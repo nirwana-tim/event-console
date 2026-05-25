@@ -1,0 +1,240 @@
+:root {
+    --eventku-primary: #435ebe;
+    --eventku-accent: #57caeb;
+    --eventku-ink: #25396f;
+    --eventku-soft: #f2f7ff;
+    --eventku-body: #f2f7ff;
+    --eventku-card-shadow: 0 10px 24px rgba(67, 94, 190, .08);
+    --eventku-muted: #7c8db5;
+}
+
+body {
+    background: var(--eventku-body);
+}
+
+[data-bs-theme="dark"] {
+    --eventku-ink: #e9edf7;
+    --eventku-soft: #1f2637;
+    --eventku-body: #151b2d;
+    --eventku-card-shadow: 0 12px 28px rgba(0, 0, 0, .18);
+    --eventku-muted: #a8b3cf;
+}
+
+.app-topbar .navbar {
+    min-height: 64px;
+}
+
+.brand-mark {
+    align-items: center;
+    background: linear-gradient(135deg, var(--eventku-primary), var(--eventku-accent));
+    border-radius: 12px;
+    color: #fff;
+    display: inline-flex;
+    font-size: 1.25rem;
+    height: 42px;
+    justify-content: center;
+    width: 42px;
+}
+
+.theme-toggle {
+    background: var(--bs-body-bg);
+    border: 1px solid var(--bs-border-color);
+    border-radius: 999px;
+    padding: .35rem .65rem;
+}
+
+.theme-toggle .form-check-input {
+    cursor: pointer;
+}
+
+.user-chip {
+    background: var(--bs-body-bg);
+    border: 1px solid var(--bs-border-color);
+    border-radius: 999px;
+    padding: .35rem .75rem !important;
+}
+
+.page-heading {
+    margin-bottom: 1.5rem;
+}
+
+.page-heading h3,
+.page-heading h2 {
+    color: var(--eventku-ink);
+    font-weight: 700;
+}
+
+.page-subtitle {
+    color: var(--eventku-muted);
+    margin-bottom: 0;
+}
+
+.card {
+    border: 0;
+    box-shadow: var(--eventku-card-shadow);
+}
+
+.stat-card {
+    overflow: hidden;
+    position: relative;
+}
+
+.stat-card .stat-icon {
+    align-items: center;
+    border-radius: 14px;
+    color: #fff;
+    display: inline-flex;
+    font-size: 1.35rem;
+    height: 48px;
+    justify-content: center;
+    width: 48px;
+}
+
+.stat-card h6 {
+    color: var(--eventku-muted);
+    font-size: .82rem;
+    font-weight: 600;
+    margin-bottom: .35rem;
+}
+
+.stat-card h2,
+.stat-card h4 {
+    color: var(--eventku-ink);
+    font-weight: 700;
+    margin-bottom: 0;
+}
+
+.table thead th {
+    color: #25396f;
+    font-size: .82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+[data-bs-theme="dark"] .table thead th {
+    color: #dce3f7;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+.table-img {
+    border-radius: 8px;
+    height: 58px;
+    object-fit: cover;
+    width: 92px;
+}
+
+.btn {
+    border-radius: .55rem;
+    font-weight: 600;
+}
+
+.btn-group-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .45rem;
+}
+
+.form-control,
+.form-select {
+    border-color: #dce7f1;
+}
+
+[data-bs-theme="dark"] .form-control,
+[data-bs-theme="dark"] .form-select,
+[data-bs-theme="dark"] .input-group-text {
+    border-color: #34415f;
+}
+
+.form-label,
+label {
+    color: #25396f;
+    font-weight: 600;
+}
+
+.event-card .card-img-top {
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+
+.event-card .event-meta {
+    color: var(--eventku-muted);
+    display: flex;
+    gap: .5rem;
+    margin-bottom: .45rem;
+}
+
+.auth-art {
+    align-items: center;
+    background:
+        linear-gradient(135deg, rgba(67, 94, 190, .94), rgba(87, 202, 235, .88)),
+        url("../../static/images/samples/bg-mountain.jpg") center / cover;
+    color: #fff;
+    display: flex;
+    height: 100vh;
+    padding: 4rem;
+}
+
+.auth-art h2 {
+    color: #fff;
+    font-size: 2.6rem;
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.auth-art p {
+    color: rgba(255, 255, 255, .84);
+    font-size: 1.05rem;
+    max-width: 520px;
+}
+
+.auth-logo-mark {
+    align-items: center;
+    background: var(--eventku-soft);
+    border-radius: 16px;
+    color: var(--eventku-primary);
+    display: inline-flex;
+    font-size: 1.8rem;
+    height: 56px;
+    justify-content: center;
+    width: 56px;
+}
+
+.empty-state {
+    color: var(--eventku-muted);
+    padding: 2rem;
+    text-align: center;
+}
+
+[data-bs-theme="dark"] .auth-logo-mark {
+    background: #1f2637;
+}
+
+[data-bs-theme="dark"] .text-muted,
+[data-bs-theme="dark"] .text-gray-600 {
+    color: var(--eventku-muted) !important;
+}
+
+.empty-state i {
+    color: #c2cbe0;
+    font-size: 2.4rem;
+}
+
+@media (max-width: 767.98px) {
+    .page-heading .d-flex {
+        align-items: stretch !important;
+        flex-direction: column;
+        gap: .75rem;
+    }
+
+    .btn-group-wrap,
+    .page-heading .btn-group-wrap {
+        width: 100%;
+    }
+
+    .btn-group-wrap .btn {
+        flex: 1 1 auto;
+    }
+}
