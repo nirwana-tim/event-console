@@ -24,7 +24,7 @@ class Event extends MY_Controller
         $this->pagination->initialize($this->pagination_config($keyword));
 
         $this->render('event/index', array(
-            'page_title' => 'Data Event - EventKu',
+            'page_title' => 'Data Event - EventConsole',
             'events' => $this->event_model->get_all(self::PER_PAGE, $offset, $keyword),
             'keyword' => $keyword,
             'offset' => $offset,
@@ -37,7 +37,7 @@ class Event extends MY_Controller
         $this->set_event_rules();
 
         if ($this->form_validation->run() === FALSE) {
-            $this->render('event/tambah', array('page_title' => 'Tambah Event - EventKu'));
+            $this->render('event/tambah', array('page_title' => 'Tambah Event - EventConsole'));
             return;
         }
 
@@ -71,7 +71,7 @@ class Event extends MY_Controller
 
         if ($this->form_validation->run() === FALSE) {
             $this->render('event/edit', array(
-                'page_title' => 'Edit Event - EventKu',
+                'page_title' => 'Edit Event - EventConsole',
                 'event' => $event,
             ));
             return;
@@ -123,7 +123,7 @@ class Event extends MY_Controller
         $selected_event_id = $selected_event_id > 0 ? $selected_event_id : null;
 
         $this->render('event/pendaftaran', array(
-            'page_title' => 'Pendaftaran Peserta - EventKu',
+            'page_title' => 'Pendaftaran Peserta - EventConsole',
             'events' => $this->event_model->get_options(),
             'selected_event_id' => $selected_event_id,
             'registrations' => $this->event_model->get_registrations($selected_event_id),
@@ -135,7 +135,7 @@ class Event extends MY_Controller
         $this->set_active_menu('pembayaran');
 
         $this->render('event/pembayaran', array(
-            'page_title' => 'Pembayaran - EventKu',
+            'page_title' => 'Pembayaran - EventConsole',
             'payments' => $this->event_model->get_payments(),
         ));
     }

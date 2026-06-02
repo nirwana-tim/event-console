@@ -22,7 +22,7 @@
         href="<?= base_url('assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css') ?>">
 
     <link rel="stylesheet"
-        href="<?= base_url('assets/compiled/css/eventku.css') ?>">
+        href="<?= base_url('assets/compiled/css/EventConsole.css') ?>">
 </head>
 
 <body>

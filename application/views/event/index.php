@@ -121,7 +121,8 @@
                             <td>
                                 <img class="table-img"
                                     src="<?= e(base_url('uploads/banner/' . $event->banner)) ?>"
-                                    alt="<?= e($event->nama_event) ?>">
+                                    alt="<?= e($event->nama_event) ?>"
+                                    onerror="this.src='<?= base_url('assets/static/images/samples/error-404.svg') ?>'">
                             </td>
 
                             <td>
@@ -137,12 +138,6 @@
                                         class="btn btn-info btn-sm">
                                         <i class="bi bi-people me-1"></i>
                                         Peserta
-                                    </a>
-
-                                    <a href="<?= base_url('event/export_peserta/' . $event->id) ?>"
-                                        class="btn btn-success btn-sm">
-                                        <i class="bi bi-file-earmark-excel me-1"></i>
-                                        Excel
                                     </a>
 
                                     <a href="<?= base_url('event/edit/' . $event->id) ?>"

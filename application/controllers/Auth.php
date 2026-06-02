@@ -22,7 +22,7 @@ class Auth extends MY_Controller
         $this->form_validation->set_message('is_unique', '{field} sudah terdaftar.');
 
         if ($this->form_validation->run() === FALSE) {
-            $this->render_auth('register', array('page_title' => 'Register - EventKu'));
+            $this->render_auth('register', array('page_title' => 'Register - EventConsole'));
             return;
         }
 
@@ -67,7 +67,7 @@ class Auth extends MY_Controller
             redirect('auth/login');
         }
 
-        $this->render_auth('login', array('page_title' => 'Login - EventKu'));
+        $this->render_auth('login', array('page_title' => 'Login - EventConsole'));
     }
 
     public function logout()

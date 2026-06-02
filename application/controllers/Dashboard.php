@@ -16,7 +16,7 @@ class Dashboard extends MY_Controller
         $this->set_active_menu('dashboard');
 
         $this->render('dashboard', array(
-            'page_title' => 'Dashboard - EventKu',
+            'page_title' => 'Dashboard - EventConsole',
             'summary' => $this->dashboard_model->get_summary(),
         ));
     }

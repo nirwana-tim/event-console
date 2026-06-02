@@ -7,7 +7,7 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0">
 
-    <title>Register - EventKu</title>
+    <title>Register - EventConsole</title>
 
     <script src="<?= base_url('assets/static/js/initTheme.js') ?>"></script>
 
@@ -18,7 +18,7 @@
     <link rel="stylesheet"
         href="<?= base_url('assets/extensions/bootstrap-icons/font/bootstrap-icons.css') ?>">
     <link rel="stylesheet"
-        href="<?= base_url('assets/compiled/css/eventku.css') ?>">
+        href="<?= base_url('assets/compiled/css/EventConsole.css') ?>">
 
 </head>
 
@@ -39,7 +39,7 @@
                     </span>
 
                     <div>
-                        <h2 class="fw-bold text-primary mb-0">EventKu</h2>
+                        <h2 class="fw-bold text-primary mb-0">EventConsole</h2>
                         <small class="text-muted">Buat akun peserta</small>
                     </div>
 

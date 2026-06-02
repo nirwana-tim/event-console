@@ -9,8 +9,7 @@
                     <i class="bi bi-calendar2-check"></i>
                 </div>
                 <div>
-                    <h3 class="mb-0">EventKu</h3>
-                    <small class="text-muted">Event & Sertifikat</small>
+                    <h3 class="mb-0">EventConsole</h3>
                 </div>
             </div>
 

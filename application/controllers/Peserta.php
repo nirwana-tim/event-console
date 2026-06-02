@@ -17,7 +17,7 @@ class Peserta extends MY_Controller
         $this->set_active_menu('peserta_event');
 
         $this->render('peserta/event', array(
-            'page_title' => 'Event - EventKu',
+            'page_title' => 'Event - EventConsole',
             'events' => $this->event_model->get_all(),
         ));
     }
@@ -105,7 +105,7 @@ class Peserta extends MY_Controller
         }
 
         $this->render('peserta/upload', array(
-            'page_title' => 'Upload Bukti Pembayaran - EventKu',
+            'page_title' => 'Upload Bukti Pembayaran - EventConsole',
         ));
     }
 
@@ -114,7 +114,7 @@ class Peserta extends MY_Controller
         $this->set_active_menu('sertifikat');
 
         $this->render('peserta/sertifikat', array(
-            'page_title' => 'Sertifikat Saya - EventKu',
+            'page_title' => 'Sertifikat Saya - EventConsole',
             'certificates' => $this->event_model->get_user_certificates($this->session->userdata('id')),
         ));
     }
@@ -141,7 +141,7 @@ class Peserta extends MY_Controller
     private function render_registration_form($event)
     {
         $this->render('peserta/form_daftar', array(
-            'page_title' => 'Form Pendaftaran Event - EventKu',
+            'page_title' => 'Form Pendaftaran Event - EventConsole',
             'event' => $event,
         ));
     }

@@ -1,23 +1,23 @@
 :root {
-    --eventku-primary: #435ebe;
-    --eventku-accent: #57caeb;
-    --eventku-ink: #25396f;
-    --eventku-soft: #f2f7ff;
-    --eventku-body: #f2f7ff;
-    --eventku-card-shadow: 0 10px 24px rgba(67, 94, 190, .08);
-    --eventku-muted: #7c8db5;
+    --EventConsole-primary: #435ebe;
+    --EventConsole-accent: #57caeb;
+    --EventConsole-ink: #25396f;
+    --EventConsole-soft: #f2f7ff;
+    --EventConsole-body: #f2f7ff;
+    --EventConsole-card-shadow: 0 10px 24px rgba(67, 94, 190, .08);
+    --EventConsole-muted: #7c8db5;
 }
 
 body {
-    background: var(--eventku-body);
+    background: var(--EventConsole-body);
 }
 
 [data-bs-theme="dark"] {
-    --eventku-ink: #e9edf7;
-    --eventku-soft: #1f2637;
-    --eventku-body: #151b2d;
-    --eventku-card-shadow: 0 12px 28px rgba(0, 0, 0, .18);
-    --eventku-muted: #a8b3cf;
+    --EventConsole-ink: #e9edf7;
+    --EventConsole-soft: #1f2637;
+    --EventConsole-body: #151b2d;
+    --EventConsole-card-shadow: 0 12px 28px rgba(0, 0, 0, .18);
+    --EventConsole-muted: #a8b3cf;
 }
 
 .app-topbar .navbar {
@@ -26,7 +26,7 @@ body {
 
 .brand-mark {
     align-items: center;
-    background: linear-gradient(135deg, var(--eventku-primary), var(--eventku-accent));
+    background: linear-gradient(135deg, var(--EventConsole-primary), var(--EventConsole-accent));
     border-radius: 12px;
     color: #fff;
     display: inline-flex;
@@ -60,18 +60,18 @@ body {
 
 .page-heading h3,
 .page-heading h2 {
-    color: var(--eventku-ink);
+    color: var(--EventConsole-ink);
     font-weight: 700;
 }
 
 .page-subtitle {
-    color: var(--eventku-muted);
+    color: var(--EventConsole-muted);
     margin-bottom: 0;
 }
 
 .card {
     border: 0;
-    box-shadow: var(--eventku-card-shadow);
+    box-shadow: var(--EventConsole-card-shadow);
 }
 
 .stat-card {
@@ -91,7 +91,7 @@ body {
 }
 
 .stat-card h6 {
-    color: var(--eventku-muted);
+    color: var(--EventConsole-muted);
     font-size: .82rem;
     font-weight: 600;
     margin-bottom: .35rem;
@@ -99,7 +99,7 @@ body {
 
 .stat-card h2,
 .stat-card h4 {
-    color: var(--eventku-ink);
+    color: var(--EventConsole-ink);
     font-weight: 700;
     margin-bottom: 0;
 }
@@ -121,9 +121,9 @@ body {
 
 .table-img {
     border-radius: 8px;
-    height: 58px;
+    height: 64px;
     object-fit: cover;
-    width: 92px;
+    width: 114px;
 }
 
 .btn {
@@ -160,7 +160,7 @@ label {
 }
 
 .event-card .event-meta {
-    color: var(--eventku-muted);
+    color: var(--EventConsole-muted);
     display: flex;
     gap: .5rem;
     margin-bottom: .45rem;
@@ -192,9 +192,9 @@ label {
 
 .auth-logo-mark {
     align-items: center;
-    background: var(--eventku-soft);
+    background: var(--EventConsole-soft);
     border-radius: 16px;
-    color: var(--eventku-primary);
+    color: var(--EventConsole-primary);
     display: inline-flex;
     font-size: 1.8rem;
     height: 56px;
@@ -203,7 +203,7 @@ label {
 }
 
 .empty-state {
-    color: var(--eventku-muted);
+    color: var(--EventConsole-muted);
     padding: 2rem;
     text-align: center;
 }
@@ -214,7 +214,7 @@ label {
 
 [data-bs-theme="dark"] .text-muted,
 [data-bs-theme="dark"] .text-gray-600 {
-    color: var(--eventku-muted) !important;
+    color: var(--EventConsole-muted) !important;
 }
 
 .empty-state i {

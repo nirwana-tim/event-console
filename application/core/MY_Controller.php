@@ -87,7 +87,7 @@ class MY_Controller extends CI_Controller
             'current_user_name' => $name,
             'current_user_initial' => $name !== '' ? strtoupper(substr($name, 0, 1)) : 'U',
             'current_user_role' => $this->session->userdata('role'),
-            'page_title' => isset($this->page_title) ? $this->page_title : 'EventKu',
+            'page_title' => isset($this->page_title) ? $this->page_title : 'EventConsole',
         );
     }
 }
