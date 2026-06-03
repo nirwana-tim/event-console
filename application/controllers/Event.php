@@ -24,20 +24,20 @@ class Event extends MY_Controller
         $this->pagination->initialize($this->pagination_config($keyword));
 
         $this->render('event/index', array(
-            'page_title' => 'Data Event - EventConsole',
+            'page_title' => 'Event Data - EventConsole',
             'events' => $this->event_model->get_all(self::PER_PAGE, $offset, $keyword),
             'keyword' => $keyword,
             'offset' => $offset,
         ));
     }
 
-    public function tambah()
+    public function add()
     {
         $this->set_active_menu('event');
         $this->set_event_rules();
 
         if ($this->form_validation->run() === FALSE) {
-            $this->render('event/tambah', array('page_title' => 'Tambah Event - EventConsole'));
+            $this->render('event/add', array('page_title' => 'Add Event - EventConsole'));
             return;
         }
 
@@ -45,14 +45,14 @@ class Event extends MY_Controller
 
         if (!$upload) {
             $this->session->set_flashdata('error', trim(strip_tags($this->upload->display_errors('', ''))));
-            redirect('event/tambah');
+            redirect('event/add');
         }
 
         $data = $this->event_payload();
         $data['banner'] = $upload['file_name'];
 
         $this->event_model->insert($data);
-        $this->session->set_flashdata('success', 'Event berhasil ditambahkan.');
+        $this->session->set_flashdata('success', 'Event added successfully.');
 
         redirect('event');
     }
@@ -91,12 +91,12 @@ class Event extends MY_Controller
         }
 
         $this->event_model->update($id, $data);
-        $this->session->set_flashdata('success', 'Event berhasil diperbarui.');
+        $this->session->set_flashdata('success', 'Event updated successfully.');
 
         redirect('event');
     }
 
-    public function hapus($id = null)
+    public function delete($id = null)
     {
         $event = $this->event_model->get_by_id($id);
 
@@ -105,37 +105,37 @@ class Event extends MY_Controller
         }
 
         if ($this->event_model->has_registrations($id)) {
-            $this->session->set_flashdata('error', 'Event tidak bisa dihapus karena sudah memiliki pendaftaran.');
+            $this->session->set_flashdata('error', 'This event cannot be deleted because it already has registrations.');
             redirect('event');
         }
 
         $this->event_model->delete($id);
-        $this->session->set_flashdata('success', 'Event berhasil dihapus.');
+        $this->session->set_flashdata('success', 'Event deleted successfully.');
 
         redirect('event');
     }
 
-    public function pendaftaran($event_id = null)
+    public function registrations($event_id = null)
     {
-        $this->set_active_menu('pendaftaran');
+        $this->set_active_menu('registrations');
 
         $selected_event_id = $event_id ? (int) $event_id : (int) $this->input->get('event_id', TRUE);
         $selected_event_id = $selected_event_id > 0 ? $selected_event_id : null;
 
-        $this->render('event/pendaftaran', array(
-            'page_title' => 'Pendaftaran Peserta - EventConsole',
+        $this->render('event/registrations', array(
+            'page_title' => 'Participant Registrations - EventConsole',
             'events' => $this->event_model->get_options(),
             'selected_event_id' => $selected_event_id,
             'registrations' => $this->event_model->get_registrations($selected_event_id),
         ));
     }
 
-    public function pembayaran()
+    public function payments()
     {
-        $this->set_active_menu('pembayaran');
+        $this->set_active_menu('payments');
 
-        $this->render('event/pembayaran', array(
-            'page_title' => 'Pembayaran - EventConsole',
+        $this->render('event/payments', array(
+            'page_title' => 'Payments - EventConsole',
             'payments' => $this->event_model->get_payments(),
         ));
     }
@@ -149,20 +149,20 @@ class Event extends MY_Controller
         }
 
         if ($payment->status === 'verified') {
-            $this->session->set_flashdata('info', 'Pembayaran sudah diverifikasi sebelumnya.');
-            redirect('event/pembayaran');
+            $this->session->set_flashdata('info', 'This payment has already been verified.');
+            redirect('event/payments');
         }
 
         if ($this->event_model->approve_payment($id)) {
-            $this->session->set_flashdata('success', 'Pembayaran berhasil diverifikasi dan sertifikat dibuat.');
+            $this->session->set_flashdata('success', 'Payment verified successfully and certificate created.');
         } else {
-            $this->session->set_flashdata('error', 'Pembayaran gagal diverifikasi.');
+            $this->session->set_flashdata('error', 'Payment verification failed.');
         }
 
-        redirect('event/pembayaran');
+        redirect('event/payments');
     }
 
-    public function sertifikat($id = null)
+    public function certificate($id = null)
     {
         $this->load_composer();
 
@@ -173,12 +173,12 @@ class Event extends MY_Controller
         }
 
         $dompdf = new \Dompdf\Dompdf();
-        $html = $this->load->view('peserta/pdf_sertifikat', array('certificate' => $certificate), TRUE);
+        $html = $this->load->view('participant/certificate_pdf', array('certificate' => $certificate), TRUE);
 
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
-        $dompdf->stream('sertifikat-' . $certificate->nomor_sertifikat . '.pdf', array('Attachment' => 0));
+        $dompdf->stream('certificate-' . $certificate->nomor_sertifikat . '.pdf', array('Attachment' => 0));
     }
 
     public function pdf()
@@ -186,13 +186,13 @@ class Event extends MY_Controller
         $this->load_composer();
 
         $events = $this->event_model->get_all();
-        $html = $this->load->view('event/pdf', array('events' => $events), TRUE);
+        $html = $this->load->view('event/report_pdf', array('events' => $events), TRUE);
 
         $dompdf = new \Dompdf\Dompdf();
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
-        $dompdf->stream('laporan-event.pdf', array('Attachment' => 0));
+        $dompdf->stream('event-report.pdf', array('Attachment' => 0));
     }
 
     public function excel()
@@ -204,10 +204,10 @@ class Event extends MY_Controller
         $sheet->setTitle('Event');
 
         $this->write_event_sheet($sheet, $this->event_model->get_all());
-        $this->download_excel($spreadsheet, 'laporan-event.xlsx');
+        $this->download_excel($spreadsheet, 'event-report.xlsx');
     }
 
-    public function export_peserta($event_id = null)
+    public function export_participants($event_id = null)
     {
         $this->load_composer();
 
@@ -219,9 +219,9 @@ class Event extends MY_Controller
 
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-        $sheet->setTitle('Peserta');
+        $sheet->setTitle('Participants');
 
-        $headers = array('No', 'Nama', 'Email', 'No HP', 'Instansi', 'Alamat', 'Team', 'Status Daftar', 'Status Bayar');
+        $headers = array('No', 'Name', 'Email', 'Phone', 'Institution', 'Address', 'Team', 'Registration Status', 'Payment Status');
         $column = 'A';
 
         foreach ($headers as $header) {
@@ -242,7 +242,7 @@ class Event extends MY_Controller
             $sheet->setCellValue('F' . $row, $participant->alamat);
             $sheet->setCellValue('G' . $row, $participant->team);
             $sheet->setCellValue('H' . $row, $participant->status);
-            $sheet->setCellValue('I' . $row, $participant->status_pembayaran ?: 'belum_upload');
+            $sheet->setCellValue('I' . $row, $participant->status_pembayaran ?: 'not_uploaded');
             $row++;
         }
 
@@ -250,7 +250,7 @@ class Event extends MY_Controller
             $sheet->getColumnDimension($column)->setAutoSize(TRUE);
         }
 
-        $this->download_excel($spreadsheet, 'peserta-event-' . $event->id . '.xlsx');
+        $this->download_excel($spreadsheet, 'event-participants-' . $event->id . '.xlsx');
     }
 
     private function pagination_config($keyword)
@@ -263,8 +263,8 @@ class Event extends MY_Controller
             'reuse_query_string' => TRUE,
             'full_tag_open' => '<nav aria-label="Pagination"><ul class="pagination mt-3">',
             'full_tag_close' => '</ul></nav>',
-            'first_link' => 'Awal',
-            'last_link' => 'Akhir',
+            'first_link' => 'First',
+            'last_link' => 'Last',
             'next_link' => '&raquo;',
             'prev_link' => '&laquo;',
             'cur_tag_open' => '<li class="page-item active"><span class="page-link">',
@@ -285,10 +285,10 @@ class Event extends MY_Controller
 
     private function set_event_rules()
     {
-        $this->form_validation->set_rules('nama_event', 'Nama Event', 'trim|required|max_length[150]');
-        $this->form_validation->set_rules('tanggal', 'Tanggal', 'trim|required');
-        $this->form_validation->set_rules('lokasi', 'Lokasi', 'trim|required|max_length[150]');
-        $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'trim');
+        $this->form_validation->set_rules('nama_event', 'Event Name', 'trim|required|max_length[150]');
+        $this->form_validation->set_rules('tanggal', 'Date', 'trim|required');
+        $this->form_validation->set_rules('lokasi', 'Location', 'trim|required|max_length[150]');
+        $this->form_validation->set_rules('deskripsi', 'Description', 'trim');
     }
 
     private function event_payload()
@@ -342,7 +342,7 @@ class Event extends MY_Controller
 
     private function write_event_sheet($sheet, $events)
     {
-        $headers = array('No', 'Nama Event', 'Tanggal', 'Lokasi');
+        $headers = array('No', 'Event Name', 'Date', 'Location');
         $column = 'A';
 
         foreach ($headers as $header) {

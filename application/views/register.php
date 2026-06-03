@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 
 <head>
 
@@ -40,7 +40,7 @@
 
                     <div>
                         <h2 class="fw-bold text-primary mb-0">EventConsole</h2>
-                        <small class="text-muted">Buat akun peserta</small>
+                        <small class="text-muted">Create a participant account</small>
                     </div>
 
                 </div>
@@ -48,7 +48,7 @@
                 <h1 class="auth-title">Register</h1>
 
                 <p class="auth-subtitle mb-4">
-                    Daftar sebagai peserta untuk mengikuti event dan mengakses sertifikat.
+                    Register as a participant to join events and access certificates.
                 </p>
 
                 <?= validation_errors(
@@ -66,7 +66,7 @@
                             class="form-control form-control-xl"
                             value="<?= e(set_value('nama')) ?>"
                             autocomplete="name"
-                            placeholder="Nama Lengkap">
+                            placeholder="Full Name">
 
                         <div class="form-control-icon">
                             <i class="bi bi-person"></i>
@@ -113,7 +113,7 @@
                 <div class="text-center mt-5 text-lg fs-4">
 
                     <p class="text-gray-600">
-                        Sudah punya akun?
+                        Already have an account?
                         <a href="<?= base_url('auth/login') ?>"
                             class="font-bold">
                             Login
@@ -131,11 +131,11 @@
             <div class="auth-art">
                 <div>
                     <span class="badge bg-light text-primary mb-3">
-                        Peserta Event
+                        Event Participant
                     </span>
-                    <h2>Satu akun untuk daftar event, upload pembayaran, dan unduh sertifikat.</h2>
+                    <h2>One account to register for events, upload payments, and download certificates.</h2>
                     <p class="mt-3">
-                        Isi data peserta, pilih event, lalu pantau sertifikat setelah pembayaran diverifikasi admin.
+                        Complete your participant details, choose an event, then track your certificate after the admin verifies your payment.
                     </p>
                 </div>
             </div>

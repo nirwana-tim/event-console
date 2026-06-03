@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Peserta extends MY_Controller
+class Participant extends MY_Controller
 {
     public function __construct()
     {
@@ -9,29 +9,29 @@ class Peserta extends MY_Controller
 
         $this->require_role('peserta');
         $this->load->model('Event_model', 'event_model');
-        $this->load->model('Pendaftaran_model', 'pendaftaran_model');
+        $this->load->model('Registration_model', 'registration_model');
     }
 
-    public function event()
+    public function events()
     {
-        $this->set_active_menu('peserta_event');
+        $this->set_active_menu('participant_events');
 
-        $this->render('peserta/event', array(
+        $this->render('participant/events', array(
             'page_title' => 'Event - EventConsole',
             'events' => $this->event_model->get_all(),
         ));
     }
 
-    public function form_daftar($id = null)
+    public function registration_form($id = null)
     {
-        $this->set_active_menu('peserta_event');
+        $this->set_active_menu('participant_events');
         $event = $this->event_model->get_by_id($id);
 
         if (!$event) {
             show_404();
         }
 
-        $existing_registration = $this->pendaftaran_model->find_by_user_event(
+        $existing_registration = $this->registration_model->find_by_user_event(
             $this->session->userdata('id'),
             $id
         );
@@ -43,9 +43,9 @@ class Peserta extends MY_Controller
         $this->render_registration_form($event);
     }
 
-    public function daftar($id = null)
+    public function register($id = null)
     {
-        $this->set_active_menu('peserta_event');
+        $this->set_active_menu('participant_events');
         $event = $this->event_model->get_by_id($id);
 
         if (!$event) {
@@ -53,10 +53,10 @@ class Peserta extends MY_Controller
         }
 
         if ($this->input->method() !== 'post') {
-            redirect('peserta/form_daftar/' . $id);
+            redirect('participant/registration_form/' . $id);
         }
 
-        $existing_registration = $this->pendaftaran_model->find_by_user_event(
+        $existing_registration = $this->registration_model->find_by_user_event(
             $this->session->userdata('id'),
             $id
         );
@@ -72,22 +72,22 @@ class Peserta extends MY_Controller
             return;
         }
 
-        $registration_id = $this->pendaftaran_model->create_registration($this->registration_payload($id));
+        $registration_id = $this->registration_model->create_registration($this->registration_payload($id));
 
-        redirect('peserta/upload_bayar/' . $registration_id);
+        redirect('participant/upload_payment/' . $registration_id);
     }
 
-    public function upload_bayar($id = null)
+    public function upload_payment_proof($id = null)
     {
-        $this->set_active_menu('peserta_event');
+        $this->set_active_menu('participant_events');
 
-        if (!$this->pendaftaran_model->user_owns_registration($id, $this->session->userdata('id'))) {
+        if (!$this->registration_model->user_owns_registration($id, $this->session->userdata('id'))) {
             show_404();
         }
 
-        if ($this->pendaftaran_model->find_payment($id)) {
-            $this->session->set_flashdata('info', 'Bukti pembayaran sudah pernah diupload.');
-            redirect('peserta/event');
+        if ($this->registration_model->find_payment($id)) {
+            $this->session->set_flashdata('info', 'Payment proof has already been uploaded.');
+            redirect('participant/events');
         }
 
         if ($this->input->method() === 'post') {
@@ -95,26 +95,26 @@ class Peserta extends MY_Controller
 
             if (!$upload) {
                 $this->session->set_flashdata('error', trim(strip_tags($this->upload->display_errors('', ''))));
-                redirect('peserta/upload_bayar/' . $id);
+                redirect('participant/upload_payment_proof/' . $id);
             }
 
-            $this->pendaftaran_model->create_payment($id, $upload['file_name']);
-            $this->session->set_flashdata('success', 'Bukti pembayaran berhasil diupload.');
+            $this->registration_model->create_payment($id, $upload['file_name']);
+            $this->session->set_flashdata('success', 'Payment proof uploaded successfully.');
 
-            redirect('peserta/event');
+            redirect('participant/events');
         }
 
-        $this->render('peserta/upload', array(
-            'page_title' => 'Upload Bukti Pembayaran - EventConsole',
+        $this->render('participant/upload_payment', array(
+            'page_title' => 'Upload Payment Proof - EventConsole',
         ));
     }
 
-    public function sertifikat()
+    public function certificates()
     {
-        $this->set_active_menu('sertifikat');
+        $this->set_active_menu('certificates');
 
-        $this->render('peserta/sertifikat', array(
-            'page_title' => 'Sertifikat Saya - EventConsole',
+        $this->render('participant/certificates', array(
+            'page_title' => 'My Certificates - EventConsole',
             'certificates' => $this->event_model->get_user_certificates($this->session->userdata('id')),
         ));
     }
@@ -130,39 +130,39 @@ class Peserta extends MY_Controller
         }
 
         $dompdf = new \Dompdf\Dompdf();
-        $html = $this->load->view('peserta/pdf_sertifikat', array('certificate' => $certificate), TRUE);
+        $html = $this->load->view('participant/certificate_pdf', array('certificate' => $certificate), TRUE);
 
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
-        $dompdf->stream('sertifikat-' . $certificate->nomor_sertifikat . '.pdf', array('Attachment' => 0));
+        $dompdf->stream('certificate-' . $certificate->nomor_sertifikat . '.pdf', array('Attachment' => 0));
     }
 
     private function render_registration_form($event)
     {
-        $this->render('peserta/form_daftar', array(
-            'page_title' => 'Form Pendaftaran Event - EventConsole',
+        $this->render('participant/registration_form', array(
+            'page_title' => 'Event Registration Form - EventConsole',
             'event' => $event,
         ));
     }
 
     private function redirect_existing_registration($registration)
     {
-        if (!$this->pendaftaran_model->find_payment($registration->id)) {
-            redirect('peserta/upload_bayar/' . $registration->id);
+        if (!$this->registration_model->find_payment($registration->id)) {
+            redirect('participant/upload_payment_proof/' . $registration->id);
         }
 
-        $this->session->set_flashdata('info', 'Kamu sudah terdaftar dan sudah upload pembayaran.');
-        redirect('peserta/event');
+        $this->session->set_flashdata('info', 'You are already registered and have uploaded payment proof.');
+        redirect('participant/events');
     }
 
     private function set_registration_rules()
     {
-        $this->form_validation->set_rules('no_hp', 'No HP', 'trim|required|max_length[30]');
-        $this->form_validation->set_rules('instansi', 'Instansi', 'trim|required|max_length[150]');
-        $this->form_validation->set_rules('alamat', 'Alamat', 'trim|required');
+        $this->form_validation->set_rules('no_hp', 'Phone Number', 'trim|required|max_length[30]');
+        $this->form_validation->set_rules('instansi', 'Institution', 'trim|required|max_length[150]');
+        $this->form_validation->set_rules('alamat', 'Address', 'trim|required');
         $this->form_validation->set_rules('team', 'Team', 'trim|max_length[150]');
-        $this->form_validation->set_rules('catatan', 'Catatan', 'trim');
+        $this->form_validation->set_rules('catatan', 'Notes', 'trim');
     }
 
     private function registration_payload($event_id)
@@ -181,7 +181,7 @@ class Peserta extends MY_Controller
 
     private function upload_payment()
     {
-        $upload_path = FCPATH . 'uploads/pembayaran/';
+        $upload_path = FCPATH . 'uploads/payments/';
 
         if (!is_dir($upload_path)) {
             mkdir($upload_path, 0755, TRUE);

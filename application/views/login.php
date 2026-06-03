@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 
 <head>
 
@@ -40,7 +40,7 @@
 
                     <div>
                         <h2 class="fw-bold text-primary mb-0">EventConsole</h2>
-                        <small class="text-muted">Event & Sertifikat Online</small>
+                        <small class="text-muted">Online Events & Certificates</small>
                     </div>
 
                 </div>
@@ -48,7 +48,7 @@
                 <h1 class="auth-title">Login</h1>
 
                 <p class="auth-subtitle mb-5">
-                    Masuk ke dashboard untuk mengelola event, pembayaran, dan sertifikat.
+                    Sign in to manage events, payments, and certificates.
                 </p>
 
                 <?= flash_alert('success') ?>
@@ -96,7 +96,7 @@
                 <div class="text-center mt-5 text-lg fs-4">
 
                     <p class="text-gray-600">
-                        Belum punya akun?
+                        Don't have an account?
                         <a href="<?= base_url('auth/register') ?>"
                             class="font-bold">
                             Register
@@ -116,9 +116,9 @@
                     <span class="badge bg-light text-primary mb-3">
                         CodeIgniter 3
                     </span>
-                    <h2>Kelola event lebih rapi dari pendaftaran sampai sertifikat.</h2>
+                    <h2>Manage events cleanly from registration to certificates.</h2>
                     <p class="mt-3">
-                        Admin memantau peserta dan pembayaran, peserta mendaftar event dan mengambil sertifikat PDF dalam satu alur yang bersih.
+                        Admins monitor participants and payments, while participants register for events and download PDF certificates in one clear flow.
                     </p>
                 </div>
             </div>

@@ -4,8 +4,8 @@
 
 <div class="page-heading">
 
-    <h3>Daftar Event</h3>
-    <p class="page-subtitle">Pilih event yang ingin kamu ikuti.</p>
+    <h3>Event List</h3>
+    <p class="page-subtitle">Choose the event you want to join.</p>
 
 </div>
 
@@ -19,7 +19,7 @@
             <div class="card">
                 <div class="empty-state">
                     <i class="bi bi-calendar-x d-block mb-2"></i>
-                    Belum ada event tersedia
+                    No events available yet
                 </div>
             </div>
         </div>
@@ -54,10 +54,10 @@
                         <?= e(substr(strip_tags($event->deskripsi), 0, 120)) ?>
                     </p>
 
-                    <a href="<?= base_url('peserta/form_daftar/' . $event->id) ?>"
+                    <a href="<?= base_url('participant/registration_form/' . $event->id) ?>"
                         class="btn btn-primary w-100">
                         <i class="bi bi-pencil-square me-1"></i>
-                        Daftar Event
+                        Register for Event
                     </a>
 
                 </div>

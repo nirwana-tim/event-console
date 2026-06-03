@@ -1,7 +1,7 @@
 <div class="page-heading">
 
-    <h3>Form Pendaftaran Event</h3>
-    <p class="page-subtitle">Lengkapi data peserta sebelum upload pembayaran.</p>
+    <h3>Event Registration Form</h3>
+    <p class="page-subtitle">Complete your participant details before uploading payment proof.</p>
 
 </div>
 
@@ -37,20 +37,20 @@
             <div class="card">
 
                 <div class="card-header">
-                    <h4 class="card-title mb-0">Data Peserta</h4>
+                    <h4 class="card-title mb-0">Participant Data</h4>
                 </div>
 
                 <div class="card-body">
 
                     <form method="post"
-                        action="<?= base_url('peserta/daftar/' . $event->id) ?>">
+                        action="<?= base_url('participant/register/' . $event->id) ?>">
 
                         <div class="row">
 
                             <div class="col-md-6">
 
                             <div class="mb-3">
-                                    <label for="no_hp" class="form-label">No HP</label>
+                                    <label for="no_hp" class="form-label">Phone Number</label>
                                     <input type="text"
                                         id="no_hp"
                                         name="no_hp"
@@ -65,13 +65,13 @@
                             <div class="col-md-6">
 
                                 <div class="mb-3">
-                                    <label for="instansi" class="form-label">Instansi</label>
+                                    <label for="instansi" class="form-label">Institution</label>
                                     <input type="text"
                                         id="instansi"
                                         name="instansi"
                                         class="form-control"
                                         value="<?= e(set_value('instansi')) ?>"
-                                        placeholder="Sekolah / Kampus / Komunitas"
+                                        placeholder="School / Campus / Community"
                                         required>
                                 </div>
 
@@ -80,7 +80,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="alamat" class="form-label">Alamat</label>
+                            <label for="alamat" class="form-label">Address</label>
                             <textarea name="alamat"
                                 id="alamat"
                                 rows="3"
@@ -89,7 +89,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="team" class="form-label">Team (Opsional)</label>
+                            <label for="team" class="form-label">Team (Optional)</label>
                             <input type="text"
                                 id="team"
                                 name="team"
@@ -98,7 +98,7 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="catatan" class="form-label">Catatan</label>
+                            <label for="catatan" class="form-label">Notes</label>
                             <textarea name="catatan"
                                 id="catatan"
                                 rows="3"
@@ -108,11 +108,11 @@
                         <div class="btn-group-wrap">
                             <button class="btn btn-primary">
                                 <i class="bi bi-send me-1"></i>
-                                Daftar Sekarang
+                                Register Now
                             </button>
 
-                            <a href="<?= base_url('peserta/event') ?>" class="btn btn-light">
-                                Kembali
+                            <a href="<?= base_url('participant/events') ?>" class="btn btn-light">
+                                Back
                             </a>
                         </div>
 

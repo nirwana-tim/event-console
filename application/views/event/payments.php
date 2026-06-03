@@ -4,8 +4,8 @@
 
 <div class="page-heading">
 
-    <h3>Data Pembayaran</h3>
-    <p class="page-subtitle">Verifikasi pembayaran dan generate sertifikat peserta.</p>
+    <h3>Payment Data</h3>
+    <p class="page-subtitle">Verify payments and generate participant certificates.</p>
 
 </div>
 
@@ -14,24 +14,24 @@
     <div class="card">
 
         <div class="card-header">
-            <h4 class="card-title mb-0">Pembayaran Masuk</h4>
+            <h4 class="card-title mb-0">Incoming Payments</h4>
         </div>
 
         <div class="card-body">
 
             <div class="table-responsive">
 
-                <table class="table table-hover align-middle" id="table-pembayaran">
+                <table class="table table-hover align-middle" id="table-payments">
 
                     <thead>
 
                         <tr>
-                            <th>Peserta</th>
+                            <th>Participant</th>
                             <th>Event</th>
-                            <th>Bukti</th>
+                            <th>Proof</th>
                             <th>Status</th>
-                            <th>Sertifikat</th>
-                            <th>Aksi</th>
+                            <th>Certificate</th>
+                            <th>Actions</th>
                         </tr>
 
                     </thead>
@@ -44,7 +44,7 @@
                             <td colspan="6">
                                 <div class="empty-state">
                                     <i class="bi bi-credit-card d-block mb-2"></i>
-                                    Belum ada pembayaran
+                                    No payments yet
                                 </div>
                             </td>
                         </tr>
@@ -59,11 +59,11 @@
                             <td><?= e($payment->nama_event) ?></td>
 
                             <td>
-                                <a href="<?= e(base_url('uploads/pembayaran/' . $payment->bukti_bayar)) ?>"
+                                <a href="<?= e(base_url('uploads/payments/' . $payment->bukti_bayar)) ?>"
                                     target="_blank">
                                     <img class="table-img"
-                                        src="<?= e(base_url('uploads/pembayaran/' . $payment->bukti_bayar)) ?>"
-                                        alt="Bukti pembayaran">
+                                        src="<?= e(base_url('uploads/payments/' . $payment->bukti_bayar)) ?>"
+                                        alt="Payment proof">
                                 </a>
                             </td>
 
@@ -77,14 +77,14 @@
 
                             <td>
                                 <?php if ($payment->sertifikat_id) { ?>
-                                    <a href="<?= base_url('event/sertifikat/' . $payment->sertifikat_id) ?>"
+                                    <a href="<?= base_url('event/certificate/' . $payment->sertifikat_id) ?>"
                                         class="btn btn-primary btn-sm"
                                         target="_blank">
                                         <i class="bi bi-file-earmark-pdf me-1"></i>
                                         PDF
                                     </a>
                                 <?php } else { ?>
-                                    <span class="text-muted">Belum ada</span>
+                                    <span class="text-muted">Not available</span>
                                 <?php } ?>
                             </td>
 
@@ -92,12 +92,12 @@
                                 <?php if ($payment->status === 'pending') { ?>
                                     <a href="<?= base_url('event/approve/' . $payment->id) ?>"
                                         class="btn btn-success btn-sm"
-                                        onclick="return confirm('Approve pembayaran ini?')">
+                                        onclick="return confirm('Approve this payment?')">
                                         <i class="bi bi-check2-circle me-1"></i>
                                         Approve
                                     </a>
                                 <?php } else { ?>
-                                    <span class="badge bg-light-success text-success">Selesai</span>
+                                    <span class="badge bg-light-success text-success">Completed</span>
                                 <?php } ?>
                             </td>
 

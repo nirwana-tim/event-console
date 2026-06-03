@@ -1,7 +1,7 @@
 <div class="page-heading">
 
     <h3>Edit Event</h3>
-    <p class="page-subtitle">Perbarui informasi event yang sudah dibuat.</p>
+    <p class="page-subtitle">Update the information for this event.</p>
 
 </div>
 
@@ -26,7 +26,7 @@
                     <div class="col-md-8">
 
                         <div class="mb-3">
-                            <label for="nama_event" class="form-label">Nama Event</label>
+                            <label for="nama_event" class="form-label">Event Name</label>
                             <input type="text"
                                 id="nama_event"
                                 name="nama_event"
@@ -39,7 +39,7 @@
                     <div class="col-md-4">
 
                         <div class="mb-3">
-                            <label for="tanggal" class="form-label">Tanggal</label>
+                            <label for="tanggal" class="form-label">Date</label>
                             <input type="date"
                                 id="tanggal"
                                 name="tanggal"
@@ -52,7 +52,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="lokasi" class="form-label">Lokasi</label>
+                    <label for="lokasi" class="form-label">Location</label>
                     <input type="text"
                         id="lokasi"
                         name="lokasi"
@@ -61,7 +61,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="deskripsi" class="form-label">Deskripsi</label>
+                    <label for="deskripsi" class="form-label">Description</label>
                     <textarea name="deskripsi"
                         id="deskripsi"
                         rows="5"
@@ -95,7 +95,7 @@
                     </button>
 
                     <a href="<?= base_url('event') ?>" class="btn btn-light">
-                        Kembali
+                        Back
                     </a>
                 </div>
 

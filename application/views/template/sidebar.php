@@ -45,31 +45,31 @@
                         class="sidebar-link">
 
                         <i class="bi bi-calendar2-event-fill"></i>
-                        <span>Data Event</span>
+                        <span>Event Data</span>
 
                     </a>
 
                 </li>
 
-                <li class="sidebar-item<?= active_sidebar_class('pendaftaran', $active_menu) ?>">
+                <li class="sidebar-item<?= active_sidebar_class('registrations', $active_menu) ?>">
 
-                    <a href="<?= base_url('event/pendaftaran') ?>"
+                    <a href="<?= base_url('event/registrations') ?>"
                         class="sidebar-link">
 
                         <i class="bi bi-person-lines-fill"></i>
-                        <span>Pendaftaran Peserta</span>
+                        <span>Participant Registrations</span>
 
                     </a>
 
                 </li>
 
-                <li class="sidebar-item<?= active_sidebar_class('pembayaran', $active_menu) ?>">
+                <li class="sidebar-item<?= active_sidebar_class('payments', $active_menu) ?>">
 
-                    <a href="<?= base_url('event/pembayaran') ?>"
+                    <a href="<?= base_url('event/payments') ?>"
                         class="sidebar-link">
 
                         <i class="bi bi-receipt-cutoff"></i>
-                        <span>Pembayaran</span>
+                        <span>Payments</span>
 
                     </a>
 
@@ -79,9 +79,9 @@
 
                 <?php if ($current_user_role === 'peserta') { ?>
 
-                <li class="sidebar-item<?= active_sidebar_class('peserta_event', $active_menu) ?>">
+                <li class="sidebar-item<?= active_sidebar_class('participant_events', $active_menu) ?>">
 
-                    <a href="<?= base_url('peserta/event') ?>"
+                    <a href="<?= base_url('participant/events') ?>"
                         class="sidebar-link">
 
                         <i class="bi bi-calendar2-event-fill"></i>
@@ -91,13 +91,13 @@
 
                 </li>
 
-                <li class="sidebar-item<?= active_sidebar_class('sertifikat', $active_menu) ?>">
+                <li class="sidebar-item<?= active_sidebar_class('certificates', $active_menu) ?>">
 
-                    <a href="<?= base_url('peserta/sertifikat') ?>"
+                    <a href="<?= base_url('participant/certificates') ?>"
                         class="sidebar-link">
 
                         <i class="bi bi-award-fill"></i>
-                        <span>Sertifikat Saya</span>
+                        <span>My Certificates</span>
 
                     </a>
 

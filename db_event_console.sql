@@ -1,6 +1,6 @@
 -- =========================================================
 -- Database: db_eventku
--- Aplikasi: Management Event & Sertifikat Online Sederhana
+-- Application: Simple Online Event & Certificate Management
 -- Versi schema baru disesuaikan dari database sebelumnya
 -- =========================================================
 
@@ -13,7 +13,7 @@ USE db_eventconsole;
 
 -- =========================================================
 -- Tabel users
--- Menyimpan data akun admin dan peserta
+-- Stores admin and participant account data
 -- =========================================================
 
 CREATE TABLE users (
@@ -48,8 +48,8 @@ CREATE TABLE events (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- =========================================================
--- Tabel pendaftaran
--- Menyimpan data pendaftaran peserta ke event
+-- Registration table
+-- Stores participant registration data for events
 -- =========================================================
 
 CREATE TABLE pendaftaran (
@@ -80,8 +80,8 @@ CREATE TABLE pendaftaran (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- =========================================================
--- Tabel pembayaran
--- Menyimpan bukti pembayaran peserta
+-- Payment table
+-- Stores participant payment proof
 -- =========================================================
 
 CREATE TABLE pembayaran (
@@ -101,8 +101,8 @@ CREATE TABLE pembayaran (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- =========================================================
--- Tabel sertifikat
--- Menyimpan data sertifikat peserta
+-- Certificate table
+-- Stores participant certificate data
 -- =========================================================
 
 CREATE TABLE sertifikat (
@@ -131,7 +131,7 @@ CREATE TABLE sertifikat (
 -- email    : admin@gmail.com
 -- password : sesuai password pada aplikasi lama
 --
--- Peserta login:
+-- Participant login:
 -- email    : user@gmail.com
 -- password : sesuai password pada aplikasi lama
 -- =========================================================
@@ -147,21 +147,21 @@ INSERT INTO users (id, nama, email, password, role, created_at) VALUES
 INSERT INTO events
 (id, nama_event, deskripsi, tanggal, waktu_mulai, waktu_selesai, lokasi, kuota, banner, status, created_at)
 VALUES
-(1, 'Seminar Teknologi Digital', 'Event seminar tentang perkembangan teknologi digital dan pemanfaatannya di dunia kerja.', '2026-05-30', '09:00:00', '12:00:00', 'Aula Kampus', 100, 'banner_event_1.png', 'selesai', '2026-05-27 01:51:44'),
+(1, 'Digital Technology Seminar', 'A seminar event about digital technology development and its use in the workplace.', '2026-05-30', '09:00:00', '12:00:00', 'Campus Hall', 100, 'banner_event_1.png', 'selesai', '2026-05-27 01:51:44'),
 (2, 'Workshop Web Development', 'Workshop dasar pembuatan aplikasi web sederhana menggunakan database dan framework.', '2026-06-15', '13:00:00', '16:00:00', 'Laboratorium Komputer', 50, 'banner_event_2.png', 'dibuka', '2026-05-27 11:08:54');
 
 -- =========================================================
--- Data contoh pendaftaran
+-- Sample registration data
 -- =========================================================
 
 INSERT INTO pendaftaran
 (id, user_id, event_id, status, kehadiran, no_hp, instansi, alamat, team, catatan, created_at)
 VALUES
-(1, 2, 1, 'approved', 'hadir', '081234567890', 'Universitas Contoh', 'Tangerang', 'Team A', 'Peserta hadir tepat waktu', '2026-05-27 02:06:59'),
-(2, 2, 2, 'pending', 'belum_hadir', '08123456789', 'Universitas Contoh', 'Tangerang', NULL, 'Menunggu verifikasi pembayaran', '2026-05-27 11:10:15');
+(1, 2, 1, 'approved', 'hadir', '081234567890', 'Example University', 'Tangerang', 'Team A', 'Participant arrived on time', '2026-05-27 02:06:59'),
+(2, 2, 2, 'pending', 'belum_hadir', '08123456789', 'Example University', 'Tangerang', NULL, 'Waiting for payment verification', '2026-05-27 11:10:15');
 
 -- =========================================================
--- Data contoh pembayaran
+-- Sample payment data
 -- =========================================================
 
 INSERT INTO pembayaran
@@ -171,8 +171,8 @@ VALUES
 (2, 2, 'bukti_bayar_2.jpeg', 'pending', '2026-05-27 11:10:47');
 
 -- =========================================================
--- Data contoh sertifikat
--- Sertifikat hanya dibuat untuk peserta yang approved, verified, dan hadir
+-- Sample certificate data
+-- Certificates are only created for approved, verified, and present participants
 -- =========================================================
 
 INSERT INTO sertifikat
@@ -181,7 +181,7 @@ VALUES
 (1, 1, 'SRT-1-20260527020952', 'SRT-1-20260527020952.pdf', 'VERIFY-SRT-1-20260527020952', '2026-05-27 02:09:52');
 
 -- =========================================================
--- Query contoh untuk cek peserta yang berhak mendapat sertifikat
+-- Sample query to check participants eligible for certificates
 -- =========================================================
 --
 -- SELECT
@@ -200,5 +200,5 @@ VALUES
 --   AND p.kehadiran = 'hadir';
 --
 -- =========================================================
--- Selesai
+-- Done
 -- =========================================================

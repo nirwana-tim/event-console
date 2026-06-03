@@ -16,10 +16,10 @@ class Auth extends MY_Controller
             redirect('dashboard');
         }
 
-        $this->form_validation->set_rules('nama', 'Nama', 'trim|required');
+        $this->form_validation->set_rules('nama', 'Name', 'trim|required');
         $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|is_unique[users.email]');
         $this->form_validation->set_rules('password', 'Password', 'required|min_length[6]');
-        $this->form_validation->set_message('is_unique', '{field} sudah terdaftar.');
+        $this->form_validation->set_message('is_unique', '{field} is already registered.');
 
         if ($this->form_validation->run() === FALSE) {
             $this->render_auth('register', array('page_title' => 'Register - EventConsole'));
@@ -34,7 +34,7 @@ class Auth extends MY_Controller
         );
 
         $this->auth_model->create_user($data);
-        $this->session->set_flashdata('success', 'Registrasi berhasil. Silakan login.');
+        $this->session->set_flashdata('success', 'Registration successful. Please log in.');
 
         redirect('auth/login');
     }
@@ -63,7 +63,7 @@ class Auth extends MY_Controller
                 redirect('dashboard');
             }
 
-            $this->session->set_flashdata('error', 'Email atau password tidak sesuai.');
+            $this->session->set_flashdata('error', 'Email or password is incorrect.');
             redirect('auth/login');
         }
 

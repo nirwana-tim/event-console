@@ -1,7 +1,7 @@
 <div class="page-heading">
 
-    <h3>Tambah Event</h3>
-    <p class="page-subtitle">Buat event baru untuk dibuka ke peserta.</p>
+    <h3>Add Event</h3>
+    <p class="page-subtitle">Create a new event for participants.</p>
 
 </div>
 
@@ -10,7 +10,7 @@
     <div class="card">
 
         <div class="card-header">
-            <h4 class="card-title mb-0">Informasi Event</h4>
+            <h4 class="card-title mb-0">Event Information</h4>
         </div>
 
         <div class="card-body">
@@ -26,13 +26,13 @@
                     <div class="col-md-6">
 
                         <div class="mb-3">
-                            <label for="nama_event" class="form-label">Nama Event</label>
+                            <label for="nama_event" class="form-label">Event Name</label>
                             <input type="text"
                                 id="nama_event"
                                 name="nama_event"
                                 class="form-control"
                                 value="<?= e(set_value('nama_event')) ?>"
-                                placeholder="Contoh: Lomba Desain Poster">
+                                placeholder="Example: Poster Design Competition">
                         </div>
 
                     </div>
@@ -40,7 +40,7 @@
                     <div class="col-md-3">
 
                         <div class="mb-3">
-                            <label for="tanggal" class="form-label">Tanggal</label>
+                            <label for="tanggal" class="form-label">Date</label>
                             <input type="date"
                                 id="tanggal"
                                 name="tanggal"
@@ -53,13 +53,13 @@
                     <div class="col-md-3">
 
                         <div class="mb-3">
-                            <label for="lokasi" class="form-label">Lokasi</label>
+                            <label for="lokasi" class="form-label">Location</label>
                             <input type="text"
                                 id="lokasi"
                                 name="lokasi"
                                 class="form-control"
                                 value="<?= e(set_value('lokasi')) ?>"
-                                placeholder="Kampus / Online">
+                                placeholder="Campus / Online">
                         </div>
 
                     </div>
@@ -67,12 +67,12 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="deskripsi" class="form-label">Deskripsi</label>
+                    <label for="deskripsi" class="form-label">Description</label>
                     <textarea name="deskripsi"
                         id="deskripsi"
                         rows="5"
                         class="form-control"
-                        placeholder="Detail singkat event"><?= e(set_value('deskripsi')) ?></textarea>
+                        placeholder="Brief event details"><?= e(set_value('deskripsi')) ?></textarea>
                 </div>
 
                 <div class="mb-4">
@@ -87,11 +87,11 @@
                 <div class="btn-group-wrap">
                     <button type="submit" class="btn btn-success">
                         <i class="bi bi-save me-1"></i>
-                        Simpan Event
+                        Save Event
                     </button>
 
                     <a href="<?= base_url('event') ?>" class="btn btn-light">
-                        Kembali
+                        Back
                     </a>
                 </div>
 

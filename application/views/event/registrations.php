@@ -2,8 +2,8 @@
 
     <div class="d-flex justify-content-between align-items-center">
         <div>
-            <h3>Data Pendaftaran Peserta</h3>
-            <p class="page-subtitle">Pantau peserta berdasarkan event dan status pembayaran.</p>
+            <h3>Participant Registration Data</h3>
+            <p class="page-subtitle">Monitor participants by event and payment status.</p>
         </div>
     </div>
 
@@ -33,7 +33,7 @@
 
                         <select name="event_id" class="form-select">
 
-                            <option value="">Semua Event</option>
+                            <option value="">All Events</option>
 
                             <?php foreach ($events as $event) { ?>
 
@@ -54,12 +54,12 @@
 
                             <button class="btn btn-primary">
                                 <i class="bi bi-funnel me-1"></i>
-                                Tampilkan
+                                Show
                             </button>
 
                             <?php if($selected_event_id){ ?>
 
-                                <a href="<?= base_url('event/export_peserta/'.$selected_event_id) ?>"
+                                <a href="<?= base_url('event/export_participants/'.$selected_event_id) ?>"
                                     class="btn btn-success">
                                     <i class="bi bi-file-earmark-excel me-1"></i>
                                     Export Excel
@@ -77,19 +77,19 @@
 
             <div class="table-responsive">
 
-                <table class="table table-hover align-middle" id="table-pendaftaran">
+                <table class="table table-hover align-middle" id="table-registrations">
 
                     <thead>
 
                         <tr>
-                            <th>Nama</th>
+                            <th>Name</th>
                             <th>Email</th>
                             <th>Event</th>
-                            <th>No HP</th>
-                            <th>Instansi</th>
+                            <th>Phone</th>
+                            <th>Institution</th>
                             <th>Team</th>
-                            <th>Status Daftar</th>
-                            <th>Status Bayar</th>
+                            <th>Registration Status</th>
+                            <th>Payment Status</th>
                         </tr>
 
                     </thead>
@@ -102,7 +102,7 @@
                             <td colspan="8">
                                 <div class="empty-state">
                                     <i class="bi bi-people d-block mb-2"></i>
-                                    Belum ada pendaftaran
+                                    No registrations yet
                                 </div>
                             </td>
                         </tr>
@@ -130,7 +130,7 @@
                                 <?php } elseif ($registration->status_pembayaran === 'pending') { ?>
                                     <span class="badge bg-warning">pending</span>
                                 <?php } else { ?>
-                                    <span class="badge bg-secondary">belum upload</span>
+                                    <span class="badge bg-secondary">not uploaded</span>
                                 <?php } ?>
                             </td>
 

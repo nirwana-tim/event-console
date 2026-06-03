@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Laporan Event</title>
+    <title>Event Report</title>
     <style>
         body { font-family: DejaVu Sans, sans-serif; font-size: 12px; }
         table { border-collapse: collapse; width: 100%; }
@@ -11,15 +11,15 @@
     </style>
 </head>
 <body>
-<h2>Laporan Event</h2>
+<h2>Event Report</h2>
 
 <table>
 
 <tr>
     <th>No</th>
-    <th>Nama Event</th>
-    <th>Tanggal</th>
-    <th>Lokasi</th>
+    <th>Event Name</th>
+    <th>Date</th>
+    <th>Location</th>
 </tr>
 
 <?php $number = 1; foreach ($events as $event) { ?>

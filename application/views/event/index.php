@@ -7,8 +7,8 @@
     <div class="d-flex justify-content-between align-items-center">
 
         <div>
-            <h3>Data Event</h3>
-            <p class="page-subtitle">Kelola event, peserta, dan laporan.</p>
+            <h3>Event Data</h3>
+            <p class="page-subtitle">Manage events, participants, and reports.</p>
         </div>
 
         <div class="btn-group-wrap">
@@ -25,10 +25,10 @@
                 Excel Event
             </a>
 
-            <a href="<?= base_url('event/tambah') ?>"
+            <a href="<?= base_url('event/add') ?>"
                 class="btn btn-primary">
                 <i class="bi bi-plus-circle me-1"></i>
-                Tambah
+                Add
             </a>
 
         </div>
@@ -42,7 +42,7 @@
     <div class="card">
 
         <div class="card-header">
-            <h4 class="card-title mb-0">Daftar Event</h4>
+            <h4 class="card-title mb-0">Event List</h4>
         </div>
 
         <div class="card-body">
@@ -61,7 +61,7 @@
                                 name="keyword"
                                 class="form-control"
                                 value="<?= e($keyword) ?>"
-                                placeholder="Cari event...">
+                                placeholder="Search events...">
                         </div>
 
                     </div>
@@ -69,7 +69,7 @@
                     <div class="col-md-2">
 
                         <button class="btn btn-primary w-100">
-                            Cari
+                            Search
                         </button>
 
                     </div>
@@ -87,10 +87,10 @@
                         <tr>
                             <th>No</th>
                             <th>Banner</th>
-                            <th>Nama Event</th>
-                            <th>Tanggal</th>
-                            <th>Lokasi</th>
-                            <th>Aksi</th>
+                            <th>Event Name</th>
+                            <th>Date</th>
+                            <th>Location</th>
+                            <th>Actions</th>
                         </tr>
 
                     </thead>
@@ -103,7 +103,7 @@
                             <td colspan="6">
                                 <div class="empty-state">
                                     <i class="bi bi-calendar-x d-block mb-2"></i>
-                                    Tidak ada data event
+                                    No event data found
                                 </div>
                             </td>
                         </tr>
@@ -134,10 +134,10 @@
 
                                 <div class="btn-group-wrap">
 
-                                    <a href="<?= base_url('event/pendaftaran/' . $event->id) ?>"
+                                    <a href="<?= base_url('event/registrations/' . $event->id) ?>"
                                         class="btn btn-info btn-sm">
                                         <i class="bi bi-people me-1"></i>
-                                        Peserta
+                                        Participants
                                     </a>
 
                                     <a href="<?= base_url('event/edit/' . $event->id) ?>"
@@ -146,11 +146,11 @@
                                         Edit
                                     </a>
 
-                                    <a href="<?= base_url('event/hapus/' . $event->id) ?>"
+                                    <a href="<?= base_url('event/delete/' . $event->id) ?>"
                                         class="btn btn-danger btn-sm"
-                                        onclick="return confirm('Hapus event ini?')">
+                                        onclick="return confirm('Delete this event?')">
                                         <i class="bi bi-trash me-1"></i>
-                                        Hapus
+                                        Delete
                                     </a>
 
                                 </div>

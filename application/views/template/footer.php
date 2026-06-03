@@ -11,7 +11,7 @@
 
 $(document).ready(function(){
 
-    ['#table-pembayaran', '#table-pendaftaran'].forEach(function(selector){
+    ['#table-payments', '#table-registrations'].forEach(function(selector){
         var table = $(selector);
 
         if(table.length && $.fn.DataTable && table.find('tbody td[colspan]').length === 0){

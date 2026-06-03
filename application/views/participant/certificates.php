@@ -1,7 +1,7 @@
 <div class="page-heading">
 
-    <h3>Sertifikat Saya</h3>
-    <p class="page-subtitle">Unduh sertifikat setelah pembayaran diverifikasi admin.</p>
+    <h3>My Certificates</h3>
+    <p class="page-subtitle">Download certificates after the admin verifies your payment.</p>
 
 </div>
 
@@ -14,7 +14,7 @@
     <div class="card">
 
         <div class="card-header">
-            <h4 class="card-title mb-0">Daftar Sertifikat</h4>
+            <h4 class="card-title mb-0">Certificate List</h4>
         </div>
 
         <div class="card-body">
@@ -26,9 +26,9 @@
                     <thead>
 
                         <tr>
-                            <th>Nomor</th>
+                            <th>Number</th>
                             <th>Event</th>
-                            <th>Aksi</th>
+                            <th>Actions</th>
                         </tr>
 
                     </thead>
@@ -41,7 +41,7 @@
                             <td colspan="3">
                                 <div class="empty-state">
                                     <i class="bi bi-award d-block mb-2"></i>
-                                    Belum ada sertifikat
+                                    No certificates yet
                                 </div>
                             </td>
                         </tr>
@@ -55,7 +55,7 @@
                             <td><strong><?= e($certificate->nomor_sertifikat) ?></strong></td>
                             <td><?= e($certificate->nama_event) ?></td>
                             <td>
-                                <a href="<?= base_url('peserta/download/' . $certificate->id) ?>"
+                                <a href="<?= base_url('participant/download/' . $certificate->id) ?>"
                                     class="btn btn-primary btn-sm">
                                     <i class="bi bi-download me-1"></i>
                                     Download

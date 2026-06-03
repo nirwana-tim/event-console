@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Sertifikat</title>
+    <title>Certificate</title>
     <style>
         body { font-family: DejaVu Sans, sans-serif; color: #25396f; }
         .certificate { border: 8px solid #435ebe; height: 500px; padding: 48px; text-align: center; }
@@ -16,22 +16,22 @@
 <body>
 <div class="certificate">
 
-    <h1>SERTIFIKAT</h1>
+    <h1>CERTIFICATE</h1>
 
-    <h3>Diberikan Kepada</h3>
+    <h3>Awarded To</h3>
 
     <h1>
         <?= e($certificate->nama) ?>
     </h1>
 
-    <p>Telah mengikuti event</p>
+    <p>For participating in the event</p>
 
     <h2>
         <?= e($certificate->nama_event) ?>
     </h2>
 
     <p class="number">
-        Nomor Sertifikat:
+        Certificate Number:
         <?= e($certificate->nomor_sertifikat) ?>
     </p>
 
