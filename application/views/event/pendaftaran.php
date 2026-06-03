@@ -11,10 +11,13 @@
 
 <div class="page-content">
 
+<<<<<<< HEAD
     <?= flash_alert('success') ?>
     <?= flash_alert('error') ?>
     <?= flash_alert('info') ?>
 
+=======
+>>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
     <div class="card">
 
         <div class="card-header">
@@ -35,11 +38,19 @@
 
                             <option value="">Semua Event</option>
 
+<<<<<<< HEAD
                             <?php foreach ($events as $event) { ?>
 
                                 <option value="<?= e($event->id) ?>"
                                     <?= (int) $selected_event_id === (int) $event->id ? 'selected' : '' ?>>
                                     <?= e($event->nama_event) ?>
+=======
+                            <?php foreach($events as $e){ ?>
+
+                                <option value="<?= $e->id ?>"
+                                    <?= $selected_event_id == $e->id ? 'selected' : '' ?>>
+                                    <?= html_escape($e->nama_event) ?>
+>>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
                                 </option>
 
                             <?php } ?>
@@ -96,7 +107,11 @@
 
                     <tbody>
 
+<<<<<<< HEAD
                         <?php if (empty($registrations)) { ?>
+=======
+                        <?php if(empty($pendaftaran)){ ?>
+>>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
 
                         <tr>
                             <td colspan="8">
@@ -109,6 +124,7 @@
 
                         <?php } ?>
 
+<<<<<<< HEAD
                         <?php foreach ($registrations as $registration) { ?>
 
                         <tr>
@@ -128,6 +144,27 @@
                                 <?php if ($registration->status_pembayaran === 'verified') { ?>
                                     <span class="badge bg-success">verified</span>
                                 <?php } elseif ($registration->status_pembayaran === 'pending') { ?>
+=======
+                        <?php foreach($pendaftaran as $p){ ?>
+
+                        <tr>
+
+                            <td><strong><?= html_escape($p->nama) ?></strong></td>
+                            <td><?= html_escape($p->email) ?></td>
+                            <td><?= html_escape($p->nama_event) ?></td>
+                            <td><?= html_escape($p->no_hp) ?></td>
+                            <td><?= html_escape($p->instansi) ?></td>
+                            <td><?= html_escape($p->team) ?></td>
+                            <td>
+                                <span class="badge bg-<?= $p->status == 'approved' ? 'success' : 'warning' ?>">
+                                    <?= html_escape($p->status) ?>
+                                </span>
+                            </td>
+                            <td>
+                                <?php if($p->status_pembayaran == 'verified'){ ?>
+                                    <span class="badge bg-success">verified</span>
+                                <?php } elseif($p->status_pembayaran == 'pending'){ ?>
+>>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
                                     <span class="badge bg-warning">pending</span>
                                 <?php } else { ?>
                                     <span class="badge bg-secondary">belum upload</span>

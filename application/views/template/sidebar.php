@@ -9,7 +9,12 @@
                     <i class="bi bi-calendar2-check"></i>
                 </div>
                 <div>
+<<<<<<< HEAD
                     <h3 class="mb-0">EventConsole</h3>
+=======
+                    <h3 class="mb-0">EventKu</h3>
+                    <small class="text-muted">Event & Sertifikat</small>
+>>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
                 </div>
             </div>
 
@@ -25,7 +30,11 @@
 
                 </li>
 
+<<<<<<< HEAD
                 <li class="sidebar-item<?= active_sidebar_class('dashboard', $active_menu) ?>">
+=======
+                <li class="sidebar-item">
+>>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
 
                     <a href="<?= base_url('dashboard') ?>"
                         class="sidebar-link">
@@ -37,9 +46,18 @@
 
                 </li>
 
+<<<<<<< HEAD
                 <?php if ($current_user_role === 'admin') { ?>
 
                 <li class="sidebar-item<?= active_sidebar_class('event', $active_menu) ?>">
+=======
+                <?php if(
+                    $this->session->userdata('role')
+                    == 'admin'
+                ){ ?>
+
+                <li class="sidebar-item">
+>>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
 
                     <a href="<?= base_url('event') ?>"
                         class="sidebar-link">
@@ -51,7 +69,11 @@
 
                 </li>
 
+<<<<<<< HEAD
                 <li class="sidebar-item<?= active_sidebar_class('pendaftaran', $active_menu) ?>">
+=======
+                <li class="sidebar-item">
+>>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
 
                     <a href="<?= base_url('event/pendaftaran') ?>"
                         class="sidebar-link">
@@ -63,7 +85,11 @@
 
                 </li>
 
+<<<<<<< HEAD
                 <li class="sidebar-item<?= active_sidebar_class('pembayaran', $active_menu) ?>">
+=======
+                <li class="sidebar-item">
+>>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
 
                     <a href="<?= base_url('event/pembayaran') ?>"
                         class="sidebar-link">
@@ -77,9 +103,18 @@
 
                 <?php } ?>
 
+<<<<<<< HEAD
                 <?php if ($current_user_role === 'peserta') { ?>
 
                 <li class="sidebar-item<?= active_sidebar_class('peserta_event', $active_menu) ?>">
+=======
+                <?php if(
+                    $this->session->userdata('role')
+                    == 'peserta'
+                ){ ?>
+
+                <li class="sidebar-item">
+>>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
 
                     <a href="<?= base_url('peserta/event') ?>"
                         class="sidebar-link">
@@ -91,7 +126,11 @@
 
                 </li>
 
+<<<<<<< HEAD
                 <li class="sidebar-item<?= active_sidebar_class('sertifikat', $active_menu) ?>">
+=======
+                <li class="sidebar-item">
+>>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
 
                     <a href="<?= base_url('peserta/sertifikat') ?>"
                         class="sidebar-link">

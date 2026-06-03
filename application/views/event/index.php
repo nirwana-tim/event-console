@@ -1,6 +1,26 @@
+<<<<<<< HEAD
 <?= flash_alert('success') ?>
 <?= flash_alert('error') ?>
 <?= flash_alert('info') ?>
+=======
+<?php if($this->session->flashdata('success')){ ?>
+
+<div class="alert alert-success">
+    <i class="bi bi-check-circle me-2"></i>
+    <?= $this->session->flashdata('success') ?>
+</div>
+
+<?php } ?>
+
+<?php if($this->session->flashdata('error')){ ?>
+
+<div class="alert alert-danger">
+    <i class="bi bi-exclamation-circle me-2"></i>
+    <?= $this->session->flashdata('error') ?>
+</div>
+
+<?php } ?>
+>>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
 
 <div class="page-heading">
 
@@ -60,7 +80,11 @@
                             <input type="text"
                                 name="keyword"
                                 class="form-control"
+<<<<<<< HEAD
                                 value="<?= e($keyword) ?>"
+=======
+                                value="<?= html_escape($this->input->get('keyword')) ?>"
+>>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
                                 placeholder="Cari event...">
                         </div>
 
@@ -97,7 +121,11 @@
 
                     <tbody>
 
+<<<<<<< HEAD
                         <?php if (empty($events)) { ?>
+=======
+                        <?php if(empty($event)){ ?>
+>>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
 
                         <tr>
                             <td colspan="6">
@@ -110,6 +138,7 @@
 
                         <?php } ?>
 
+<<<<<<< HEAD
                         <?php $number = isset($offset) ? $offset + 1 : 1; ?>
 
                         <?php foreach ($events as $event) { ?>
@@ -130,23 +159,62 @@
                             </td>
                             <td><?= e(app_date($event->tanggal)) ?></td>
                             <td><?= e($event->lokasi) ?></td>
+=======
+                        <?php $no = 1; ?>
+
+                        <?php foreach($event as $e){ ?>
+
+                        <tr>
+
+                            <td><?= $no++ ?></td>
+
+                            <td>
+                                <img class="table-img"
+                                    src="<?= base_url('uploads/banner/'.$e->banner) ?>"
+                                    alt="<?= html_escape($e->nama_event) ?>">
+                            </td>
+
+                            <td>
+                                <strong><?= html_escape($e->nama_event) ?></strong>
+                            </td>
+                            <td><?= html_escape($e->tanggal) ?></td>
+                            <td><?= html_escape($e->lokasi) ?></td>
+>>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
                             <td>
 
                                 <div class="btn-group-wrap">
 
+<<<<<<< HEAD
                                     <a href="<?= base_url('event/pendaftaran/' . $event->id) ?>"
+=======
+                                    <a href="<?= base_url('event/pendaftaran/'.$e->id) ?>"
+>>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
                                         class="btn btn-info btn-sm">
                                         <i class="bi bi-people me-1"></i>
                                         Peserta
                                     </a>
 
+<<<<<<< HEAD
                                     <a href="<?= base_url('event/edit/' . $event->id) ?>"
+=======
+                                    <a href="<?= base_url('event/export_peserta/'.$e->id) ?>"
+                                        class="btn btn-success btn-sm">
+                                        <i class="bi bi-file-earmark-excel me-1"></i>
+                                        Excel
+                                    </a>
+
+                                    <a href="<?= base_url('event/edit/'.$e->id) ?>"
+>>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
                                         class="btn btn-warning btn-sm">
                                         <i class="bi bi-pencil-square me-1"></i>
                                         Edit
                                     </a>
 
+<<<<<<< HEAD
                                     <a href="<?= base_url('event/hapus/' . $event->id) ?>"
+=======
+                                    <a href="<?= base_url('event/hapus/'.$e->id) ?>"
+>>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
                                         class="btn btn-danger btn-sm"
                                         onclick="return confirm('Hapus event ini?')">
                                         <i class="bi bi-trash me-1"></i>

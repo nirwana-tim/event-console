@@ -1,4 +1,5 @@
 <?php
+<<<<<<< HEAD
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Event_model extends CI_Model
@@ -210,15 +211,40 @@ class Event_model extends CI_Model
     public function getAll($limit, $start, $keyword = null)
     {
         return $this->get_all($limit, $start, $keyword);
+=======
+class Event_model extends CI_Model {
+
+    public function getAll($limit, $start, $keyword = null)
+    {
+        if($keyword){
+            $this->db->like('nama_event', $keyword);
+        }
+
+        return $this->db->get('events', $limit, $start)->result();
+>>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
     }
 
     public function countData($keyword = null)
     {
+<<<<<<< HEAD
         return $this->count_all($keyword);
+=======
+        if($keyword){
+            $this->db->like('nama_event', $keyword);
+        }
+
+        return $this->db->count_all_results('events');
+    }
+
+    public function insert($data)
+    {
+        return $this->db->insert('events', $data);
+>>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
     }
 
     public function getById($id)
     {
+<<<<<<< HEAD
         return $this->get_by_id($id);
     }
 
@@ -234,5 +260,18 @@ class Event_model extends CI_Model
         $this->db->like('nama_event', $keyword);
         $this->db->or_like('lokasi', $keyword);
         $this->db->group_end();
+=======
+        return $this->db->get_where('events', ['id' => $id])->row();
+    }
+
+    public function update($id, $data)
+    {
+        return $this->db->where('id', $id)->update('events', $data);
+    }
+
+    public function delete($id)
+    {
+        return $this->db->where('id', $id)->delete('events');
+>>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
     }
 }

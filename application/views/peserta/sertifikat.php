@@ -7,10 +7,13 @@
 
 <div class="page-content">
 
+<<<<<<< HEAD
     <?= flash_alert('success') ?>
     <?= flash_alert('error') ?>
     <?= flash_alert('info') ?>
 
+=======
+>>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
     <div class="card">
 
         <div class="card-header">
@@ -35,7 +38,11 @@
 
                     <tbody>
 
+<<<<<<< HEAD
                         <?php if (empty($certificates)) { ?>
+=======
+                        <?php if(empty($sertifikat)){ ?>
+>>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
 
                         <tr>
                             <td colspan="3">
@@ -48,6 +55,7 @@
 
                         <?php } ?>
 
+<<<<<<< HEAD
                         <?php foreach ($certificates as $certificate) { ?>
 
                         <tr>
@@ -56,6 +64,16 @@
                             <td><?= e($certificate->nama_event) ?></td>
                             <td>
                                 <a href="<?= base_url('peserta/download/' . $certificate->id) ?>"
+=======
+                        <?php foreach($sertifikat as $s){ ?>
+
+                        <tr>
+
+                            <td><strong><?= html_escape($s->nomor_sertifikat) ?></strong></td>
+                            <td><?= html_escape($s->nama_event) ?></td>
+                            <td>
+                                <a href="<?= base_url('peserta/download/'.$s->id) ?>"
+>>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
                                     class="btn btn-primary btn-sm">
                                     <i class="bi bi-download me-1"></i>
                                     Download

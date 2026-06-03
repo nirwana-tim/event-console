@@ -1,11 +1,19 @@
 <!DOCTYPE html>
+<<<<<<< HEAD
 <html lang="id">
+=======
+<html lang="en">
+>>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<<<<<<< HEAD
     <title><?= e($page_title) ?></title>
+=======
+    <title>EventKu</title>
+>>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
 
     <script src="<?= base_url('assets/static/js/initTheme.js') ?>"></script>
 
@@ -19,10 +27,17 @@
         href="<?= base_url('assets/extensions/bootstrap-icons/font/bootstrap-icons.css') ?>">
 
     <link rel="stylesheet"
+<<<<<<< HEAD
         href="<?= base_url('assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css') ?>">
 
     <link rel="stylesheet"
         href="<?= base_url('assets/compiled/css/EventConsole.css') ?>">
+=======
+        href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
+    <link rel="stylesheet"
+        href="<?= base_url('assets/compiled/css/eventku.css') ?>">
+>>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
 </head>
 
 <body>
@@ -64,12 +79,20 @@
 
                             <span class="avatar avatar-sm">
                                 <span class="avatar-content bg-primary text-white">
+<<<<<<< HEAD
                                     <?= e($current_user_initial) ?>
+=======
+                                    <?= strtoupper(substr($this->session->userdata('nama'), 0, 1)) ?>
+>>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
                                 </span>
                             </span>
 
                             <span class="d-none d-md-inline">
+<<<<<<< HEAD
                                 <?= e($current_user_name) ?>
+=======
+                                <?= html_escape($this->session->userdata('nama')) ?>
+>>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
                             </span>
 
                         </span>
