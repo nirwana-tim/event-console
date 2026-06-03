@@ -4,12 +4,12 @@
 -- Versi schema baru disesuaikan dari database sebelumnya
 -- =========================================================
 
-DROP DATABASE IF EXISTS db_eventku;
-CREATE DATABASE db_eventku
+DROP DATABASE IF EXISTS db_eventconsole;
+CREATE DATABASE db_eventconsole
   CHARACTER SET utf8mb4
   COLLATE utf8mb4_unicode_ci;
 
-USE db_eventku;
+USE db_eventconsole;
 
 -- =========================================================
 -- Tabel users
