@@ -7,12 +7,9 @@
 
 <div class="page-content">
 
-<<<<<<< HEAD
     <?= flash_alert('error') ?>
     <?= flash_alert('info') ?>
 
-=======
->>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
     <div class="row justify-content-center">
 
         <div class="col-lg-7">
@@ -33,17 +30,11 @@
                     <form method="POST" enctype="multipart/form-data">
 
                         <div class="mb-4">
-<<<<<<< HEAD
                             <label for="bukti" class="form-label">Bukti Pembayaran</label>
                             <input type="file"
                                 id="bukti"
                                 name="bukti"
                                 accept="image/png,image/jpeg"
-=======
-                            <label>Bukti Pembayaran</label>
-                            <input type="file"
-                                name="bukti"
->>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
                                 class="form-control"
                                 required>
                         </div>

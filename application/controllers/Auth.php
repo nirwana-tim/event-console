@@ -1,26 +1,17 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-<<<<<<< HEAD
 class Auth extends MY_Controller
 {
-=======
-class Auth extends CI_Controller {
->>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
 
     public function __construct()
     {
         parent::__construct();
-<<<<<<< HEAD
         $this->load->model('Auth_model', 'auth_model');
-=======
-        $this->load->model('Auth_model');
->>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
     }
 
     public function register()
     {
-<<<<<<< HEAD
         if ($this->session->userdata('login')) {
             redirect('dashboard');
         }
@@ -46,34 +37,10 @@ class Auth extends CI_Controller {
         $this->session->set_flashdata('success', 'Registrasi berhasil. Silakan login.');
 
         redirect('auth/login');
-=======
-        $this->form_validation->set_rules('nama', 'Nama', 'required');
-        $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
-        $this->form_validation->set_rules('password', 'Password', 'required|min_length[6]');
-
-        if ($this->form_validation->run() == FALSE) {
-
-            $this->load->view('register');
-
-        } else {
-
-            $data = [
-                'nama' => $this->input->post('nama'),
-                'email' => $this->input->post('email'),
-                'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
-                'role' => 'peserta'
-            ];
-
-            $this->Auth_model->register($data);
-
-            redirect('auth/login');
-        }
->>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
     }
 
     public function login()
     {
-<<<<<<< HEAD
         if ($this->session->userdata('login')) {
             redirect('dashboard');
         }
@@ -101,33 +68,6 @@ class Auth extends CI_Controller {
         }
 
         $this->render_auth('login', array('page_title' => 'Login - EventConsole'));
-=======
-        if ($_POST) {
-
-            $user = $this->Auth_model->login($this->input->post('email'));
-
-            if ($user && password_verify($this->input->post('password'), $user->password)) {
-
-                $session = [
-                    'id' => $user->id,
-                    'nama' => $user->nama,
-                    'role' => $user->role,
-                    'login' => true
-                ];
-
-                $this->session->set_userdata($session);
-
-                redirect('dashboard');
-
-            } else {
-
-                echo "Login gagal";
-
-            }
-        }
-
-        $this->load->view('login');
->>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
     }
 
     public function logout()
@@ -136,8 +76,4 @@ class Auth extends CI_Controller {
 
         redirect('auth/login');
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f

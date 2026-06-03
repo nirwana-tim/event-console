@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -16,16 +15,12 @@
 </head>
 <body>
 <div class="certificate">
-=======
-<div style="text-align:center; margin-top:150px;">
->>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
 
     <h1>SERTIFIKAT</h1>
 
     <h3>Diberikan Kepada</h3>
 
     <h1>
-<<<<<<< HEAD
         <?= e($certificate->nama) ?>
     </h1>
 
@@ -43,26 +38,3 @@
 </div>
 </body>
 </html>
-=======
-        <?= $sertifikat->nama ?>
-    </h1>
-
-    <p>
-
-        Telah mengikuti event
-
-    </p>
-
-    <h2>
-        <?= $sertifikat->nama_event ?>
-    </h2>
-
-    <br><br>
-
-    <p>
-        Nomor Sertifikat:
-        <?= $sertifikat->nomor_sertifikat ?>
-    </p>
-
-</div>
->>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f

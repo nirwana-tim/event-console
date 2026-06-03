@@ -1,7 +1,9 @@
 <?php
-<<<<<<< HEAD
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
+/**
+ * @property Dashboard_model $dashboard_model
+ */
 class Dashboard extends MY_Controller
 {
     public function __construct()
@@ -22,19 +24,3 @@ class Dashboard extends MY_Controller
         ));
     }
 }
-=======
-class Dashboard extends CI_Controller {
-
-    public function index()
-    {
-        if(!$this->session->userdata('login')){
-            redirect('auth/login');
-        }
-
-        $this->load->view('template/header');
-        $this->load->view('template/sidebar');
-        $this->load->view('dashboard');
-        $this->load->view('template/footer');
-    }
-}
->>>>>>> c4a5b189743f0cede54ed2d76fa94f9b76cc300f
