@@ -23,7 +23,7 @@ class Event extends MY_Controller
 
         $this->pagination->initialize($this->pagination_config($keyword));
 
-        $this->render('event/index', array(
+        $this->render('admin/events/index', array(
             'page_title' => 'Event Data - EventConsole',
             'events' => $this->event_model->get_all(self::PER_PAGE, $offset, $keyword),
             'keyword' => $keyword,
@@ -42,7 +42,7 @@ class Event extends MY_Controller
         $this->set_event_rules();
 
         if ($this->form_validation->run() === FALSE) {
-            $this->render('event/create', array('page_title' => 'Create Event - EventConsole'));
+            $this->render('admin/events/create', array('page_title' => 'Create Event - EventConsole'));
             return;
         }
 
@@ -80,7 +80,7 @@ class Event extends MY_Controller
         $this->set_event_rules();
 
         if ($this->form_validation->run() === FALSE) {
-            $this->render('event/update', array(
+            $this->render('admin/events/update', array(
                 'page_title' => 'Update Event - EventConsole',
                 'event' => $event,
             ));
@@ -132,7 +132,7 @@ class Event extends MY_Controller
         $selected_event_id = $event_id ? (int) $event_id : (int) $this->input->get('event_id', TRUE);
         $selected_event_id = $selected_event_id > 0 ? $selected_event_id : null;
 
-        $this->render('event/registrations', array(
+        $this->render('admin/registrations/index', array(
             'page_title' => 'Participant Registrations - EventConsole',
             'events' => $this->event_model->get_options(),
             'selected_event_id' => $selected_event_id,
@@ -161,9 +161,19 @@ class Event extends MY_Controller
     {
         $this->set_active_menu('payments');
 
-        $this->render('event/payments', array(
+        $this->render('admin/payments/index', array(
             'page_title' => 'Payments - EventConsole',
             'payments' => $this->event_model->get_payments(),
+        ));
+    }
+
+    public function certificates()
+    {
+        $this->set_active_menu('certificates_admin');
+
+        $this->render('admin/certificates/index', array(
+            'page_title' => 'Certificates - EventConsole',
+            'certificates' => $this->event_model->get_certificates(),
         ));
     }
 
@@ -189,6 +199,28 @@ class Event extends MY_Controller
         redirect('event/payments');
     }
 
+    public function reject_payment($id = null)
+    {
+        $payment = $this->event_model->get_payment_by_id($id);
+
+        if (!$payment) {
+            show_404();
+        }
+
+        if ($payment->status === 'rejected') {
+            $this->session->set_flashdata('info', 'This payment has already been rejected.');
+            redirect('event/payments');
+        }
+
+        if ($this->event_model->reject_payment($id)) {
+            $this->session->set_flashdata('success', 'Payment rejected successfully.');
+        } else {
+            $this->session->set_flashdata('error', 'Payment rejection failed.');
+        }
+
+        redirect('event/payments');
+    }
+
     public function certificate($id = null)
     {
         $this->load_composer();
@@ -200,7 +232,7 @@ class Event extends MY_Controller
         }
 
         $dompdf = new \Dompdf\Dompdf();
-        $html = $this->load->view('participant/certificate_pdf', array('certificate' => $certificate), TRUE);
+        $html = $this->load->view('certificates/pdf', array('certificate' => $certificate), TRUE);
 
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'landscape');
@@ -213,7 +245,7 @@ class Event extends MY_Controller
         $this->load_composer();
 
         $events = $this->event_model->get_all();
-        $html = $this->load->view('event/report_pdf', array('events' => $events), TRUE);
+        $html = $this->load->view('admin/events/report_pdf', array('events' => $events), TRUE);
 
         $dompdf = new \Dompdf\Dompdf();
         $dompdf->loadHtml($html);
@@ -315,7 +347,11 @@ class Event extends MY_Controller
     {
         $this->form_validation->set_rules('name', 'Event Name', 'trim|required|max_length[150]');
         $this->form_validation->set_rules('date', 'Date', 'trim|required');
+        $this->form_validation->set_rules('start_time', 'Start Time', 'trim');
+        $this->form_validation->set_rules('end_time', 'End Time', 'trim');
         $this->form_validation->set_rules('location', 'Location', 'trim|required|max_length[150]');
+        $this->form_validation->set_rules('quota', 'Quota', 'trim|integer');
+        $this->form_validation->set_rules('status', 'Status', 'trim|required|in_list[dibuka,ditutup,selesai]');
         $this->form_validation->set_rules('description', 'Description', 'trim');
     }
 
@@ -325,7 +361,11 @@ class Event extends MY_Controller
             'name' => $this->input->post('name', TRUE),
             'description' => $this->input->post('description', TRUE),
             'date' => $this->input->post('date', TRUE),
+            'start_time' => $this->input->post('start_time', TRUE) ?: null,
+            'end_time' => $this->input->post('end_time', TRUE) ?: null,
             'location' => $this->input->post('location', TRUE),
+            'quota' => $this->input->post('quota', TRUE) !== '' ? (int) $this->input->post('quota', TRUE) : null,
+            'status' => $this->input->post('status', TRUE),
         );
     }
 
@@ -370,7 +410,7 @@ class Event extends MY_Controller
 
     private function write_event_sheet($sheet, $events)
     {
-        $headers = array('No', 'Event Name', 'Date', 'Location');
+        $headers = array('No', 'Event Name', 'Date', 'Time', 'Location', 'Quota', 'Status');
         $column = 'A';
 
         foreach ($headers as $header) {
@@ -385,11 +425,14 @@ class Event extends MY_Controller
             $sheet->setCellValue('A' . $row, $number++);
             $sheet->setCellValue('B' . $row, $event->name);
             $sheet->setCellValue('C' . $row, $event->date);
-            $sheet->setCellValue('D' . $row, $event->location);
+            $sheet->setCellValue('D' . $row, trim(($event->start_time ?: '-') . ' - ' . ($event->end_time ?: '-')));
+            $sheet->setCellValue('E' . $row, $event->location);
+            $sheet->setCellValue('F' . $row, $event->quota ?: '-');
+            $sheet->setCellValue('G' . $row, $event->status);
             $row++;
         }
 
-        foreach (range('A', 'D') as $column) {
+        foreach (range('A', 'G') as $column) {
             $sheet->getColumnDimension($column)->setAutoSize(TRUE);
         }
     }

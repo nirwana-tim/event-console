@@ -207,4 +207,63 @@
 
     </section>
 
+    <?php if ($dashboard_role !== 'participant') { ?>
+
+    <section class="row">
+
+        <div class="col-12">
+
+            <div class="card">
+
+                <div class="card-header">
+                    <h4 class="card-title mb-0">Admin Workflow</h4>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="row g-3">
+
+                        <div class="col-md-6 col-xl-3">
+                            <a href="<?= base_url('event/create') ?>" class="btn btn-outline-primary w-100 text-start">
+                                <i class="bi bi-plus-circle me-1"></i>
+                                Create Event
+                            </a>
+                        </div>
+
+                        <div class="col-md-6 col-xl-3">
+                            <a href="<?= base_url('event/payments') ?>" class="btn btn-outline-warning w-100 text-start">
+                                <i class="bi bi-receipt me-1"></i>
+                                Verify Payments
+                                <span class="badge bg-warning ms-1"><?= e($summary['total_payments_pending']) ?></span>
+                            </a>
+                        </div>
+
+                        <div class="col-md-6 col-xl-3">
+                            <a href="<?= base_url('event/registrations') ?>" class="btn btn-outline-success w-100 text-start">
+                                <i class="bi bi-person-check me-1"></i>
+                                Mark Attendance
+                                <span class="badge bg-success ms-1"><?= e($summary['total_attendance_pending']) ?></span>
+                            </a>
+                        </div>
+
+                        <div class="col-md-6 col-xl-3">
+                            <a href="<?= base_url('event/certificates') ?>" class="btn btn-outline-info w-100 text-start">
+                                <i class="bi bi-award me-1"></i>
+                                Certificates
+                                <span class="badge bg-info ms-1"><?= e($summary['total_certificates']) ?></span>
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <?php } ?>
+
 </div>

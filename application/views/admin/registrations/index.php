@@ -2,8 +2,8 @@
 
     <div class="d-flex justify-content-between align-items-center">
         <div>
-            <h3>Participant Registration Data</h3>
-            <p class="page-subtitle">Monitor participants by event and payment status.</p>
+            <h3>Participant Registrations</h3>
+            <p class="page-subtitle">Monitor registrations, payment status, and manual attendance.</p>
         </div>
     </div>
 
@@ -29,9 +29,9 @@
 
                     <div class="col-md-5">
 
-                        <label>Filter Event</label>
+                        <label for="event_id" class="form-label">Filter Event</label>
 
-                        <select name="event_id" class="form-select">
+                        <select id="event_id" name="event_id" class="form-select">
 
                             <option value="">All Events</option>
 
@@ -48,7 +48,7 @@
 
                     </div>
 
-                    <div class="col-md-5">
+                    <div class="col-md-7">
 
                         <div class="btn-group-wrap">
 
@@ -57,9 +57,9 @@
                                 Show
                             </button>
 
-                            <?php if($selected_event_id){ ?>
+                            <?php if ($selected_event_id) { ?>
 
-                                <a href="<?= base_url('event/export_participants/'.$selected_event_id) ?>"
+                                <a href="<?= base_url('event/export_participants/' . $selected_event_id) ?>"
                                     class="btn btn-success">
                                     <i class="bi bi-file-earmark-excel me-1"></i>
                                     Export Excel
@@ -87,10 +87,10 @@
                             <th>Event</th>
                             <th>Phone</th>
                             <th>Institution</th>
-                            <th>Team</th>
-                            <th>Registration Status</th>
-                            <th>Payment Status</th>
+                            <th>Registration</th>
+                            <th>Payment</th>
                             <th>Attendance</th>
+                            <th>Certificate</th>
                             <th>Actions</th>
                         </tr>
 
@@ -120,7 +120,6 @@
                             <td><?= e($registration->event_name) ?></td>
                             <td><?= e($registration->phone_number) ?></td>
                             <td><?= e($registration->institution) ?></td>
-                            <td><?= e($registration->team) ?></td>
                             <td>
                                 <span class="badge bg-<?= status_badge_class($registration->status) ?>">
                                     <?= e($registration->status) ?>
@@ -131,6 +130,8 @@
                                     <span class="badge bg-success">verified</span>
                                 <?php } elseif ($registration->status_payment === 'pending') { ?>
                                     <span class="badge bg-warning">pending</span>
+                                <?php } elseif ($registration->status_payment === 'rejected') { ?>
+                                    <span class="badge bg-danger">rejected</span>
                                 <?php } else { ?>
                                     <span class="badge bg-secondary">not uploaded</span>
                                 <?php } ?>
@@ -141,15 +142,29 @@
                                 </span>
                             </td>
                             <td>
+                                <?php if ($registration->certificate_id) { ?>
+                                    <a href="<?= base_url('event/certificate/' . $registration->certificate_id) ?>"
+                                        class="btn btn-primary btn-sm"
+                                        target="_blank">
+                                        <i class="bi bi-file-earmark-pdf me-1"></i>
+                                        PDF
+                                    </a>
+                                <?php } else { ?>
+                                    <span class="text-muted">Not ready</span>
+                                <?php } ?>
+                            </td>
+                            <td>
                                 <div class="btn-group-wrap">
                                     <a href="<?= base_url('event/attendance/' . $registration->id . '/present') ?>"
-                                        class="btn btn-success btn-sm">
+                                        class="btn btn-success btn-sm"
+                                        onclick="return confirm('Mark this participant as present?')">
                                         <i class="bi bi-check2 me-1"></i>
                                         Present
                                     </a>
 
                                     <a href="<?= base_url('event/attendance/' . $registration->id . '/absent') ?>"
-                                        class="btn btn-danger btn-sm">
+                                        class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Mark this participant as absent?')">
                                         <i class="bi bi-x-lg me-1"></i>
                                         Absent
                                     </a>

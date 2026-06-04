@@ -54,6 +54,9 @@ if (!function_exists('status_badge_class')) {
             'verified' => 'success',
             'pending' => 'warning',
             'rejected' => 'danger',
+            'dibuka' => 'success',
+            'ditutup' => 'warning',
+            'selesai' => 'secondary',
         );
 
         return isset($classes[$status]) ? $classes[$status] : 'secondary';

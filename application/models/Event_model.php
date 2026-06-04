@@ -121,6 +121,7 @@ class Event_model extends CI_Model
             payments.*,
             users.name AS user_name,
             events.name AS event_name,
+            registrations.attendance,
             certificates.id AS certificate_id,
             certificates.certificate_number
         ');
@@ -141,6 +142,36 @@ class Event_model extends CI_Model
         return $this->db
             ->get_where('payments', array('id' => (int) $id))
             ->row();
+    }
+
+    public function reject_payment($id)
+    {
+        $payment = $this->get_payment_by_id($id);
+
+        if (!$payment) {
+            return false;
+        }
+
+        $this->db->trans_start();
+
+        $this->db
+            ->where('id', (int) $id)
+            ->update('payments', array('status' => 'rejected'));
+
+        $this->db
+            ->where('id', (int) $payment->registration_id)
+            ->update('registrations', array(
+                'status' => 'pending',
+                'attendance' => 'unconfirmed',
+            ));
+
+        $this->db
+            ->where('registration_id', (int) $payment->registration_id)
+            ->delete('certificates');
+
+        $this->db->trans_complete();
+
+        return $this->db->trans_status();
     }
 
     public function approve_payment($id)
@@ -230,6 +261,24 @@ class Event_model extends CI_Model
         $this->db->join('users', 'users.id = registrations.user_id');
         $this->db->join('events', 'events.id = registrations.event_id');
         $this->db->where('users.id', (int) $user_id);
+
+        return $this->db
+            ->order_by('certificates.id', 'DESC')
+            ->get()
+            ->result();
+    }
+
+    public function get_certificates()
+    {
+        $this->db->select('
+            certificates.*,
+            users.name AS user_name,
+            events.name AS event_name
+        ');
+        $this->db->from('certificates');
+        $this->db->join('registrations', 'registrations.id = certificates.registration_id');
+        $this->db->join('users', 'users.id = registrations.user_id');
+        $this->db->join('events', 'events.id = registrations.event_id');
 
         return $this->db
             ->order_by('certificates.id', 'DESC')

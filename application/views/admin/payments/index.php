@@ -4,7 +4,7 @@
 
 <div class="page-heading">
 
-    <h3>Payment Data</h3>
+    <h3>Payments</h3>
     <p class="page-subtitle">Verify payment proofs before marking participant attendance.</p>
 
 </div>
@@ -29,7 +29,8 @@
                             <th>Participant</th>
                             <th>Event</th>
                             <th>Proof</th>
-                            <th>Status</th>
+                            <th>Payment</th>
+                            <th>Attendance</th>
                             <th>Certificate</th>
                             <th>Actions</th>
                         </tr>
@@ -41,7 +42,7 @@
                         <?php if (empty($payments)) { ?>
 
                         <tr>
-                            <td colspan="6">
+                            <td colspan="7">
                                 <div class="empty-state">
                                     <i class="bi bi-credit-card d-block mb-2"></i>
                                     No payments yet
@@ -69,10 +70,18 @@
 
                             <td>
                                 <?php if ($payment->status === 'pending') { ?>
-                                    <span class="badge bg-warning">Pending</span>
+                                    <span class="badge bg-warning">pending</span>
+                                <?php } elseif ($payment->status === 'rejected') { ?>
+                                    <span class="badge bg-danger">rejected</span>
                                 <?php } else { ?>
-                                    <span class="badge bg-success">Verified</span>
+                                    <span class="badge bg-success">verified</span>
                                 <?php } ?>
+                            </td>
+
+                            <td>
+                                <span class="badge bg-<?= attendance_badge_class($payment->attendance) ?>">
+                                    <?= e($payment->attendance) ?>
+                                </span>
                             </td>
 
                             <td>
@@ -84,21 +93,37 @@
                                         PDF
                                     </a>
                                 <?php } else { ?>
-                                    <span class="text-muted">Not available</span>
+                                    <span class="text-muted">Not ready</span>
                                 <?php } ?>
                             </td>
 
                             <td>
-                                <?php if ($payment->status === 'pending') { ?>
-                                    <a href="<?= base_url('event/approve/' . $payment->id) ?>"
-                                        class="btn btn-success btn-sm"
-                                        onclick="return confirm('Approve this payment?')">
-                                        <i class="bi bi-check2-circle me-1"></i>
-                                        Approve
-                                    </a>
-                                <?php } else { ?>
-                                    <span class="badge bg-light-success text-success">Completed</span>
-                                <?php } ?>
+                                <div class="btn-group-wrap">
+                                    <?php if ($payment->status !== 'verified') { ?>
+                                        <a href="<?= base_url('event/approve/' . $payment->id) ?>"
+                                            class="btn btn-success btn-sm"
+                                            onclick="return confirm('Approve this payment?')">
+                                            <i class="bi bi-check2-circle me-1"></i>
+                                            Approve
+                                        </a>
+                                    <?php } ?>
+
+                                    <?php if ($payment->status !== 'rejected') { ?>
+                                        <a href="<?= base_url('event/reject_payment/' . $payment->id) ?>"
+                                            class="btn btn-danger btn-sm"
+                                            onclick="return confirm('Reject this payment?')">
+                                            <i class="bi bi-x-circle me-1"></i>
+                                            Reject
+                                        </a>
+                                    <?php } ?>
+
+                                    <?php if ($payment->status === 'verified' && $payment->attendance !== 'present') { ?>
+                                        <a href="<?= base_url('event/attendance/' . $payment->registration_id . '/present') ?>"
+                                            class="btn btn-primary btn-sm">
+                                            Mark Present
+                                        </a>
+                                    <?php } ?>
+                                </div>
                             </td>
 
                         </tr>

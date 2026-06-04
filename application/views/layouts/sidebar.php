@@ -60,7 +60,7 @@
                         class="sidebar-link">
 
                         <i class="bi bi-person-lines-fill"></i>
-                        <span>Participant Registrations</span>
+                        <span>Registrations</span>
 
                     </a>
 
@@ -73,6 +73,18 @@
 
                         <i class="bi bi-receipt-cutoff"></i>
                         <span>Payments</span>
+
+                    </a>
+
+                </li>
+
+                <li class="sidebar-item<?= active_sidebar_class('certificates_admin', $active_menu) ?>">
+
+                    <a href="<?= base_url('event/certificates') ?>"
+                        class="sidebar-link">
+
+                        <i class="bi bi-award-fill"></i>
+                        <span>Certificates</span>
 
                     </a>
 

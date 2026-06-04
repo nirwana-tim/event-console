@@ -89,6 +89,8 @@
                             <th>Banner</th>
                             <th>Event Name</th>
                             <th>Date</th>
+                            <th>Quota</th>
+                            <th>Status</th>
                             <th>Location</th>
                             <th>Actions</th>
                         </tr>
@@ -100,7 +102,7 @@
                         <?php if (empty($events)) { ?>
 
                         <tr>
-                            <td colspan="6">
+                            <td colspan="8">
                                 <div class="empty-state">
                                     <i class="bi bi-calendar-x d-block mb-2"></i>
                                     No event data found
@@ -129,6 +131,12 @@
                                 <strong><?= e($event->name) ?></strong>
                             </td>
                             <td><?= e(app_date($event->date)) ?></td>
+                            <td><?= e($event->quota ?: '-') ?></td>
+                            <td>
+                                <span class="badge bg-<?= status_badge_class($event->status) ?>">
+                                    <?= e($event->status) ?>
+                                </span>
+                            </td>
                             <td><?= e($event->location) ?></td>
                             <td>
 

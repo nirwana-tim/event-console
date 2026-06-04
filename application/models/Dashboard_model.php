@@ -14,6 +14,13 @@ class Dashboard_model extends CI_Model
             'total_payments_pending' => $this->db
                 ->where('status', 'pending')
                 ->count_all_results('payments'),
+            'total_attendance_pending' => $this->db
+                ->join('payments', 'payments.registration_id = registrations.id')
+                ->where('registrations.status', 'approved')
+                ->where('registrations.attendance', 'unconfirmed')
+                ->where('payments.status', 'verified')
+                ->count_all_results('registrations'),
+            'total_certificates' => $this->db->count_all('certificates'),
         );
     }
 

@@ -40,10 +40,47 @@
 
                 </div>
 
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="start_time" class="form-label">Start Time</label>
+                            <input type="time" id="start_time" name="start_time" class="form-control"
+                                value="<?= e(set_value('start_time')) ?>">
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="end_time" class="form-label">End Time</label>
+                            <input type="time" id="end_time" name="end_time" class="form-control"
+                                value="<?= e(set_value('end_time')) ?>">
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="quota" class="form-label">Quota</label>
+                            <input type="number" id="quota" name="quota" min="0" class="form-control"
+                                value="<?= e(set_value('quota')) ?>">
+                        </div>
+                    </div>
+
+                </div>
+
                 <div class="mb-3">
                     <label for="location" class="form-label">Location</label>
                     <input type="text" id="location" name="location" class="form-control"
                         value="<?= e(set_value('location')) ?>" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select id="status" name="status" class="form-select" required>
+                        <option value="dibuka" <?= set_select('status', 'dibuka', TRUE) ?>>Open</option>
+                        <option value="ditutup" <?= set_select('status', 'ditutup') ?>>Closed</option>
+                        <option value="selesai" <?= set_select('status', 'selesai') ?>>Completed</option>
+                    </select>
                 </div>
 
                 <div class="mb-3">

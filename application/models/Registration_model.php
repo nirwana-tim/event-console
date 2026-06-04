@@ -98,6 +98,22 @@ class Registration_model extends CI_Model
         ));
     }
 
+    public function save_payment($registration_id, $file_name)
+    {
+        $payment = $this->find_payment($registration_id);
+
+        if (!$payment) {
+            return $this->create_payment($registration_id, $file_name);
+        }
+
+        return $this->db
+            ->where('registration_id', (int) $registration_id)
+            ->update('payments', array(
+                'payment_proof' => $file_name,
+                'status' => 'pending',
+            ));
+    }
+
     public function register_event($registration_data, $payment_data = null)
     {
         $this->db->trans_start();

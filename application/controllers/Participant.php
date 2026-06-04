@@ -16,7 +16,7 @@ class Participant extends MY_Controller
     {
         $this->set_active_menu('my_participants');
 
-        $this->render('participant/index', array(
+        $this->render('participant/registrations/index', array(
             'page_title' => 'My Participants - EventConsole',
             'registrations' => $this->registration_model->get_user_registrations($this->session->userdata('id')),
         ));
@@ -46,6 +46,11 @@ class Participant extends MY_Controller
             show_404();
         }
 
+        if ($event->status !== 'dibuka') {
+            $this->session->set_flashdata('error', 'Registration for this event is closed.');
+            redirect('participant/events');
+        }
+
         $existing_registration = $this->registration_model->find_by_user_event(
             $this->session->userdata('id'),
             $id
@@ -71,7 +76,7 @@ class Participant extends MY_Controller
             show_404();
         }
 
-        $this->render('participant/show', array(
+        $this->render('participant/registrations/show', array(
             'page_title' => 'Registration Detail - EventConsole',
             'registration' => $registration,
         ));
@@ -84,6 +89,11 @@ class Participant extends MY_Controller
 
         if (!$event) {
             show_404();
+        }
+
+        if ($event->status !== 'dibuka') {
+            $this->session->set_flashdata('error', 'Registration for this event is closed.');
+            redirect('participant/events');
         }
 
         if ($this->input->method() !== 'post') {
@@ -119,7 +129,9 @@ class Participant extends MY_Controller
             show_404();
         }
 
-        if ($this->registration_model->find_payment($id)) {
+        $payment = $this->registration_model->find_payment($id);
+
+        if ($payment && $payment->status !== 'rejected') {
             $this->session->set_flashdata('info', 'Payment proof has already been uploaded.');
             redirect('participant');
         }
@@ -132,7 +144,7 @@ class Participant extends MY_Controller
                 redirect('participant/upload_payment_proof/' . $id);
             }
 
-            $this->registration_model->create_payment($id, $upload['file_name']);
+            $this->registration_model->save_payment($id, $upload['file_name']);
             $this->session->set_flashdata('success', 'Payment proof uploaded successfully.');
 
             redirect('participant');
@@ -164,7 +176,7 @@ class Participant extends MY_Controller
         }
 
         $dompdf = new \Dompdf\Dompdf();
-        $html = $this->load->view('participant/certificate_pdf', array('certificate' => $certificate), TRUE);
+        $html = $this->load->view('certificates/pdf', array('certificate' => $certificate), TRUE);
 
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'landscape');
@@ -182,7 +194,9 @@ class Participant extends MY_Controller
 
     private function redirect_existing_registration($registration)
     {
-        if (!$this->registration_model->find_payment($registration->id)) {
+        $payment = $this->registration_model->find_payment($registration->id);
+
+        if (!$payment || $payment->status === 'rejected') {
             redirect('participant/upload_payment_proof/' . $registration->id);
         }
 

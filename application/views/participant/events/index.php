@@ -41,6 +41,17 @@
 
                     <h5 class="card-title"><?= e($event->name) ?></h5>
 
+                    <div class="mb-2">
+                        <span class="badge bg-<?= status_badge_class($event->status) ?>">
+                            <?= e($event->status) ?>
+                        </span>
+                        <?php if ($event->quota) { ?>
+                            <span class="badge bg-light text-dark">
+                                Quota <?= e($event->quota) ?>
+                            </span>
+                        <?php } ?>
+                    </div>
+
                     <div class="event-meta">
                         <i class="bi bi-geo-alt"></i>
                         <span><?= e($event->location) ?></span>
@@ -55,11 +66,17 @@
                         <?= e(substr(strip_tags($event->description), 0, 120)) ?>
                     </p>
 
-                    <a href="<?= base_url('participant/create/' . $event->id) ?>"
-                        class="btn btn-primary w-100">
-                        <i class="bi bi-pencil-square me-1"></i>
-                        Register for Event
-                    </a>
+                    <?php if ($event->status === 'dibuka') { ?>
+                        <a href="<?= base_url('participant/create/' . $event->id) ?>"
+                            class="btn btn-primary w-100">
+                            <i class="bi bi-pencil-square me-1"></i>
+                            Register for Event
+                        </a>
+                    <?php } else { ?>
+                        <button type="button" class="btn btn-light w-100" disabled>
+                            Registration Closed
+                        </button>
+                    <?php } ?>
 
                 </div>
 
