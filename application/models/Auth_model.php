@@ -25,11 +25,42 @@ class Auth_model extends CI_Model
             ->count_all_results(self::TABLE) > 0;
     }
 
+    public function email_exists_except($email, $id)
+    {
+        return $this->db
+            ->where('email', strtolower(trim($email)))
+            ->where('id !=', (int) $id)
+            ->count_all_results(self::TABLE) > 0;
+    }
+
     public function get_participants()
     {
         return $this->db
             ->select('name, email')
             ->where('role', 'participant')
+            ->order_by('name', 'ASC')
+            ->get(self::TABLE)
+            ->result();
+    }
+
+    public function get_users($keyword = null, $role = null)
+    {
+        $keyword = trim((string) $keyword);
+        $role = trim((string) $role);
+
+        if ($keyword !== '') {
+            $this->db->group_start();
+            $this->db->like('name', $keyword);
+            $this->db->or_like('email', $keyword);
+            $this->db->group_end();
+        }
+
+        if (in_array($role, array('admin', 'participant'), TRUE)) {
+            $this->db->where('role', $role);
+        }
+
+        return $this->db
+            ->order_by('role', 'ASC')
             ->order_by('name', 'ASC')
             ->get(self::TABLE)
             ->result();

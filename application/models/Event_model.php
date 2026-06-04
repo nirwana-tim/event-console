@@ -1,4 +1,5 @@
 <?php
+<?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Event_model extends CI_Model
@@ -7,9 +8,11 @@ class Event_model extends CI_Model
 
     public function get_all($limit = null, $offset = 0, $keyword = null)
     {
+        $this->db->select('events.*, users.name AS creator_name');
+        $this->db->join('users', 'users.id = events.user_id', 'left');
         $this->apply_search($keyword);
-        $this->db->order_by('date', 'DESC');
-        $this->db->order_by('id', 'DESC');
+        $this->db->order_by('events.date', 'DESC');
+        $this->db->order_by('events.id', 'DESC');
 
         if ($limit !== null) {
             return $this->db->get(self::TABLE, (int) $limit, (int) $offset)->result();
@@ -71,13 +74,11 @@ class Event_model extends CI_Model
             users.name AS user_name,
             users.email,
             events.name AS event_name,
-            payments.status AS status_payment,
             certificates.id AS certificate_id
         ');
         $this->db->from('registrations');
         $this->db->join('users', 'users.id = registrations.user_id');
         $this->db->join('events', 'events.id = registrations.event_id');
-        $this->db->join('payments', 'payments.registration_id = registrations.id', 'left');
         $this->db->join('certificates', 'certificates.registration_id = registrations.id', 'left');
 
         if ($event_id) {
@@ -115,95 +116,10 @@ class Event_model extends CI_Model
         return true;
     }
 
-    public function get_payments()
-    {
-        $this->db->select('
-            payments.*,
-            users.name AS user_name,
-            events.name AS event_name,
-            registrations.attendance,
-            certificates.id AS certificate_id,
-            certificates.certificate_number
-        ');
-        $this->db->from('payments');
-        $this->db->join('registrations', 'registrations.id = payments.registration_id');
-        $this->db->join('users', 'users.id = registrations.user_id');
-        $this->db->join('events', 'events.id = registrations.event_id');
-        $this->db->join('certificates', 'certificates.registration_id = registrations.id', 'left');
-
-        return $this->db
-            ->order_by('payments.id', 'DESC')
-            ->get()
-            ->result();
-    }
-
-    public function get_payment_by_id($id)
-    {
-        return $this->db
-            ->get_where('payments', array('id' => (int) $id))
-            ->row();
-    }
-
-    public function reject_payment($id)
-    {
-        $payment = $this->get_payment_by_id($id);
-
-        if (!$payment) {
-            return false;
-        }
-
-        $this->db->trans_start();
-
-        $this->db
-            ->where('id', (int) $id)
-            ->update('payments', array('status' => 'rejected'));
-
-        $this->db
-            ->where('id', (int) $payment->registration_id)
-            ->update('registrations', array(
-                'status' => 'pending',
-                'attendance' => 'unconfirmed',
-            ));
-
-        $this->db
-            ->where('registration_id', (int) $payment->registration_id)
-            ->delete('certificates');
-
-        $this->db->trans_complete();
-
-        return $this->db->trans_status();
-    }
-
-    public function approve_payment($id)
-    {
-        $payment = $this->get_payment_by_id($id);
-
-        if (!$payment) {
-            return false;
-        }
-
-        $this->db->trans_start();
-
-        $this->db
-            ->where('id', (int) $id)
-            ->update('payments', array('status' => 'verified'));
-
-        $this->db
-            ->where('id', (int) $payment->registration_id)
-            ->update('registrations', array('status' => 'approved'));
-
-        $this->ensure_certificate((int) $payment->registration_id);
-
-        $this->db->trans_complete();
-
-        return $this->db->trans_status();
-    }
-
     public function ensure_certificate($registration_id)
     {
-        $this->db->select('registrations.*, payments.status AS payment_status');
+        $this->db->select('registrations.*');
         $this->db->from('registrations');
-        $this->db->join('payments', 'payments.registration_id = registrations.id');
         $this->db->where('registrations.id', (int) $registration_id);
         $registration = $this->db->get()->row();
 
@@ -213,7 +129,6 @@ class Event_model extends CI_Model
 
         if (
             $registration->status !== 'approved' ||
-            $registration->payment_status !== 'verified' ||
             $registration->attendance !== 'present'
         ) {
             return false;
@@ -296,12 +211,10 @@ class Event_model extends CI_Model
             registrations.address,
             registrations.team,
             registrations.status,
-            registrations.attendance,
-            payments.status AS status_payment
+            registrations.attendance
         ');
         $this->db->from('registrations');
         $this->db->join('users', 'users.id = registrations.user_id');
-        $this->db->join('payments', 'payments.registration_id = registrations.id', 'left');
         $this->db->where('registrations.event_id', (int) $event_id);
 
         return $this->db
@@ -334,8 +247,8 @@ class Event_model extends CI_Model
         }
 
         $this->db->group_start();
-        $this->db->like('name', $keyword);
-        $this->db->or_like('location', $keyword);
+        $this->db->like('events.name', $keyword);
+        $this->db->or_like('events.location', $keyword);
         $this->db->group_end();
     }
 }

@@ -111,6 +111,17 @@ class Participant extends MY_Controller
 
         $this->set_registration_rules();
 
+        $existing_registration = $this->registration_model->find_by_user_event(
+            $this->session->userdata('id'),
+            $id
+        );
+
+        if ($existing_registration) {
+            $this->redirect_existing_registration($existing_registration);
+        }
+
+        $this->set_registration_rules();
+
         if ($this->form_validation->run() === FALSE) {
             $this->render_registration_form($event);
             return;
@@ -118,41 +129,8 @@ class Participant extends MY_Controller
 
         $registration_id = $this->registration_model->create_registration($this->registration_payload($id));
 
-        redirect('participant/upload_payment_proof/' . $registration_id);
-    }
-
-    public function upload_payment_proof($id = null)
-    {
-        $this->set_active_menu('my_participants');
-
-        if (!$this->registration_model->user_owns_registration($id, $this->session->userdata('id'))) {
-            show_404();
-        }
-
-        $payment = $this->registration_model->find_payment($id);
-
-        if ($payment && $payment->status !== 'rejected') {
-            $this->session->set_flashdata('info', 'Payment proof has already been uploaded.');
-            redirect('participant');
-        }
-
-        if ($this->input->method() === 'post') {
-            $upload = $this->upload_payment();
-
-            if (!$upload) {
-                $this->session->set_flashdata('error', trim(strip_tags($this->upload->display_errors('', ''))));
-                redirect('participant/upload_payment_proof/' . $id);
-            }
-
-            $this->registration_model->save_payment($id, $upload['file_name']);
-            $this->session->set_flashdata('success', 'Payment proof uploaded successfully.');
-
-            redirect('participant');
-        }
-
-        $this->render('participant/payments/create', array(
-            'page_title' => 'Upload Payment Proof - EventConsole',
-        ));
+        $this->session->set_flashdata('success', 'Successfully registered for the event.');
+        redirect('participant');
     }
 
     public function certificates()
@@ -194,13 +172,7 @@ class Participant extends MY_Controller
 
     private function redirect_existing_registration($registration)
     {
-        $payment = $this->registration_model->find_payment($registration->id);
-
-        if (!$payment || $payment->status === 'rejected') {
-            redirect('participant/upload_payment_proof/' . $registration->id);
-        }
-
-        $this->session->set_flashdata('info', 'You are already registered and have uploaded payment proof.');
+        $this->session->set_flashdata('info', 'You are already registered for this event.');
         redirect('participant');
     }
 
@@ -218,38 +190,12 @@ class Participant extends MY_Controller
         return array(
             'user_id' => (int) $this->session->userdata('id'),
             'event_id' => (int) $event_id,
-            'status' => 'pending',
+            'status' => 'approved',
             'phone_number' => $this->input->post('phone_number', TRUE),
             'institution' => $this->input->post('institution', TRUE),
             'address' => $this->input->post('address', TRUE),
             'team' => $this->input->post('team', TRUE),
             'notes' => $this->input->post('notes', TRUE),
         );
-    }
-
-    private function upload_payment()
-    {
-        $upload_path = FCPATH . 'uploads/payments/';
-
-        if (!is_dir($upload_path)) {
-            mkdir($upload_path, 0755, TRUE);
-        }
-
-        $config = array(
-            'upload_path' => $upload_path,
-            'allowed_types' => 'jpg|jpeg|png',
-            'max_size' => 2048,
-            'encrypt_name' => TRUE,
-            'file_ext_tolower' => TRUE,
-        );
-
-        $this->load->library('upload');
-        $this->upload->initialize($config);
-
-        if (!$this->upload->do_upload('payment_proof')) {
-            return false;
-        }
-
-        return $this->upload->data();
     }
 }

@@ -40,6 +40,7 @@
                 <div class="card-body d-flex flex-column">
 
                     <h5 class="card-title"><?= e($event->name) ?></h5>
+                    <div class="text-muted mb-2"><small><i class="bi bi-person me-1"></i><?= e($event->creator_name) ?></small></div>
 
                     <div class="mb-2">
                         <span class="badge bg-<?= status_badge_class($event->status) ?>">

@@ -26,7 +26,7 @@
 
 $(document).ready(function(){
 
-    ['#table-payments', '#table-registrations', '#table-certificates'].forEach(function(selector){
+    ['#table-payments', '#table-registrations', '#table-certificates', '#table-users'].forEach(function(selector){
         var table = $(selector);
 
         if(table.length && $.fn.DataTable && table.find('tbody td[colspan]').length === 0){

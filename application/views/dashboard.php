@@ -48,36 +48,6 @@
                         </div>
                     </div>
                 </div>
-
-            </div>
-
-        </div>
-
-        <div class="col-12 col-md-6 col-xl-3">
-
-            <div class="card stat-card">
-
-                <div class="card-body py-4">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="stat-icon bg-warning">
-                            <i class="bi bi-hourglass-split"></i>
-                        </div>
-                        <div>
-                            <h6>Pending Payment</h6>
-                            <h2><?= e($summary['pending_payments']) ?></h2>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="col-12 col-md-6 col-xl-3">
-
-            <div class="card stat-card">
-
-                <div class="card-body py-4">
                     <div class="d-flex align-items-center gap-3">
                         <div class="stat-icon bg-info">
                             <i class="bi bi-award"></i>
@@ -157,25 +127,7 @@
 
         </div>
 
-        <div class="col-12 col-md-6 col-xl-3">
 
-            <div class="card stat-card">
-
-                <div class="card-body py-4">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="stat-icon bg-info">
-                            <i class="bi bi-person-badge"></i>
-                        </div>
-                        <div>
-                            <h6>Awaiting Verification</h6>
-                            <h4><?= e($summary['total_payments_pending']) ?></h4>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
 
         <?php } ?>
 
@@ -197,7 +149,7 @@
                     <p class="mb-0 text-muted">
                         <?= $dashboard_role === 'participant'
                             ? 'Use the sidebar menu to browse events, review your registrations, and download certificates.'
-                            : 'Use the sidebar menu to manage events, registrations, payments, and certificates.' ?>
+                            : 'Use the sidebar menu to manage events, registrations, and certificates.' ?>
                     </p>
                 </div>
 
@@ -223,22 +175,16 @@
 
                     <div class="row g-3">
 
-                        <div class="col-md-6 col-xl-3">
+                        <div class="col-md-6 col-xl">
                             <a href="<?= base_url('event/create') ?>" class="btn btn-outline-primary w-100 text-start">
                                 <i class="bi bi-plus-circle me-1"></i>
                                 Create Event
                             </a>
                         </div>
 
-                        <div class="col-md-6 col-xl-3">
-                            <a href="<?= base_url('event/payments') ?>" class="btn btn-outline-warning w-100 text-start">
-                                <i class="bi bi-receipt me-1"></i>
-                                Verify Payments
-                                <span class="badge bg-warning ms-1"><?= e($summary['total_payments_pending']) ?></span>
-                            </a>
-                        </div>
 
-                        <div class="col-md-6 col-xl-3">
+
+                        <div class="col-md-6 col-xl">
                             <a href="<?= base_url('event/registrations') ?>" class="btn btn-outline-success w-100 text-start">
                                 <i class="bi bi-person-check me-1"></i>
                                 Mark Attendance
@@ -246,11 +192,18 @@
                             </a>
                         </div>
 
-                        <div class="col-md-6 col-xl-3">
+                        <div class="col-md-6 col-xl">
                             <a href="<?= base_url('event/certificates') ?>" class="btn btn-outline-info w-100 text-start">
                                 <i class="bi bi-award me-1"></i>
                                 Certificates
                                 <span class="badge bg-info ms-1"><?= e($summary['total_certificates']) ?></span>
+                            </a>
+                        </div>
+
+                        <div class="col-md-6 col-xl">
+                            <a href="<?= base_url('users') ?>" class="btn btn-outline-secondary w-100 text-start">
+                                <i class="bi bi-person-gear me-1"></i>
+                                User Management
                             </a>
                         </div>
 

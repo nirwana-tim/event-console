@@ -66,18 +66,6 @@
 
                 </li>
 
-                <li class="sidebar-item<?= active_sidebar_class('payments', $active_menu) ?>">
-
-                    <a href="<?= base_url('event/payments') ?>"
-                        class="sidebar-link">
-
-                        <i class="bi bi-receipt-cutoff"></i>
-                        <span>Payments</span>
-
-                    </a>
-
-                </li>
-
                 <li class="sidebar-item<?= active_sidebar_class('certificates_admin', $active_menu) ?>">
 
                     <a href="<?= base_url('event/certificates') ?>"
@@ -85,6 +73,18 @@
 
                         <i class="bi bi-award-fill"></i>
                         <span>Certificates</span>
+
+                    </a>
+
+                </li>
+
+                <li class="sidebar-item<?= active_sidebar_class('users', $active_menu) ?>">
+
+                    <a href="<?= base_url('users') ?>"
+                        class="sidebar-link">
+
+                        <i class="bi bi-person-gear"></i>
+                        <span>User Management</span>
 
                     </a>
 

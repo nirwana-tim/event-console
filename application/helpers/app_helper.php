@@ -76,6 +76,18 @@ if (!function_exists('attendance_badge_class')) {
     }
 }
 
+if (!function_exists('role_badge_class')) {
+    function role_badge_class($role)
+    {
+        $classes = array(
+            'admin' => 'primary',
+            'participant' => 'secondary',
+        );
+
+        return isset($classes[$role]) ? $classes[$role] : 'secondary';
+    }
+}
+
 if (!function_exists('app_date')) {
     function app_date($date)
     {

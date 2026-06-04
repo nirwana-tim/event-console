@@ -157,16 +157,6 @@ class Event extends MY_Controller
         redirect($referrer ? $referrer : 'event/registrations');
     }
 
-    public function payments()
-    {
-        $this->set_active_menu('payments');
-
-        $this->render('admin/payments/index', array(
-            'page_title' => 'Payments - EventConsole',
-            'payments' => $this->event_model->get_payments(),
-        ));
-    }
-
     public function certificates()
     {
         $this->set_active_menu('certificates_admin');
@@ -175,50 +165,6 @@ class Event extends MY_Controller
             'page_title' => 'Certificates - EventConsole',
             'certificates' => $this->event_model->get_certificates(),
         ));
-    }
-
-    public function approve($id = null)
-    {
-        $payment = $this->event_model->get_payment_by_id($id);
-
-        if (!$payment) {
-            show_404();
-        }
-
-        if ($payment->status === 'verified') {
-            $this->session->set_flashdata('info', 'This payment has already been verified.');
-            redirect('event/payments');
-        }
-
-        if ($this->event_model->approve_payment($id)) {
-            $this->session->set_flashdata('success', 'Payment verified successfully. Certificate will be available after attendance is marked present.');
-        } else {
-            $this->session->set_flashdata('error', 'Payment verification failed.');
-        }
-
-        redirect('event/payments');
-    }
-
-    public function reject_payment($id = null)
-    {
-        $payment = $this->event_model->get_payment_by_id($id);
-
-        if (!$payment) {
-            show_404();
-        }
-
-        if ($payment->status === 'rejected') {
-            $this->session->set_flashdata('info', 'This payment has already been rejected.');
-            redirect('event/payments');
-        }
-
-        if ($this->event_model->reject_payment($id)) {
-            $this->session->set_flashdata('success', 'Payment rejected successfully.');
-        } else {
-            $this->session->set_flashdata('error', 'Payment rejection failed.');
-        }
-
-        redirect('event/payments');
     }
 
     public function certificate($id = null)
@@ -280,7 +226,7 @@ class Event extends MY_Controller
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setTitle('Participants');
 
-        $headers = array('No', 'Name', 'Email', 'Phone', 'Institution', 'Address', 'Team', 'Registration Status', 'Payment Status', 'Attendance');
+        $headers = array('No', 'Name', 'Email', 'Phone', 'Institution', 'Address', 'Team', 'Registration Status', 'Attendance');
         $column = 'A';
 
         foreach ($headers as $header) {
@@ -301,12 +247,11 @@ class Event extends MY_Controller
             $sheet->setCellValue('F' . $row, $participant->address);
             $sheet->setCellValue('G' . $row, $participant->team);
             $sheet->setCellValue('H' . $row, $participant->status);
-            $sheet->setCellValue('I' . $row, $participant->status_payment ?: 'not_uploaded');
-            $sheet->setCellValue('J' . $row, $participant->attendance);
+            $sheet->setCellValue('I' . $row, $participant->attendance);
             $row++;
         }
 
-        foreach (range('A', 'J') as $column) {
+        foreach (range('A', 'I') as $column) {
             $sheet->getColumnDimension($column)->setAutoSize(TRUE);
         }
 
@@ -358,6 +303,7 @@ class Event extends MY_Controller
     private function event_payload()
     {
         return array(
+            'user_id' => (int) $this->session->userdata('id'),
             'name' => $this->input->post('name', TRUE),
             'description' => $this->input->post('description', TRUE),
             'date' => $this->input->post('date', TRUE),

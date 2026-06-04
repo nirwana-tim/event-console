@@ -44,6 +44,10 @@ body {
     margin-top: -1px;
 }
 
+.brand-mark i::before {
+    vertical-align: 0;
+}
+
 .theme-toggle .form-check-input {
     cursor: pointer;
 }
@@ -85,10 +89,17 @@ body {
     border-radius: 14px;
     color: #fff;
     display: inline-flex;
+    flex-shrink: 0;
     font-size: 1.35rem;
     height: 48px;
     justify-content: center;
     width: 48px;
+}
+
+/* Bootstrap Icons sets vertical-align: -.125em on ::before which shifts
+   the icon downward inside flex containers. Reset it here. */
+.stat-card .stat-icon i::before {
+    vertical-align: 0;
 }
 
 .stat-card h6 {
@@ -208,6 +219,10 @@ label {
     align-items: center;
     justify-content: center;
     line-height: 1;
+}
+
+.auth-logo-mark i::before {
+    vertical-align: 0;
 }
 
 .empty-state {

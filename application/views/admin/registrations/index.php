@@ -88,7 +88,6 @@
                             <th>Phone</th>
                             <th>Institution</th>
                             <th>Registration</th>
-                            <th>Payment</th>
                             <th>Attendance</th>
                             <th>Certificate</th>
                             <th>Actions</th>
@@ -125,17 +124,7 @@
                                     <?= e($registration->status) ?>
                                 </span>
                             </td>
-                            <td>
-                                <?php if ($registration->status_payment === 'verified') { ?>
-                                    <span class="badge bg-success">verified</span>
-                                <?php } elseif ($registration->status_payment === 'pending') { ?>
-                                    <span class="badge bg-warning">pending</span>
-                                <?php } elseif ($registration->status_payment === 'rejected') { ?>
-                                    <span class="badge bg-danger">rejected</span>
-                                <?php } else { ?>
-                                    <span class="badge bg-secondary">not uploaded</span>
-                                <?php } ?>
-                            </td>
+
                             <td>
                                 <span class="badge bg-<?= attendance_badge_class($registration->attendance) ?>">
                                     <?= e($registration->attendance) ?>
