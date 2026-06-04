@@ -1,10 +1,3 @@
-<div class="page-heading">
-
-    <h3>Update Event</h3>
-    <p class="page-subtitle">Update the information for this event.</p>
-
-</div>
-
 <div class="page-content">
 
     <?= flash_alert('error') ?>

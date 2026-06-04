@@ -1,8 +1,3 @@
-<div class="page-heading">
-    <h3>User Settings</h3>
-    <p class="page-subtitle">Manage your profile, theme, and security settings.</p>
-</div>
-
 <div class="page-content">
     <?= flash_alert('success') ?>
     <?= flash_alert('error') ?>

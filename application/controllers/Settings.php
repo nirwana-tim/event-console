@@ -61,7 +61,7 @@ class Settings extends MY_Controller
 
         $this->set_active_menu('');
         $this->render('settings', array(
-            'page_title' => 'Settings - EventConsole',
+            'page_title' => 'Settings',
             'user' => $user,
         ));
     }

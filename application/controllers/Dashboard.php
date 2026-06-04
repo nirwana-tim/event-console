@@ -19,13 +19,19 @@ class Dashboard extends MY_Controller
         $this->set_active_menu('dashboard');
 
         $role = $this->session->userdata('role');
-
-        $this->render('dashboard', array(
-            'page_title' => 'Dashboard - EventConsole',
+        $data = array(
+            'page_title' => 'Dashboard',
             'summary' => $role === 'participant'
                 ? $this->dashboard_model->get_participant_summary($this->session->userdata('id'))
                 : $this->dashboard_model->get_summary(),
             'dashboard_role' => $role,
-        ));
+        );
+
+        if ($role === 'participant') {
+            $this->load->model('Event_model', 'event_model');
+            $data['latest_events'] = $this->event_model->get_events_with_registration($this->session->userdata('id'), 4);
+        }
+
+        $this->render('dashboard', $data);
     }
 }

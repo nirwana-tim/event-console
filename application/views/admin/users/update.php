@@ -1,10 +1,3 @@
-<div class="page-heading">
-
-    <h3>Update User</h3>
-    <p class="page-subtitle">Update account information, role, and optional password.</p>
-
-</div>
-
 <div class="page-content">
 
     <?= validation_errors('<div class="alert alert-danger">', '</div>') ?>

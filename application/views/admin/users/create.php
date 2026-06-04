@@ -1,10 +1,3 @@
-<div class="page-heading">
-
-    <h3>Create User</h3>
-    <p class="page-subtitle">Create a participant or admin account.</p>
-
-</div>
-
 <div class="page-content">
 
     <?= validation_errors('<div class="alert alert-danger">', '</div>') ?>

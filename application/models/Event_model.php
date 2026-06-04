@@ -1,14 +1,15 @@
 <?php
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 class Event_model extends CI_Model
 {
     const TABLE = 'events';
 
-    public function get_all($limit = null, $offset = 0, $keyword = null)
+    public function get_events_with_registration($user_id, $limit = null, $offset = 0, $keyword = null)
     {
-        $this->db->select('events.*, users.name AS creator_name');
+        $this->db->select('events.*, users.name AS creator_name, (SELECT COUNT(*) FROM registrations WHERE registrations.event_id = events.id) AS total_registrations');
+        $this->db->select('(SELECT id FROM registrations WHERE registrations.event_id = events.id AND registrations.user_id = ' . (int) $user_id . ' LIMIT 1) AS user_registration_id');
         $this->db->join('users', 'users.id = events.user_id', 'left');
         $this->apply_search($keyword);
         $this->db->order_by('events.date', 'DESC');
@@ -21,16 +22,33 @@ class Event_model extends CI_Model
         return $this->db->get(self::TABLE)->result();
     }
 
-    public function count_all($keyword = null)
+    public function get_all($limit = null, $offset = 0, $keyword = null, $start_date = null, $end_date = null)
     {
-        $this->apply_search($keyword);
+        $this->db->select('events.*, users.name AS creator_name, (SELECT COUNT(*) FROM registrations WHERE registrations.event_id = events.id) AS total_registrations');
+        $this->db->join('users', 'users.id = events.user_id', 'left');
+        $this->apply_search($keyword, $start_date, $end_date);
+        $this->db->order_by('events.date', 'DESC');
+        $this->db->order_by('events.id', 'DESC');
+
+        if ($limit !== null) {
+            return $this->db->get(self::TABLE, (int) $limit, (int) $offset)->result();
+        }
+
+        return $this->db->get(self::TABLE)->result();
+    }
+
+    public function count_all($keyword = null, $start_date = null, $end_date = null)
+    {
+        $this->apply_search($keyword, $start_date, $end_date);
 
         return $this->db->count_all_results(self::TABLE);
     }
 
     public function get_by_id($id)
     {
-        return $this->db->get_where(self::TABLE, array('id' => (int) $id))->row();
+        $this->db->select('events.*, users.name AS creator_name, (SELECT COUNT(*) FROM registrations WHERE registrations.event_id = events.id) AS total_registrations');
+        $this->db->join('users', 'users.id = events.user_id', 'left');
+        return $this->db->get_where(self::TABLE, array('events.id' => (int) $id))->row();
     }
 
     public function insert($data)
@@ -170,7 +188,7 @@ class Event_model extends CI_Model
 
     public function get_user_certificates($user_id)
     {
-        $this->db->select('certificates.*, events.name AS event_name, users.name AS user_name');
+        $this->db->select('certificates.*, events.name AS event_name, events.banner, events.date, users.name AS user_name');
         $this->db->from('certificates');
         $this->db->join('registrations', 'registrations.id = certificates.registration_id');
         $this->db->join('users', 'users.id = registrations.user_id');
@@ -238,9 +256,17 @@ class Event_model extends CI_Model
         return $this->get_by_id($id);
     }
 
-    private function apply_search($keyword)
+    private function apply_search($keyword, $start_date = null, $end_date = null)
     {
         $keyword = trim((string) $keyword);
+
+        if ($start_date) {
+            $this->db->where('events.date >=', $start_date);
+        }
+
+        if ($end_date) {
+            $this->db->where('events.date <=', $end_date);
+        }
 
         if ($keyword === '') {
             return;

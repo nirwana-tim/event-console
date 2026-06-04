@@ -2,40 +2,7 @@
 <?= flash_alert('error') ?>
 <?= flash_alert('info') ?>
 
-<div class="page-heading">
 
-    <div class="d-flex justify-content-between align-items-center">
-
-        <div>
-            <h3>Event Data</h3>
-            <p class="page-subtitle">Manage events, participants, and reports.</p>
-        </div>
-
-        <div class="btn-group-wrap">
-
-            <a href="<?= base_url('event/pdf') ?>"
-                class="btn btn-outline-danger">
-                <i class="bi bi-file-earmark-pdf me-1"></i>
-                PDF Event
-            </a>
-
-            <a href="<?= base_url('event/excel') ?>"
-                class="btn btn-outline-success">
-                <i class="bi bi-file-earmark-excel me-1"></i>
-                Excel Event
-            </a>
-
-            <a href="<?= base_url('event/create') ?>"
-                class="btn btn-primary">
-                <i class="bi bi-plus-circle me-1"></i>
-                Add
-            </a>
-
-        </div>
-
-    </div>
-
-</div>
 
 <div class="page-content">
 
@@ -49,29 +16,30 @@
 
             <form method="get" class="mb-4">
 
-                <div class="row g-2">
+                <div class="row g-2 align-items-end">
 
-                    <div class="col-md-5">
+                    <div class="col-md-3">
+                        <label class="form-label mb-1"><small>Start Date</small></label>
+                        <input type="date" name="start_date" class="form-control" value="<?= e(isset($start_date) ? $start_date : '') ?>">
+                    </div>
 
+                    <div class="col-md-3">
+                        <label class="form-label mb-1"><small>End Date</small></label>
+                        <input type="date" name="end_date" class="form-control" value="<?= e(isset($end_date) ? $end_date : '') ?>">
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label mb-1"><small>Search Event</small></label>
                         <div class="input-group">
-                            <span class="input-group-text">
-                                <i class="bi bi-search"></i>
-                            </span>
-                            <input type="text"
-                                name="keyword"
-                                class="form-control"
-                                value="<?= e($keyword) ?>"
-                                placeholder="Search events...">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text" name="keyword" class="form-control" value="<?= e($keyword) ?>" placeholder="Search events...">
                         </div>
-
                     </div>
 
                     <div class="col-md-2">
-
                         <button class="btn btn-primary w-100">
                             Search
                         </button>
-
                     </div>
 
                 </div>
@@ -131,7 +99,7 @@
                                 <strong><?= e($event->name) ?></strong>
                             </td>
                             <td><?= e(app_date($event->date)) ?></td>
-                            <td><?= e($event->quota ?: '-') ?></td>
+                            <td><?= e($event->total_registrations) ?>/<?= e($event->quota ?: '∞') ?></td>
                             <td>
                                 <span class="badge bg-<?= status_badge_class($event->status) ?>">
                                     <?= e($event->status) ?>
@@ -142,10 +110,10 @@
 
                                 <div class="btn-group-wrap">
 
-                                    <a href="<?= base_url('event/registrations/' . $event->id) ?>"
-                                        class="btn btn-info btn-sm">
-                                        <i class="bi bi-people me-1"></i>
-                                        Participants
+                                    <a href="<?= base_url('event/show/' . $event->id) ?>"
+                                        class="btn btn-primary btn-sm">
+                                        <i class="bi bi-eye me-1"></i>
+                                        Show
                                     </a>
 
                                     <a href="<?= base_url('event/update/' . $event->id) ?>"

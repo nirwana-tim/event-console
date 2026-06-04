@@ -1,14 +1,3 @@
-<div class="page-heading">
-
-    <div class="d-flex justify-content-between align-items-center">
-        <div>
-            <h3>Participant Registrations</h3>
-            <p class="page-subtitle">Monitor registrations, payment status, and manual attendance.</p>
-        </div>
-    </div>
-
-</div>
-
 <div class="page-content">
 
     <?= flash_alert('success') ?>
@@ -144,21 +133,21 @@
                             </td>
                             <td>
                                 <div class="btn-group-wrap">
-                                    <a href="<?= base_url('event/attendance/' . $registration->id . '/present') ?>"
-                                        class="btn btn-success btn-sm"
-                                        onclick="return confirm('Mark this participant as present?')">
-                                        <i class="bi bi-check2 me-1"></i>
-                                        Present
-                                    </a>
+                                    <?php if ($registration->attendance === 'unconfirmed') { ?>
+                                        <a href="<?= base_url('event/attendance/' . $registration->id . '/present') ?>"
+                                            class="btn btn-success btn-sm"
+                                            onclick="return confirm('Mark this participant as present?')">
+                                            <i class="bi bi-check2 me-1"></i>
+                                            Present
+                                        </a>
 
-                                    <a href="<?= base_url('event/attendance/' . $registration->id . '/absent') ?>"
-                                        class="btn btn-danger btn-sm"
-                                        onclick="return confirm('Mark this participant as absent?')">
-                                        <i class="bi bi-x-lg me-1"></i>
-                                        Absent
-                                    </a>
-
-                                    <?php if ($registration->attendance !== 'unconfirmed') { ?>
+                                        <a href="<?= base_url('event/attendance/' . $registration->id . '/absent') ?>"
+                                            class="btn btn-danger btn-sm"
+                                            onclick="return confirm('Mark this participant as absent?')">
+                                            <i class="bi bi-x-lg me-1"></i>
+                                            Absent
+                                        </a>
+                                    <?php } else { ?>
                                         <a href="<?= base_url('event/attendance/' . $registration->id . '/unconfirmed') ?>"
                                             class="btn btn-light btn-sm">
                                             Reset

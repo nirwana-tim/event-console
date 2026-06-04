@@ -1,10 +1,3 @@
-<div class="page-heading">
-
-    <h3>User Detail</h3>
-    <p class="page-subtitle">Review account information before making changes.</p>
-
-</div>
-
 <div class="page-content">
 
     <?= flash_alert('success') ?>

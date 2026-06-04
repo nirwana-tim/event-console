@@ -19,7 +19,7 @@ class Users extends MY_Controller
         $role = trim((string) $this->input->get('role', TRUE));
 
         $this->render('admin/users/index', array(
-            'page_title' => 'User Management - EventConsole',
+            'page_title' => 'User Management',
             'users' => $this->auth_model->get_users($keyword, $role),
             'keyword' => $keyword,
             'role' => $role,
@@ -34,7 +34,7 @@ class Users extends MY_Controller
 
         if ($this->form_validation->run() === FALSE) {
             $this->render('admin/users/create', array(
-                'page_title' => 'Create User - EventConsole',
+                'page_title' => 'Create User',
             ));
             return;
         }
@@ -75,7 +75,7 @@ class Users extends MY_Controller
 
         if ($this->form_validation->run() === FALSE) {
             $this->render('admin/users/update', array(
-                'page_title' => 'Update User - EventConsole',
+                'page_title' => 'Update User',
                 'user' => $user,
             ));
             return;
@@ -108,7 +108,7 @@ class Users extends MY_Controller
         }
 
         $this->render('admin/users/show', array(
-            'page_title' => 'User Detail - EventConsole',
+            'page_title' => 'User Detail',
             'user' => $user,
         ));
     }

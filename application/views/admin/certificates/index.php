@@ -1,14 +1,3 @@
-<div class="page-heading">
-
-    <div class="d-flex justify-content-between align-items-center">
-        <div>
-            <h3>Certificates</h3>
-            <p class="page-subtitle">Review generated certificates for verified and present participants.</p>
-        </div>
-    </div>
-
-</div>
-
 <div class="page-content">
 
     <?= flash_alert('success') ?>

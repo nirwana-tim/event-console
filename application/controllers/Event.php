@@ -12,6 +12,7 @@ class Event extends MY_Controller
         $this->require_admin();
         $this->load->model('Event_model', 'event_model');
         $this->load->library('pagination');
+
     }
 
     public function index()
@@ -19,15 +20,35 @@ class Event extends MY_Controller
         $this->set_active_menu('event');
 
         $keyword = trim((string) $this->input->get('keyword', TRUE));
+        $start_date = $this->input->get('start_date', TRUE);
+        $end_date = $this->input->get('end_date', TRUE);
         $offset = (int) $this->uri->segment(3, 0);
 
-        $this->pagination->initialize($this->pagination_config($keyword));
+        $this->pagination->initialize($this->pagination_config($keyword, $start_date, $end_date));
 
         $this->render('admin/events/index', array(
-            'page_title' => 'Event Data - EventConsole',
-            'events' => $this->event_model->get_all(self::PER_PAGE, $offset, $keyword),
+            'page_title' => 'Event Data',
+            'events' => $this->event_model->get_all(self::PER_PAGE, $offset, $keyword, $start_date, $end_date),
             'keyword' => $keyword,
+            'start_date' => $start_date,
+            'end_date' => $end_date,
             'offset' => $offset,
+        ));
+    }
+
+    public function show($id = null)
+    {
+        $this->set_active_menu('event');
+
+        $event = $this->event_model->get_by_id($id);
+
+        if (!$event) {
+            show_404();
+        }
+
+        $this->render('admin/events/show', array(
+            'page_title' => 'Event Detail',
+            'event' => $event,
         ));
     }
 
@@ -42,7 +63,7 @@ class Event extends MY_Controller
         $this->set_event_rules();
 
         if ($this->form_validation->run() === FALSE) {
-            $this->render('admin/events/create', array('page_title' => 'Create Event - EventConsole'));
+            $this->render('admin/events/create', array('page_title' => 'Create Event'));
             return;
         }
 
@@ -81,7 +102,7 @@ class Event extends MY_Controller
 
         if ($this->form_validation->run() === FALSE) {
             $this->render('admin/events/update', array(
-                'page_title' => 'Update Event - EventConsole',
+                'page_title' => 'Update Event',
                 'event' => $event,
             ));
             return;
@@ -133,7 +154,7 @@ class Event extends MY_Controller
         $selected_event_id = $selected_event_id > 0 ? $selected_event_id : null;
 
         $this->render('admin/registrations/index', array(
-            'page_title' => 'Participant Registrations - EventConsole',
+            'page_title' => 'Participant Registrations',
             'events' => $this->event_model->get_options(),
             'selected_event_id' => $selected_event_id,
             'registrations' => $this->event_model->get_registrations($selected_event_id),
@@ -162,7 +183,7 @@ class Event extends MY_Controller
         $this->set_active_menu('certificates_admin');
 
         $this->render('admin/certificates/index', array(
-            'page_title' => 'Certificates - EventConsole',
+            'page_title' => 'Certificates',
             'certificates' => $this->event_model->get_certificates(),
         ));
     }
@@ -190,7 +211,11 @@ class Event extends MY_Controller
     {
         $this->load_composer();
 
-        $events = $this->event_model->get_all();
+        $keyword = $this->input->get('keyword', TRUE);
+        $start_date = $this->input->get('start_date', TRUE);
+        $end_date = $this->input->get('end_date', TRUE);
+
+        $events = $this->event_model->get_all(null, 0, $keyword, $start_date, $end_date);
         $html = $this->load->view('admin/events/report_pdf', array('events' => $events), TRUE);
 
         $dompdf = new \Dompdf\Dompdf();
@@ -208,7 +233,11 @@ class Event extends MY_Controller
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setTitle('Event');
 
-        $this->write_event_sheet($sheet, $this->event_model->get_all());
+        $keyword = $this->input->get('keyword', TRUE);
+        $start_date = $this->input->get('start_date', TRUE);
+        $end_date = $this->input->get('end_date', TRUE);
+
+        $this->write_event_sheet($sheet, $this->event_model->get_all(null, 0, $keyword, $start_date, $end_date));
         $this->download_excel($spreadsheet, 'event-report.xlsx');
     }
 
@@ -258,11 +287,11 @@ class Event extends MY_Controller
         $this->download_excel($spreadsheet, 'event-participants-' . $event->id . '.xlsx');
     }
 
-    private function pagination_config($keyword)
+    private function pagination_config($keyword, $start_date = null, $end_date = null)
     {
         return array(
             'base_url' => base_url('event/index'),
-            'total_rows' => $this->event_model->count_all($keyword),
+            'total_rows' => $this->event_model->count_all($keyword, $start_date, $end_date),
             'per_page' => self::PER_PAGE,
             'uri_segment' => 3,
             'reuse_query_string' => TRUE,

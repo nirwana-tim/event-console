@@ -1,10 +1,3 @@
-<div class="page-heading">
-
-    <h3>Create Event</h3>
-    <p class="page-subtitle">Create a new event for participants.</p>
-
-</div>
-
 <div class="page-content">
 
     <?= flash_alert('error') ?>

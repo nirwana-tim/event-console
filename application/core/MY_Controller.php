@@ -13,11 +13,12 @@ class MY_Controller extends CI_Controller
     protected function render($view, $data = array())
     {
         $data = array_merge($this->layout_data(), $data);
+        
+        // Simpan konten halaman ke dalam variabel $content
+        $data['content'] = $this->load->view($view, $data, TRUE);
 
-        $this->load->view('layouts/header', $data);
-        $this->load->view('layouts/sidebar', $data);
-        $this->load->view($view, $data);
-        $this->load->view('layouts/footer', $data);
+        // Panggil master layout yang akan merakit header, sidebar, dan footer
+        $this->load->view('layouts/app', $data);
     }
 
     protected function render_auth($view, $data = array())
@@ -56,14 +57,6 @@ class MY_Controller extends CI_Controller
     protected function set_active_menu($menu)
     {
         $this->active_menu = $menu;
-    }
-
-    protected function json_response($data, $status_code = 200)
-    {
-        $this->output
-            ->set_status_header($status_code)
-            ->set_content_type('application/json', 'utf-8')
-            ->set_output(json_encode($data));
     }
 
     protected function load_composer()

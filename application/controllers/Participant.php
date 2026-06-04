@@ -17,7 +17,7 @@ class Participant extends MY_Controller
         $this->set_active_menu('my_participants');
 
         $this->render('participant/registrations/index', array(
-            'page_title' => 'My Participants - EventConsole',
+            'page_title' => 'My Participants',
             'registrations' => $this->registration_model->get_user_registrations($this->session->userdata('id')),
         ));
     }
@@ -27,8 +27,8 @@ class Participant extends MY_Controller
         $this->set_active_menu('participant_events');
 
         $this->render('participant/events/index', array(
-            'page_title' => 'Events - EventConsole',
-            'events' => $this->event_model->get_all(),
+            'page_title' => 'Events',
+            'events' => $this->event_model->get_events_with_registration($this->session->userdata('id')),
         ));
     }
 
@@ -63,6 +63,28 @@ class Participant extends MY_Controller
         $this->render_registration_form($event);
     }
 
+    public function event_show($id = null)
+    {
+        $this->set_active_menu('participant_events');
+        $event = $this->event_model->get_by_id($id);
+
+        if (!$event) {
+            show_404();
+        }
+
+        // Check if already registered
+        $registration = $this->registration_model->find_by_user_event(
+            $this->session->userdata('id'),
+            $id
+        );
+
+        $this->render('participant/events/show', array(
+            'page_title' => 'Event Detail',
+            'event' => $event,
+            'user_registration' => $registration,
+        ));
+    }
+
     public function show($id = null)
     {
         $this->set_active_menu('my_participants');
@@ -77,7 +99,7 @@ class Participant extends MY_Controller
         }
 
         $this->render('participant/registrations/show', array(
-            'page_title' => 'Registration Detail - EventConsole',
+            'page_title' => 'Registration Detail',
             'registration' => $registration,
         ));
     }
@@ -111,17 +133,6 @@ class Participant extends MY_Controller
 
         $this->set_registration_rules();
 
-        $existing_registration = $this->registration_model->find_by_user_event(
-            $this->session->userdata('id'),
-            $id
-        );
-
-        if ($existing_registration) {
-            $this->redirect_existing_registration($existing_registration);
-        }
-
-        $this->set_registration_rules();
-
         if ($this->form_validation->run() === FALSE) {
             $this->render_registration_form($event);
             return;
@@ -138,7 +149,7 @@ class Participant extends MY_Controller
         $this->set_active_menu('certificates');
 
         $this->render('participant/certificates/index', array(
-            'page_title' => 'My Certificates - EventConsole',
+            'page_title' => 'My Certificates',
             'certificates' => $this->event_model->get_user_certificates($this->session->userdata('id')),
         ));
     }
@@ -165,7 +176,7 @@ class Participant extends MY_Controller
     private function render_registration_form($event)
     {
         $this->render('participant/events/create', array(
-            'page_title' => 'Event Registration Form - EventConsole',
+            'page_title' => 'Event Registration Form',
             'event' => $event,
         ));
     }

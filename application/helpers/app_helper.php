@@ -96,7 +96,77 @@ if (!function_exists('app_date')) {
         }
 
         $timestamp = strtotime($date);
+        if (!$timestamp) {
+            return $date;
+        }
 
-        return $timestamp ? date('d/m/Y', $timestamp) : $date;
+        $day = date('j', $timestamp);
+        $month = (int)date('n', $timestamp);
+        $year = date('Y', $timestamp);
+
+        $months = array(
+            1 => 'Januari',
+            2 => 'Februari',
+            3 => 'Maret',
+            4 => 'April',
+            5 => 'Mei',
+            6 => 'Juni',
+            7 => 'Juli',
+            8 => 'Agustus',
+            9 => 'September',
+            10 => 'Oktober',
+            11 => 'November',
+            12 => 'Desember'
+        );
+
+        return $day . ' ' . $months[$month] . ' ' . $year;
+    }
+}
+
+if (!function_exists('human_diff')) {
+    function human_diff($date)
+    {
+        if (!$date) {
+            return '-';
+        }
+
+        $timestamp = strtotime($date);
+        if (!$timestamp) {
+            return $date;
+        }
+
+        $now = time();
+        $diff = $now - $timestamp;
+
+        if ($diff == 0) {
+            return 'Sekarang';
+        }
+
+        $is_future = $diff < 0;
+        $diff = abs($diff);
+
+        $units = array(
+            31536000 => 'tahun',
+            2592000  => 'bulan',
+            604800   => 'minggu',
+            86400    => 'hari',
+            3600     => 'jam',
+            60       => 'menit',
+            1        => 'detik'
+        );
+
+        foreach ($units as $seconds => $label) {
+            if ($diff >= $seconds) {
+                $count = floor($diff / $seconds);
+                $result = $count . ' ' . $label;
+                
+                if ($is_future) {
+                    return $result . ' lagi';
+                }
+                return $result . ' yang lalu';
+            }
+        }
+
+        return $date;
     }
 }
