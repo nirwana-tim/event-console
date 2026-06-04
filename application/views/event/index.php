@@ -121,15 +121,15 @@
                             <td>
                                 <img class="table-img"
                                     src="<?= e(base_url('uploads/banner/' . $event->banner)) ?>"
-                                    alt="<?= e($event->nama_event) ?>"
-                                    onerror="this.src='<?= base_url('assets/static/images/samples/error-404.svg') ?>'">
+                                    alt="<?= e($event->name) ?>"
+                                    onerror="this.src='<?= base_url('mazer/dist/assets/static/images/samples/error-404.svg') ?>'">
                             </td>
 
                             <td>
-                                <strong><?= e($event->nama_event) ?></strong>
+                                <strong><?= e($event->name) ?></strong>
                             </td>
-                            <td><?= e(app_date($event->tanggal)) ?></td>
-                            <td><?= e($event->lokasi) ?></td>
+                            <td><?= e(app_date($event->date)) ?></td>
+                            <td><?= e($event->location) ?></td>
                             <td>
 
                                 <div class="btn-group-wrap">

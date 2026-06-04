@@ -26,9 +26,9 @@
 
 <tr>
     <td><?= e($number++) ?></td>
-    <td><?= e($event->nama_event) ?></td>
-    <td><?= e(app_date($event->tanggal)) ?></td>
-    <td><?= e($event->lokasi) ?></td>
+    <td><?= e($event->name) ?></td>
+    <td><?= e(app_date($event->date)) ?></td>
+    <td><?= e($event->location) ?></td>
 </tr>
 
 <?php } ?>

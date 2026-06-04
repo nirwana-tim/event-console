@@ -16,16 +16,16 @@
             <div class="card event-card">
                 <img src="<?= e(base_url('uploads/banner/' . $event->banner)) ?>"
                     class="card-img-top"
-                    alt="<?= e($event->nama_event) ?>">
+                    alt="<?= e($event->name) ?>">
                 <div class="card-body">
-                    <h5><?= e($event->nama_event) ?></h5>
+                    <h5><?= e($event->name) ?></h5>
                     <div class="event-meta">
                         <i class="bi bi-calendar3"></i>
-                        <span><?= e(app_date($event->tanggal)) ?></span>
+                        <span><?= e(app_date($event->date)) ?></span>
                     </div>
                     <div class="event-meta">
                         <i class="bi bi-geo-alt"></i>
-                        <span><?= e($event->lokasi) ?></span>
+                        <span><?= e($event->location) ?></span>
                     </div>
                 </div>
             </div>
@@ -50,12 +50,12 @@
                             <div class="col-md-6">
 
                             <div class="mb-3">
-                                    <label for="no_hp" class="form-label">Phone Number</label>
+                                    <label for="phone_number" class="form-label">Phone Number</label>
                                     <input type="text"
-                                        id="no_hp"
-                                        name="no_hp"
+                                        id="phone_number"
+                                        name="phone_number"
                                         class="form-control"
-                                        value="<?= e(set_value('no_hp')) ?>"
+                                        value="<?= e(set_value('phone_number')) ?>"
                                         placeholder="08xxxxxxxxxx"
                                         required>
                                 </div>
@@ -65,12 +65,12 @@
                             <div class="col-md-6">
 
                                 <div class="mb-3">
-                                    <label for="instansi" class="form-label">Institution</label>
+                                    <label for="institution" class="form-label">Institution</label>
                                     <input type="text"
-                                        id="instansi"
-                                        name="instansi"
+                                        id="institution"
+                                        name="institution"
                                         class="form-control"
-                                        value="<?= e(set_value('instansi')) ?>"
+                                        value="<?= e(set_value('institution')) ?>"
                                         placeholder="School / Campus / Community"
                                         required>
                                 </div>
@@ -80,12 +80,12 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="alamat" class="form-label">Address</label>
-                            <textarea name="alamat"
-                                id="alamat"
+                            <label for="address" class="form-label">Address</label>
+                            <textarea name="address"
+                                id="address"
                                 rows="3"
                                 class="form-control"
-                                required><?= e(set_value('alamat')) ?></textarea>
+                                required><?= e(set_value('address')) ?></textarea>
                         </div>
 
                         <div class="mb-3">
@@ -98,11 +98,11 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="catatan" class="form-label">Notes</label>
-                            <textarea name="catatan"
-                                id="catatan"
+                            <label for="notes" class="form-label">Notes</label>
+                            <textarea name="notes"
+                                id="notes"
                                 rows="3"
-                                class="form-control"><?= e(set_value('catatan')) ?></textarea>
+                                class="form-control"><?= e(set_value('notes')) ?></textarea>
                         </div>
 
                         <div class="btn-group-wrap">

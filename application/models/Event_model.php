@@ -8,7 +8,7 @@ class Event_model extends CI_Model
     public function get_all($limit = null, $offset = 0, $keyword = null)
     {
         $this->apply_search($keyword);
-        $this->db->order_by('tanggal', 'DESC');
+        $this->db->order_by('date', 'DESC');
         $this->db->order_by('id', 'DESC');
 
         if ($limit !== null) {
@@ -53,13 +53,13 @@ class Event_model extends CI_Model
     {
         return $this->db
             ->where('event_id', (int) $event_id)
-            ->count_all_results('pendaftaran') > 0;
+            ->count_all_results('registrations') > 0;
     }
 
     public function get_options()
     {
         return $this->db
-            ->order_by('nama_event', 'ASC')
+            ->order_by('name', 'ASC')
             ->get(self::TABLE)
             ->result();
     }
@@ -67,23 +67,23 @@ class Event_model extends CI_Model
     public function get_registrations($event_id = null)
     {
         $this->db->select('
-            pendaftaran.*,
-            users.nama,
+            registrations.*,
+            users.name AS user_name,
             users.email,
-            events.nama_event,
-            pembayaran.status AS status_pembayaran
+            events.name AS event_name,
+            payments.status AS status_payment
         ');
-        $this->db->from('pendaftaran');
-        $this->db->join('users', 'users.id = pendaftaran.user_id');
-        $this->db->join('events', 'events.id = pendaftaran.event_id');
-        $this->db->join('pembayaran', 'pembayaran.pendaftaran_id = pendaftaran.id', 'left');
+        $this->db->from('registrations');
+        $this->db->join('users', 'users.id = registrations.user_id');
+        $this->db->join('events', 'events.id = registrations.event_id');
+        $this->db->join('payments', 'payments.registration_id = registrations.id', 'left');
 
         if ($event_id) {
-            $this->db->where('pendaftaran.event_id', (int) $event_id);
+            $this->db->where('registrations.event_id', (int) $event_id);
         }
 
         return $this->db
-            ->order_by('pendaftaran.id', 'DESC')
+            ->order_by('registrations.id', 'DESC')
             ->get()
             ->result();
     }
@@ -91,20 +91,20 @@ class Event_model extends CI_Model
     public function get_payments()
     {
         $this->db->select('
-            pembayaran.*,
-            users.nama,
-            events.nama_event,
-            sertifikat.id AS sertifikat_id,
-            sertifikat.nomor_sertifikat
+            payments.*,
+            users.name AS user_name,
+            events.name AS event_name,
+            certificates.id AS certificate_id,
+            certificates.certificate_number
         ');
-        $this->db->from('pembayaran');
-        $this->db->join('pendaftaran', 'pendaftaran.id = pembayaran.pendaftaran_id');
-        $this->db->join('users', 'users.id = pendaftaran.user_id');
-        $this->db->join('events', 'events.id = pendaftaran.event_id');
-        $this->db->join('sertifikat', 'sertifikat.pendaftaran_id = pendaftaran.id', 'left');
+        $this->db->from('payments');
+        $this->db->join('registrations', 'registrations.id = payments.registration_id');
+        $this->db->join('users', 'users.id = registrations.user_id');
+        $this->db->join('events', 'events.id = registrations.event_id');
+        $this->db->join('certificates', 'certificates.registration_id = registrations.id', 'left');
 
         return $this->db
-            ->order_by('pembayaran.id', 'DESC')
+            ->order_by('payments.id', 'DESC')
             ->get()
             ->result();
     }
@@ -112,7 +112,7 @@ class Event_model extends CI_Model
     public function get_payment_by_id($id)
     {
         return $this->db
-            ->get_where('pembayaran', array('id' => (int) $id))
+            ->get_where('payments', array('id' => (int) $id))
             ->row();
     }
 
@@ -128,23 +128,23 @@ class Event_model extends CI_Model
 
         $this->db
             ->where('id', (int) $id)
-            ->update('pembayaran', array('status' => 'verified'));
+            ->update('payments', array('status' => 'verified'));
 
         $this->db
-            ->where('id', (int) $payment->pendaftaran_id)
-            ->update('pendaftaran', array('status' => 'approved'));
+            ->where('id', (int) $payment->registration_id)
+            ->update('registrations', array('status' => 'approved'));
 
         $certificate = $this->db
-            ->get_where('sertifikat', array('pendaftaran_id' => (int) $payment->pendaftaran_id))
+            ->get_where('certificates', array('registration_id' => (int) $payment->registration_id))
             ->row();
 
         if (!$certificate) {
-            $certificate_number = 'SRT-' . $payment->pendaftaran_id . '-' . date('YmdHis');
+            $certificate_number = 'SRT-' . $payment->registration_id . '-' . date('YmdHis');
 
-            $this->db->insert('sertifikat', array(
-                'pendaftaran_id' => (int) $payment->pendaftaran_id,
-                'nomor_sertifikat' => $certificate_number,
-                'file_sertifikat' => $certificate_number . '.pdf',
+            $this->db->insert('certificates', array(
+                'registration_id' => (int) $payment->registration_id,
+                'certificate_number' => $certificate_number,
+                'certificate_file' => $certificate_number . '.pdf',
             ));
         }
 
@@ -155,12 +155,12 @@ class Event_model extends CI_Model
 
     public function get_certificate_by_id($id, $user_id = null)
     {
-        $this->db->select('sertifikat.*, users.nama, events.nama_event');
-        $this->db->from('sertifikat');
-        $this->db->join('pendaftaran', 'pendaftaran.id = sertifikat.pendaftaran_id');
-        $this->db->join('users', 'users.id = pendaftaran.user_id');
-        $this->db->join('events', 'events.id = pendaftaran.event_id');
-        $this->db->where('sertifikat.id', (int) $id);
+        $this->db->select('certificates.*, users.name AS user_name, events.name AS event_name');
+        $this->db->from('certificates');
+        $this->db->join('registrations', 'registrations.id = certificates.registration_id');
+        $this->db->join('users', 'users.id = registrations.user_id');
+        $this->db->join('events', 'events.id = registrations.event_id');
+        $this->db->where('certificates.id', (int) $id);
 
         if ($user_id !== null) {
             $this->db->where('users.id', (int) $user_id);
@@ -171,15 +171,15 @@ class Event_model extends CI_Model
 
     public function get_user_certificates($user_id)
     {
-        $this->db->select('sertifikat.*, events.nama_event, users.nama');
-        $this->db->from('sertifikat');
-        $this->db->join('pendaftaran', 'pendaftaran.id = sertifikat.pendaftaran_id');
-        $this->db->join('users', 'users.id = pendaftaran.user_id');
-        $this->db->join('events', 'events.id = pendaftaran.event_id');
+        $this->db->select('certificates.*, events.name AS event_name, users.name AS user_name');
+        $this->db->from('certificates');
+        $this->db->join('registrations', 'registrations.id = certificates.registration_id');
+        $this->db->join('users', 'users.id = registrations.user_id');
+        $this->db->join('events', 'events.id = registrations.event_id');
         $this->db->where('users.id', (int) $user_id);
 
         return $this->db
-            ->order_by('sertifikat.id', 'DESC')
+            ->order_by('certificates.id', 'DESC')
             ->get()
             ->result();
     }
@@ -187,22 +187,22 @@ class Event_model extends CI_Model
     public function get_participants($event_id)
     {
         $this->db->select('
-            users.nama,
+            users.name AS user_name,
             users.email,
-            pendaftaran.no_hp,
-            pendaftaran.instansi,
-            pendaftaran.alamat,
-            pendaftaran.team,
-            pendaftaran.status,
-            pembayaran.status AS status_pembayaran
+            registrations.phone_number,
+            registrations.institution,
+            registrations.address,
+            registrations.team,
+            registrations.status,
+            payments.status AS status_payment
         ');
-        $this->db->from('pendaftaran');
-        $this->db->join('users', 'users.id = pendaftaran.user_id');
-        $this->db->join('pembayaran', 'pembayaran.pendaftaran_id = pendaftaran.id', 'left');
-        $this->db->where('pendaftaran.event_id', (int) $event_id);
+        $this->db->from('registrations');
+        $this->db->join('users', 'users.id = registrations.user_id');
+        $this->db->join('payments', 'payments.registration_id = registrations.id', 'left');
+        $this->db->where('registrations.event_id', (int) $event_id);
 
         return $this->db
-            ->order_by('users.nama', 'ASC')
+            ->order_by('users.name', 'ASC')
             ->get()
             ->result();
     }
@@ -231,8 +231,8 @@ class Event_model extends CI_Model
         }
 
         $this->db->group_start();
-        $this->db->like('nama_event', $keyword);
-        $this->db->or_like('lokasi', $keyword);
+        $this->db->like('name', $keyword);
+        $this->db->or_like('location', $keyword);
         $this->db->group_end();
     }
 }

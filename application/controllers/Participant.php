@@ -7,7 +7,7 @@ class Participant extends MY_Controller
     {
         parent::__construct();
 
-        $this->require_role('peserta');
+        $this->require_role('participant');
         $this->load->model('Event_model', 'event_model');
         $this->load->model('Registration_model', 'registration_model');
     }
@@ -74,7 +74,7 @@ class Participant extends MY_Controller
 
         $registration_id = $this->registration_model->create_registration($this->registration_payload($id));
 
-        redirect('participant/upload_payment/' . $registration_id);
+        redirect('participant/upload_payment_proof/' . $registration_id);
     }
 
     public function upload_payment_proof($id = null)
@@ -135,7 +135,7 @@ class Participant extends MY_Controller
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
-        $dompdf->stream('certificate-' . $certificate->nomor_sertifikat . '.pdf', array('Attachment' => 0));
+        $dompdf->stream('certificate-' . $certificate->certificate_number . '.pdf', array('Attachment' => 0));
     }
 
     private function render_registration_form($event)
@@ -158,11 +158,11 @@ class Participant extends MY_Controller
 
     private function set_registration_rules()
     {
-        $this->form_validation->set_rules('no_hp', 'Phone Number', 'trim|required|max_length[30]');
-        $this->form_validation->set_rules('instansi', 'Institution', 'trim|required|max_length[150]');
-        $this->form_validation->set_rules('alamat', 'Address', 'trim|required');
+        $this->form_validation->set_rules('phone_number', 'Phone Number', 'trim|required|max_length[30]');
+        $this->form_validation->set_rules('institution', 'Institution', 'trim|required|max_length[150]');
+        $this->form_validation->set_rules('address', 'Address', 'trim|required');
         $this->form_validation->set_rules('team', 'Team', 'trim|max_length[150]');
-        $this->form_validation->set_rules('catatan', 'Notes', 'trim');
+        $this->form_validation->set_rules('notes', 'Notes', 'trim');
     }
 
     private function registration_payload($event_id)
@@ -171,11 +171,11 @@ class Participant extends MY_Controller
             'user_id' => (int) $this->session->userdata('id'),
             'event_id' => (int) $event_id,
             'status' => 'pending',
-            'no_hp' => $this->input->post('no_hp', TRUE),
-            'instansi' => $this->input->post('instansi', TRUE),
-            'alamat' => $this->input->post('alamat', TRUE),
+            'phone_number' => $this->input->post('phone_number', TRUE),
+            'institution' => $this->input->post('institution', TRUE),
+            'address' => $this->input->post('address', TRUE),
             'team' => $this->input->post('team', TRUE),
-            'catatan' => $this->input->post('catatan', TRUE),
+            'notes' => $this->input->post('notes', TRUE),
         );
     }
 
@@ -198,7 +198,7 @@ class Participant extends MY_Controller
         $this->load->library('upload');
         $this->upload->initialize($config);
 
-        if (!$this->upload->do_upload('bukti')) {
+        if (!$this->upload->do_upload('payment_proof')) {
             return false;
         }
 

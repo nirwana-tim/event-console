@@ -14,10 +14,10 @@ class MY_Controller extends CI_Controller
     {
         $data = array_merge($this->layout_data(), $data);
 
-        $this->load->view('template/header', $data);
-        $this->load->view('template/sidebar', $data);
+        $this->load->view('layouts/header', $data);
+        $this->load->view('layouts/sidebar', $data);
         $this->load->view($view, $data);
-        $this->load->view('template/footer', $data);
+        $this->load->view('layouts/footer', $data);
     }
 
     protected function render_auth($view, $data = array())
@@ -79,7 +79,7 @@ class MY_Controller extends CI_Controller
 
     protected function layout_data()
     {
-        $name = (string) $this->session->userdata('nama');
+        $name = (string) $this->session->userdata('name');
 
         return array(
             'active_menu' => $this->active_menu,

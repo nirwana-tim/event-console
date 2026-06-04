@@ -178,7 +178,7 @@ class Event extends MY_Controller
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
-        $dompdf->stream('certificate-' . $certificate->nomor_sertifikat . '.pdf', array('Attachment' => 0));
+        $dompdf->stream('certificate-' . $certificate->certificate_number . '.pdf', array('Attachment' => 0));
     }
 
     public function pdf()
@@ -235,14 +235,14 @@ class Event extends MY_Controller
 
         foreach ($participants as $participant) {
             $sheet->setCellValue('A' . $row, $number++);
-            $sheet->setCellValue('B' . $row, $participant->nama);
+            $sheet->setCellValue('B' . $row, $participant->user_name);
             $sheet->setCellValue('C' . $row, $participant->email);
-            $sheet->setCellValue('D' . $row, $participant->no_hp);
-            $sheet->setCellValue('E' . $row, $participant->instansi);
-            $sheet->setCellValue('F' . $row, $participant->alamat);
+            $sheet->setCellValue('D' . $row, $participant->phone_number);
+            $sheet->setCellValue('E' . $row, $participant->institution);
+            $sheet->setCellValue('F' . $row, $participant->address);
             $sheet->setCellValue('G' . $row, $participant->team);
             $sheet->setCellValue('H' . $row, $participant->status);
-            $sheet->setCellValue('I' . $row, $participant->status_pembayaran ?: 'not_uploaded');
+            $sheet->setCellValue('I' . $row, $participant->status_payment ?: 'not_uploaded');
             $row++;
         }
 
@@ -285,19 +285,19 @@ class Event extends MY_Controller
 
     private function set_event_rules()
     {
-        $this->form_validation->set_rules('nama_event', 'Event Name', 'trim|required|max_length[150]');
-        $this->form_validation->set_rules('tanggal', 'Date', 'trim|required');
-        $this->form_validation->set_rules('lokasi', 'Location', 'trim|required|max_length[150]');
-        $this->form_validation->set_rules('deskripsi', 'Description', 'trim');
+        $this->form_validation->set_rules('name', 'Event Name', 'trim|required|max_length[150]');
+        $this->form_validation->set_rules('date', 'Date', 'trim|required');
+        $this->form_validation->set_rules('location', 'Location', 'trim|required|max_length[150]');
+        $this->form_validation->set_rules('description', 'Description', 'trim');
     }
 
     private function event_payload()
     {
         return array(
-            'nama_event' => $this->input->post('nama_event', TRUE),
-            'deskripsi' => $this->input->post('deskripsi', TRUE),
-            'tanggal' => $this->input->post('tanggal', TRUE),
-            'lokasi' => $this->input->post('lokasi', TRUE),
+            'name' => $this->input->post('name', TRUE),
+            'description' => $this->input->post('description', TRUE),
+            'date' => $this->input->post('date', TRUE),
+            'location' => $this->input->post('location', TRUE),
         );
     }
 
@@ -355,9 +355,9 @@ class Event extends MY_Controller
 
         foreach ($events as $event) {
             $sheet->setCellValue('A' . $row, $number++);
-            $sheet->setCellValue('B' . $row, $event->nama_event);
-            $sheet->setCellValue('C' . $row, $event->tanggal);
-            $sheet->setCellValue('D' . $row, $event->lokasi);
+            $sheet->setCellValue('B' . $row, $event->name);
+            $sheet->setCellValue('C' . $row, $event->date);
+            $sheet->setCellValue('D' . $row, $event->location);
             $row++;
         }
 

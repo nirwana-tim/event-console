@@ -34,24 +34,24 @@
 
                 <img src="<?= e(base_url('uploads/banner/' . $event->banner)) ?>"
                     class="card-img-top"
-                    alt="<?= e($event->nama_event) ?>">
+                    alt="<?= e($event->name) ?>">
 
                 <div class="card-body d-flex flex-column">
 
-                    <h5 class="card-title"><?= e($event->nama_event) ?></h5>
+                    <h5 class="card-title"><?= e($event->name) ?></h5>
 
                     <div class="event-meta">
                         <i class="bi bi-geo-alt"></i>
-                        <span><?= e($event->lokasi) ?></span>
+                        <span><?= e($event->location) ?></span>
                     </div>
 
                     <div class="event-meta mb-3">
                         <i class="bi bi-calendar3"></i>
-                        <span><?= e(app_date($event->tanggal)) ?></span>
+                        <span><?= e(app_date($event->date)) ?></span>
                     </div>
 
                     <p class="text-muted flex-grow-1">
-                        <?= e(substr(strip_tags($event->deskripsi), 0, 120)) ?>
+                        <?= e(substr(strip_tags($event->description), 0, 120)) ?>
                     </p>
 
                     <a href="<?= base_url('participant/registration_form/' . $event->id) ?>"

@@ -26,12 +26,12 @@
                     <div class="col-md-6">
 
                         <div class="mb-3">
-                            <label for="nama_event" class="form-label">Event Name</label>
+                            <label for="name" class="form-label">Event Name</label>
                             <input type="text"
-                                id="nama_event"
-                                name="nama_event"
+                                id="name"
+                                name="name"
                                 class="form-control"
-                                value="<?= e(set_value('nama_event')) ?>"
+                                value="<?= e(set_value('name')) ?>"
                                 placeholder="Example: Poster Design Competition">
                         </div>
 
@@ -40,11 +40,11 @@
                     <div class="col-md-3">
 
                         <div class="mb-3">
-                            <label for="tanggal" class="form-label">Date</label>
+                            <label for="date" class="form-label">Date</label>
                             <input type="date"
-                                id="tanggal"
-                                name="tanggal"
-                                value="<?= e(set_value('tanggal')) ?>"
+                                id="date"
+                                name="date"
+                                value="<?= e(set_value('date')) ?>"
                                 class="form-control">
                         </div>
 
@@ -53,12 +53,12 @@
                     <div class="col-md-3">
 
                         <div class="mb-3">
-                            <label for="lokasi" class="form-label">Location</label>
+                            <label for="location" class="form-label">Location</label>
                             <input type="text"
-                                id="lokasi"
-                                name="lokasi"
+                                id="location"
+                                name="location"
                                 class="form-control"
-                                value="<?= e(set_value('lokasi')) ?>"
+                                value="<?= e(set_value('location')) ?>"
                                 placeholder="Campus / Online">
                         </div>
 
@@ -67,12 +67,12 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="deskripsi" class="form-label">Description</label>
-                    <textarea name="deskripsi"
-                        id="deskripsi"
+                    <label for="description" class="form-label">Description</label>
+                    <textarea name="description"
+                        id="description"
                         rows="5"
                         class="form-control"
-                        placeholder="Brief event details"><?= e(set_value('deskripsi')) ?></textarea>
+                        placeholder="Brief event details"><?= e(set_value('description')) ?></textarea>
                 </div>
 
                 <div class="mb-4">

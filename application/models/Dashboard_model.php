@@ -8,12 +8,12 @@ class Dashboard_model extends CI_Model
         return array(
             'total_events' => $this->db->count_all('events'),
             'total_participants' => $this->db
-                ->where('role', 'peserta')
+                ->where('role', 'participant')
                 ->count_all_results('users'),
-            'total_registrations' => $this->db->count_all('pendaftaran'),
+            'total_registrations' => $this->db->count_all('registrations'),
             'total_payments_pending' => $this->db
                 ->where('status', 'pending')
-                ->count_all_results('pembayaran'),
+                ->count_all_results('payments'),
         );
     }
 }

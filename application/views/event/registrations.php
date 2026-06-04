@@ -39,7 +39,7 @@
 
                                 <option value="<?= e($event->id) ?>"
                                     <?= (int) $selected_event_id === (int) $event->id ? 'selected' : '' ?>>
-                                    <?= e($event->nama_event) ?>
+                                    <?= e($event->name) ?>
                                 </option>
 
                             <?php } ?>
@@ -113,11 +113,11 @@
 
                         <tr>
 
-                            <td><strong><?= e($registration->nama) ?></strong></td>
+                            <td><strong><?= e($registration->user_name) ?></strong></td>
                             <td><?= e($registration->email) ?></td>
-                            <td><?= e($registration->nama_event) ?></td>
-                            <td><?= e($registration->no_hp) ?></td>
-                            <td><?= e($registration->instansi) ?></td>
+                            <td><?= e($registration->event_name) ?></td>
+                            <td><?= e($registration->phone_number) ?></td>
+                            <td><?= e($registration->institution) ?></td>
                             <td><?= e($registration->team) ?></td>
                             <td>
                                 <span class="badge bg-<?= status_badge_class($registration->status) ?>">
@@ -125,9 +125,9 @@
                                 </span>
                             </td>
                             <td>
-                                <?php if ($registration->status_pembayaran === 'verified') { ?>
+                                <?php if ($registration->status_payment === 'verified') { ?>
                                     <span class="badge bg-success">verified</span>
-                                <?php } elseif ($registration->status_pembayaran === 'pending') { ?>
+                                <?php } elseif ($registration->status_payment === 'pending') { ?>
                                     <span class="badge bg-warning">pending</span>
                                 <?php } else { ?>
                                     <span class="badge bg-secondary">not uploaded</span>

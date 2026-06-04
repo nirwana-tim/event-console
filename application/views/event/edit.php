@@ -10,7 +10,7 @@
     <div class="card">
 
         <div class="card-header">
-            <h4 class="card-title mb-0"><?= e($event->nama_event) ?></h4>
+            <h4 class="card-title mb-0"><?= e($event->name) ?></h4>
         </div>
 
         <div class="card-body">
@@ -26,12 +26,12 @@
                     <div class="col-md-8">
 
                         <div class="mb-3">
-                            <label for="nama_event" class="form-label">Event Name</label>
+                            <label for="name" class="form-label">Event Name</label>
                             <input type="text"
-                                id="nama_event"
-                                name="nama_event"
+                                id="name"
+                                name="name"
                                 class="form-control"
-                                value="<?= e(set_value('nama_event', $event->nama_event)) ?>">
+                                value="<?= e(set_value('name', $event->name)) ?>">
                         </div>
 
                     </div>
@@ -39,12 +39,12 @@
                     <div class="col-md-4">
 
                         <div class="mb-3">
-                            <label for="tanggal" class="form-label">Date</label>
+                            <label for="date" class="form-label">Date</label>
                             <input type="date"
-                                id="tanggal"
-                                name="tanggal"
+                                id="date"
+                                name="date"
                                 class="form-control"
-                                value="<?= e(set_value('tanggal', $event->tanggal)) ?>">
+                                value="<?= e(set_value('date', $event->date)) ?>">
                         </div>
 
                     </div>
@@ -52,20 +52,20 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="lokasi" class="form-label">Location</label>
+                    <label for="location" class="form-label">Location</label>
                     <input type="text"
-                        id="lokasi"
-                        name="lokasi"
+                        id="location"
+                        name="location"
                         class="form-control"
-                        value="<?= e(set_value('lokasi', $event->lokasi)) ?>">
+                        value="<?= e(set_value('location', $event->location)) ?>">
                 </div>
 
                 <div class="mb-3">
-                    <label for="deskripsi" class="form-label">Description</label>
-                    <textarea name="deskripsi"
-                        id="deskripsi"
+                    <label for="description" class="form-label">Description</label>
+                    <textarea name="description"
+                        id="description"
                         rows="5"
-                        class="form-control"><?= e(set_value('deskripsi', $event->deskripsi)) ?></textarea>
+                        class="form-control"><?= e(set_value('description', $event->description)) ?></textarea>
                 </div>
 
                 <div class="mb-4">
@@ -76,7 +76,7 @@
                     <div class="mb-3">
                         <img class="table-img"
                             src="<?= e(base_url('uploads/banner/' . $event->banner)) ?>"
-                            alt="<?= e($event->nama_event) ?>">
+                            alt="<?= e($event->name) ?>">
                     </div>
 
                     <?php } ?>

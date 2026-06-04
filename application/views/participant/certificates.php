@@ -52,8 +52,8 @@
 
                         <tr>
 
-                            <td><strong><?= e($certificate->nomor_sertifikat) ?></strong></td>
-                            <td><?= e($certificate->nama_event) ?></td>
+                            <td><strong><?= e($certificate->certificate_number) ?></strong></td>
+                            <td><?= e($certificate->event_name) ?></td>
                             <td>
                                 <a href="<?= base_url('participant/download/' . $certificate->id) ?>"
                                     class="btn btn-primary btn-sm">

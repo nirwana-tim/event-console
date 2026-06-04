@@ -21,18 +21,18 @@
     <h3>Awarded To</h3>
 
     <h1>
-        <?= e($certificate->nama) ?>
+        <?= e($certificate->user_name) ?>
     </h1>
 
     <p>For participating in the event</p>
 
     <h2>
-        <?= e($certificate->nama_event) ?>
+        <?= e($certificate->event_name) ?>
     </h2>
 
     <p class="number">
         Certificate Number:
-        <?= e($certificate->nomor_sertifikat) ?>
+        <?= e($certificate->certificate_number) ?>
     </p>
 
 </div>

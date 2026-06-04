@@ -9,16 +9,16 @@
 
     <title>Register - EventConsole</title>
 
-    <script src="<?= base_url('assets/static/js/initTheme.js') ?>"></script>
+    <script src="<?= base_url('mazer/dist/assets/static/js/initTheme.js') ?>"></script>
 
     <link rel="stylesheet"
-        href="<?= base_url('assets/compiled/css/app.css') ?>">
+        href="<?= base_url('mazer/dist/assets/compiled/css/app.css') ?>">
     <link rel="stylesheet"
-        href="<?= base_url('assets/compiled/css/auth.css') ?>">
+        href="<?= base_url('mazer/dist/assets/compiled/css/auth.css') ?>">
     <link rel="stylesheet"
-        href="<?= base_url('assets/extensions/bootstrap-icons/font/bootstrap-icons.css') ?>">
+        href="<?= base_url('mazer/dist/assets/extensions/bootstrap-icons/font/bootstrap-icons.css') ?>">
     <link rel="stylesheet"
-        href="<?= base_url('assets/compiled/css/EventConsole.css') ?>">
+        href="<?= base_url('mazer/dist/assets/compiled/css/EventConsole.css') ?>">
 
 </head>
 
@@ -62,9 +62,9 @@
                     <div class="form-group position-relative has-icon-left mb-4">
 
                         <input type="text"
-                            name="nama"
+                            name="name"
                             class="form-control form-control-xl"
-                            value="<?= e(set_value('nama')) ?>"
+                            value="<?= e(set_value('name')) ?>"
                             autocomplete="name"
                             placeholder="Full Name">
 

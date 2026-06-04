@@ -16,7 +16,7 @@ class Auth extends MY_Controller
             redirect('dashboard');
         }
 
-        $this->form_validation->set_rules('nama', 'Name', 'trim|required');
+        $this->form_validation->set_rules('name', 'Name', 'trim|required');
         $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|is_unique[users.email]');
         $this->form_validation->set_rules('password', 'Password', 'required|min_length[6]');
         $this->form_validation->set_message('is_unique', '{field} is already registered.');
@@ -27,10 +27,10 @@ class Auth extends MY_Controller
         }
 
         $data = array(
-            'nama' => trim($this->input->post('nama', TRUE)),
+            'name' => trim($this->input->post('name', TRUE)),
             'email' => strtolower(trim($this->input->post('email', TRUE))),
             'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
-            'role' => 'peserta',
+            'role' => 'participant',
         );
 
         $this->auth_model->create_user($data);
@@ -55,7 +55,7 @@ class Auth extends MY_Controller
                 $this->session->sess_regenerate(TRUE);
                 $this->session->set_userdata(array(
                     'id' => $user->id,
-                    'nama' => $user->nama,
+                    'name' => $user->name,
                     'role' => $user->role,
                     'login' => TRUE,
                 ));

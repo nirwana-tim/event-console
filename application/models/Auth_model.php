@@ -28,9 +28,9 @@ class Auth_model extends CI_Model
     public function get_participants()
     {
         return $this->db
-            ->select('nama, email')
-            ->where('role', 'peserta')
-            ->order_by('nama', 'ASC')
+            ->select('name, email')
+            ->where('role', 'participant')
+            ->order_by('name', 'ASC')
             ->get(self::TABLE)
             ->result();
     }

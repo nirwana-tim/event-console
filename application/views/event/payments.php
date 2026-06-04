@@ -55,14 +55,14 @@
 
                         <tr>
 
-                            <td><strong><?= e($payment->nama) ?></strong></td>
-                            <td><?= e($payment->nama_event) ?></td>
+                            <td><strong><?= e($payment->user_name) ?></strong></td>
+                            <td><?= e($payment->event_name) ?></td>
 
                             <td>
-                                <a href="<?= e(base_url('uploads/payments/' . $payment->bukti_bayar)) ?>"
+                                <a href="<?= e(base_url('uploads/payments/' . $payment->payment_proof)) ?>"
                                     target="_blank">
                                     <img class="table-img"
-                                        src="<?= e(base_url('uploads/payments/' . $payment->bukti_bayar)) ?>"
+                                        src="<?= e(base_url('uploads/payments/' . $payment->payment_proof)) ?>"
                                         alt="Payment proof">
                                 </a>
                             </td>
@@ -76,8 +76,8 @@
                             </td>
 
                             <td>
-                                <?php if ($payment->sertifikat_id) { ?>
-                                    <a href="<?= base_url('event/certificate/' . $payment->sertifikat_id) ?>"
+                                <?php if ($payment->certificate_id) { ?>
+                                    <a href="<?= base_url('event/certificate/' . $payment->certificate_id) ?>"
                                         class="btn btn-primary btn-sm"
                                         target="_blank">
                                         <i class="bi bi-file-earmark-pdf me-1"></i>

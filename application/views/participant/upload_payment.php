@@ -30,10 +30,10 @@
                     <form method="POST" enctype="multipart/form-data">
 
                         <div class="mb-4">
-                            <label for="bukti" class="form-label">Payment Proof</label>
+                            <label for="payment_proof" class="form-label">Payment Proof</label>
                             <input type="file"
-                                id="bukti"
-                                name="bukti"
+                                id="payment_proof"
+                                name="payment_proof"
                                 accept="image/png,image/jpeg"
                                 class="form-control"
                                 required>
