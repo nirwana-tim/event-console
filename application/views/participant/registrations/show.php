@@ -6,11 +6,11 @@
     <!-- Action Buttons -->
     <div class="mb-4 d-flex flex-wrap gap-2">
         <a href="<?= base_url('participant') ?>" class="btn btn-secondary shadow-sm">
-            <i class="bi bi-arrow-left me-2"></i>Kembali
+            <i class="bi bi-arrow-left me-2"></i>Back
         </a>
         <?php if ($registration->certificate_id) { ?>
             <a href="<?= base_url('participant/download/' . $registration->certificate_id) ?>" class="btn btn-success shadow-sm">
-                <i class="bi bi-award-fill me-2"></i>Download Sertifikat
+                <i class="bi bi-award-fill me-2"></i>Download Certificate
             </a>
         <?php } ?>
     </div>
@@ -30,10 +30,10 @@
                             <div class="container-fluid px-0">
                                 <div class="d-flex gap-2 mb-3">
                                     <span class="badge bg-<?= status_badge_class($registration->status) ?> py-2 px-3 text-uppercase shadow">
-                                        Status: <?= e($registration->status) ?>
+                                        Status: <?= e(status_label($registration->status)) ?>
                                     </span>
                                     <span class="badge bg-<?= attendance_badge_class($registration->attendance) ?> py-2 px-3 text-uppercase shadow">
-                                        Absensi: <?= e($registration->attendance) ?>
+                                        Attendance: <?= e(attendance_label($registration->attendance)) ?>
                                     </span>
                                 </div>
                                 <h1 class="text-white display-5 fw-bold mb-2 text-shadow"><?= e($registration->event_name) ?></h1>
@@ -53,28 +53,28 @@
         <div class="col-lg-7">
             <div class="card border-0 shadow-sm rounded-4 h-100">
                 <div class="card-header bg-white border-bottom py-3 px-4">
-                    <h5 class="fw-bold mb-0"><i class="bi bi-person-badge me-2 text-primary"></i>Data Pendaftaran</h5>
+                    <h5 class="fw-bold mb-0"><i class="bi bi-person-badge me-2 text-primary"></i>Registration Data</h5>
                 </div>
                 <div class="card-body p-4">
                     <div class="row g-3">
                         <div class="col-sm-6">
-                            <label class="text-muted small text-uppercase fw-bold">No. Telepon</label>
+                            <label class="text-muted small text-uppercase fw-bold">Phone Number</label>
                             <p class="fw-bold text-gray-800 fs-5 mb-0"><?= e($registration->phone_number) ?></p>
                         </div>
                         <div class="col-sm-6">
-                            <label class="text-muted small text-uppercase fw-bold">Institusi</label>
+                            <label class="text-muted small text-uppercase fw-bold">Institution</label>
                             <p class="fw-bold text-gray-800 fs-5 mb-0"><?= e($registration->institution) ?></p>
                         </div>
                         <div class="col-12">
-                            <label class="text-muted small text-uppercase fw-bold">Alamat</label>
+                            <label class="text-muted small text-uppercase fw-bold">Address</label>
                             <p class="text-gray-700 fs-6 mb-0"><?= e($registration->address) ?></p>
                         </div>
                         <div class="col-sm-6">
-                            <label class="text-muted small text-uppercase fw-bold">Tim</label>
+                            <label class="text-muted small text-uppercase fw-bold">Team</label>
                             <p class="text-gray-800 fw-bold mb-0"><?= e($registration->team ?: '-') ?></p>
                         </div>
                         <div class="col-12">
-                            <label class="text-muted small text-uppercase fw-bold">Catatan</label>
+                            <label class="text-muted small text-uppercase fw-bold">Notes</label>
                             <p class="text-gray-700 small mb-0"><?= e($registration->notes ?: '-') ?></p>
                         </div>
                     </div>
@@ -86,10 +86,10 @@
         <div class="col-lg-5">
             <div class="card border-0 shadow-sm rounded-4 h-100">
                 <div class="card-header bg-white border-bottom py-3 px-4">
-                    <h5 class="fw-bold mb-0"><i class="bi bi-info-circle me-2 text-primary"></i>Deskripsi Event</h5>
+                    <h5 class="fw-bold mb-0"><i class="bi bi-info-circle me-2 text-primary"></i>Event Description</h5>
                 </div>
                 <div class="card-body p-4">
-                    <div class="event-description text-gray-700 small lh-base" style="white-space: pre-wrap;"><?= $registration->description ? nl2br(e($registration->description)) : '<span class="text-muted italic">Tidak ada deskripsi untuk event ini.</span>' ?></div>
+                    <div class="event-description text-gray-700 small lh-base" style="white-space: pre-wrap;"><?= $registration->description ? nl2br(e($registration->description)) : '<span class="text-muted italic">No description available for this event.</span>' ?></div>
                 </div>
             </div>
         </div>

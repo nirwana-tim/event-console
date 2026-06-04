@@ -6,12 +6,15 @@ class Event_model extends CI_Model
 {
     const TABLE = 'events';
 
-    public function get_events_with_registration($user_id, $limit = null, $offset = 0, $keyword = null)
+    public function get_events_with_registration($user_id, $limit = null, $offset = 0, $keyword = null, $status = null)
     {
         $this->db->select('events.*, users.name AS creator_name, (SELECT COUNT(*) FROM registrations WHERE registrations.event_id = events.id) AS total_registrations');
         $this->db->select('(SELECT id FROM registrations WHERE registrations.event_id = events.id AND registrations.user_id = ' . (int) $user_id . ' LIMIT 1) AS user_registration_id');
         $this->db->join('users', 'users.id = events.user_id', 'left');
         $this->apply_search($keyword);
+        if (in_array($status, array('dibuka', 'ditutup', 'selesai'), TRUE)) {
+            $this->db->where('events.status', $status);
+        }
         $this->db->order_by('events.date', 'DESC');
         $this->db->order_by('events.id', 'DESC');
 
@@ -22,11 +25,20 @@ class Event_model extends CI_Model
         return $this->db->get(self::TABLE)->result();
     }
 
-    public function get_all($limit = null, $offset = 0, $keyword = null, $start_date = null, $end_date = null)
+    public function count_events_with_registration($keyword = null, $status = null)
+    {
+        $this->apply_search($keyword);
+        if (in_array($status, array('dibuka', 'ditutup', 'selesai'), TRUE)) {
+            $this->db->where('events.status', $status);
+        }
+        return $this->db->count_all_results(self::TABLE);
+    }
+
+    public function get_all($limit = null, $offset = 0, $keyword = null, $status = null, $start_date = null, $end_date = null)
     {
         $this->db->select('events.*, users.name AS creator_name, (SELECT COUNT(*) FROM registrations WHERE registrations.event_id = events.id) AS total_registrations');
         $this->db->join('users', 'users.id = events.user_id', 'left');
-        $this->apply_search($keyword, $start_date, $end_date);
+        $this->apply_event_filters($keyword, $status, $start_date, $end_date);
         $this->db->order_by('events.date', 'DESC');
         $this->db->order_by('events.id', 'DESC');
 
@@ -37,9 +49,9 @@ class Event_model extends CI_Model
         return $this->db->get(self::TABLE)->result();
     }
 
-    public function count_all($keyword = null, $start_date = null, $end_date = null)
+    public function count_all($keyword = null, $status = null, $start_date = null, $end_date = null)
     {
-        $this->apply_search($keyword, $start_date, $end_date);
+        $this->apply_event_filters($keyword, $status, $start_date, $end_date);
 
         return $this->db->count_all_results(self::TABLE);
     }
@@ -85,7 +97,7 @@ class Event_model extends CI_Model
             ->result();
     }
 
-    public function get_registrations($event_id = null)
+    public function get_registrations($event_id = null, $keyword = null, $status = null, $attendance = null)
     {
         $this->db->select('
             registrations.*,
@@ -101,6 +113,25 @@ class Event_model extends CI_Model
 
         if ($event_id) {
             $this->db->where('registrations.event_id', (int) $event_id);
+        }
+
+        $keyword = trim((string) $keyword);
+        if ($keyword !== '') {
+            $this->db->group_start();
+            $this->db->like('users.name', $keyword);
+            $this->db->or_like('users.email', $keyword);
+            $this->db->or_like('events.name', $keyword);
+            $this->db->or_like('registrations.phone_number', $keyword);
+            $this->db->or_like('registrations.institution', $keyword);
+            $this->db->group_end();
+        }
+
+        if (in_array($status, array('pending', 'approved', 'rejected'), TRUE)) {
+            $this->db->where('registrations.status', $status);
+        }
+
+        if (in_array($attendance, array('unconfirmed', 'present', 'absent'), TRUE)) {
+            $this->db->where('registrations.attendance', $attendance);
         }
 
         return $this->db
@@ -186,7 +217,7 @@ class Event_model extends CI_Model
         return $this->db->get()->row();
     }
 
-    public function get_user_certificates($user_id)
+    public function get_user_certificates($user_id, $keyword = null)
     {
         $this->db->select('certificates.*, events.name AS event_name, events.banner, events.date, users.name AS user_name');
         $this->db->from('certificates');
@@ -195,13 +226,22 @@ class Event_model extends CI_Model
         $this->db->join('events', 'events.id = registrations.event_id');
         $this->db->where('users.id', (int) $user_id);
 
+        $keyword = trim((string) $keyword);
+        if ($keyword !== '') {
+            $this->db->group_start();
+            $this->db->like('events.name', $keyword);
+            $this->db->or_like('certificates.certificate_number', $keyword);
+            $this->db->or_like('certificates.verification_code', $keyword);
+            $this->db->group_end();
+        }
+
         return $this->db
             ->order_by('certificates.id', 'DESC')
             ->get()
             ->result();
     }
 
-    public function get_certificates()
+    public function get_certificates($event_id = null, $keyword = null)
     {
         $this->db->select('
             certificates.*,
@@ -212,6 +252,20 @@ class Event_model extends CI_Model
         $this->db->join('registrations', 'registrations.id = certificates.registration_id');
         $this->db->join('users', 'users.id = registrations.user_id');
         $this->db->join('events', 'events.id = registrations.event_id');
+
+        if ($event_id) {
+            $this->db->where('registrations.event_id', (int) $event_id);
+        }
+
+        $keyword = trim((string) $keyword);
+        if ($keyword !== '') {
+            $this->db->group_start();
+            $this->db->like('certificates.certificate_number', $keyword);
+            $this->db->or_like('certificates.verification_code', $keyword);
+            $this->db->or_like('users.name', $keyword);
+            $this->db->or_like('events.name', $keyword);
+            $this->db->group_end();
+        }
 
         return $this->db
             ->order_by('certificates.id', 'DESC')
@@ -256,9 +310,13 @@ class Event_model extends CI_Model
         return $this->get_by_id($id);
     }
 
-    private function apply_search($keyword, $start_date = null, $end_date = null)
+    private function apply_event_filters($keyword, $status = null, $start_date = null, $end_date = null)
     {
         $keyword = trim((string) $keyword);
+
+        if (in_array($status, array('dibuka', 'ditutup', 'selesai'), TRUE)) {
+            $this->db->where('events.status', $status);
+        }
 
         if ($start_date) {
             $this->db->where('events.date >=', $start_date);
@@ -276,5 +334,10 @@ class Event_model extends CI_Model
         $this->db->like('events.name', $keyword);
         $this->db->or_like('events.location', $keyword);
         $this->db->group_end();
+    }
+
+    private function apply_search($keyword, $start_date = null, $end_date = null)
+    {
+        $this->apply_event_filters($keyword, null, $start_date, $end_date);
     }
 }

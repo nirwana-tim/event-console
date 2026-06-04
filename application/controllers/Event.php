@@ -20,16 +20,22 @@ class Event extends MY_Controller
         $this->set_active_menu('event');
 
         $keyword = trim((string) $this->input->get('keyword', TRUE));
-        $start_date = $this->input->get('start_date', TRUE);
-        $end_date = $this->input->get('end_date', TRUE);
+        $status = trim((string) $this->input->get('status', TRUE));
+        $start_date = trim((string) $this->input->get('start_date', TRUE));
+        $end_date = trim((string) $this->input->get('end_date', TRUE));
         $offset = (int) $this->uri->segment(3, 0);
 
-        $this->pagination->initialize($this->pagination_config($keyword, $start_date, $end_date));
+        if (!in_array($status, array('dibuka', 'ditutup', 'selesai'), TRUE)) {
+            $status = '';
+        }
+
+        $this->pagination->initialize($this->pagination_config($keyword, $status, $start_date, $end_date));
 
         $this->render('admin/events/index', array(
             'page_title' => 'Event Data',
-            'events' => $this->event_model->get_all(self::PER_PAGE, $offset, $keyword, $start_date, $end_date),
+            'events' => $this->event_model->get_all(self::PER_PAGE, $offset, $keyword, $status, $start_date, $end_date),
             'keyword' => $keyword,
+            'status' => $status,
             'start_date' => $start_date,
             'end_date' => $end_date,
             'offset' => $offset,
@@ -153,11 +159,26 @@ class Event extends MY_Controller
         $selected_event_id = $event_id ? (int) $event_id : (int) $this->input->get('event_id', TRUE);
         $selected_event_id = $selected_event_id > 0 ? $selected_event_id : null;
 
+        $keyword = trim((string) $this->input->get('keyword', TRUE));
+        $status = trim((string) $this->input->get('status', TRUE));
+        $attendance = trim((string) $this->input->get('attendance', TRUE));
+
+        if (!in_array($status, array('pending', 'approved', 'rejected'), TRUE)) {
+            $status = '';
+        }
+
+        if (!in_array($attendance, array('unconfirmed', 'present', 'absent'), TRUE)) {
+            $attendance = '';
+        }
+
         $this->render('admin/registrations/index', array(
             'page_title' => 'Participant Registrations',
             'events' => $this->event_model->get_options(),
             'selected_event_id' => $selected_event_id,
-            'registrations' => $this->event_model->get_registrations($selected_event_id),
+            'keyword' => $keyword,
+            'selected_status' => $status,
+            'selected_attendance' => $attendance,
+            'registrations' => $this->event_model->get_registrations($selected_event_id, $keyword, $status, $attendance),
         ));
     }
 
@@ -182,9 +203,16 @@ class Event extends MY_Controller
     {
         $this->set_active_menu('certificates_admin');
 
+        $selected_event_id = (int) $this->input->get('event_id', TRUE);
+        $selected_event_id = $selected_event_id > 0 ? $selected_event_id : null;
+        $keyword = trim((string) $this->input->get('keyword', TRUE));
+
         $this->render('admin/certificates/index', array(
             'page_title' => 'Certificates',
-            'certificates' => $this->event_model->get_certificates(),
+            'events' => $this->event_model->get_options(),
+            'selected_event_id' => $selected_event_id,
+            'keyword' => $keyword,
+            'certificates' => $this->event_model->get_certificates($selected_event_id, $keyword),
         ));
     }
 
@@ -211,11 +239,16 @@ class Event extends MY_Controller
     {
         $this->load_composer();
 
-        $keyword = $this->input->get('keyword', TRUE);
-        $start_date = $this->input->get('start_date', TRUE);
-        $end_date = $this->input->get('end_date', TRUE);
+        $keyword = trim((string) $this->input->get('keyword', TRUE));
+        $status = trim((string) $this->input->get('status', TRUE));
+        $start_date = trim((string) $this->input->get('start_date', TRUE));
+        $end_date = trim((string) $this->input->get('end_date', TRUE));
 
-        $events = $this->event_model->get_all(null, 0, $keyword, $start_date, $end_date);
+        if (!in_array($status, array('dibuka', 'ditutup', 'selesai'), TRUE)) {
+            $status = '';
+        }
+
+        $events = $this->event_model->get_all(null, 0, $keyword, $status, $start_date, $end_date);
         $html = $this->load->view('admin/events/report_pdf', array('events' => $events), TRUE);
 
         $dompdf = new \Dompdf\Dompdf();
@@ -233,11 +266,16 @@ class Event extends MY_Controller
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setTitle('Event');
 
-        $keyword = $this->input->get('keyword', TRUE);
-        $start_date = $this->input->get('start_date', TRUE);
-        $end_date = $this->input->get('end_date', TRUE);
+        $keyword = trim((string) $this->input->get('keyword', TRUE));
+        $status = trim((string) $this->input->get('status', TRUE));
+        $start_date = trim((string) $this->input->get('start_date', TRUE));
+        $end_date = trim((string) $this->input->get('end_date', TRUE));
 
-        $this->write_event_sheet($sheet, $this->event_model->get_all(null, 0, $keyword, $start_date, $end_date));
+        if (!in_array($status, array('dibuka', 'ditutup', 'selesai'), TRUE)) {
+            $status = '';
+        }
+
+        $this->write_event_sheet($sheet, $this->event_model->get_all(null, 0, $keyword, $status, $start_date, $end_date));
         $this->download_excel($spreadsheet, 'event-report.xlsx');
     }
 
@@ -287,11 +325,11 @@ class Event extends MY_Controller
         $this->download_excel($spreadsheet, 'event-participants-' . $event->id . '.xlsx');
     }
 
-    private function pagination_config($keyword, $start_date = null, $end_date = null)
+    private function pagination_config($keyword, $status = null, $start_date = null, $end_date = null)
     {
         return array(
             'base_url' => base_url('event/index'),
-            'total_rows' => $this->event_model->count_all($keyword, $start_date, $end_date),
+            'total_rows' => $this->event_model->count_all($keyword, $status, $start_date, $end_date),
             'per_page' => self::PER_PAGE,
             'uri_segment' => 3,
             'reuse_query_string' => TRUE,

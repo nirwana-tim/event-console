@@ -6,28 +6,36 @@
 
     <div class="card">
 
-        <div class="card-header">
-            <h4 class="card-title mb-0">Filter Users</h4>
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h4 class="card-title mb-0">User Management</h4>
+
+            <a href="<?= base_url('users/create') ?>" class="btn btn-primary">
+                <i class="bi bi-person-plus me-1"></i>
+                Create User
+            </a>
         </div>
 
         <div class="card-body">
 
-            <form method="get" class="mb-4">
+            <form method="get" action="<?= base_url('users') ?>" class="mb-4">
 
                 <div class="row g-2 align-items-end">
 
-                    <div class="col-md-5">
-                        <label for="keyword" class="form-label">Search</label>
-                        <input type="text"
-                            id="keyword"
-                            name="keyword"
-                            class="form-control"
-                            value="<?= e($keyword) ?>"
-                            placeholder="Search name or email...">
+                    <div class="col-md-6">
+                        <label for="keyword" class="form-label mb-1"><small>Search User</small></label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text"
+                                id="keyword"
+                                name="keyword"
+                                class="form-control"
+                                value="<?= e($keyword) ?>"
+                                placeholder="Name or email">
+                        </div>
                     </div>
 
                     <div class="col-md-3">
-                        <label for="role" class="form-label">Role</label>
+                        <label for="role" class="form-label mb-1"><small>Role</small></label>
                         <select id="role" name="role" class="form-select">
                             <option value="">All Roles</option>
                             <option value="admin" <?= $role === 'admin' ? 'selected' : '' ?>>Admin</option>
@@ -35,16 +43,17 @@
                         </select>
                     </div>
 
-                    <div class="col-md-4">
-                        <div class="btn-group-wrap">
-                            <button class="btn btn-primary">
-                                <i class="bi bi-search me-1"></i>
-                                Search
-                            </button>
-                            <a href="<?= base_url('users') ?>" class="btn btn-light">
-                                Reset
-                            </a>
-                        </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-primary w-100">
+                            <i class="bi bi-search me-1"></i>
+                            Search
+                        </button>
+                    </div>
+
+                    <div class="col-md-1">
+                        <a href="<?= base_url('users') ?>" class="btn btn-light w-100" title="Reset filter">
+                            <i class="bi bi-arrow-clockwise"></i>
+                        </a>
                     </div>
 
                 </div>

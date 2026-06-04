@@ -19,6 +19,48 @@ class Dashboard_model extends CI_Model
         );
     }
 
+    public function get_latest_events($limit = 5)
+    {
+        $this->db->select('
+            events.*,
+            users.name AS creator_name,
+            (SELECT COUNT(*) FROM registrations WHERE registrations.event_id = events.id) AS total_registrations
+        ');
+        $this->db->from('events');
+        $this->db->join('users', 'users.id = events.user_id', 'left');
+
+        return $this->db
+            ->order_by('events.created_at', 'DESC')
+            ->order_by('events.id', 'DESC')
+            ->limit((int) $limit)
+            ->get()
+            ->result();
+    }
+
+    public function get_recent_activities($limit = 6)
+    {
+        $this->db->select('
+            registrations.id,
+            registrations.status,
+            registrations.attendance,
+            registrations.created_at,
+            users.name AS participant_name,
+            users.email AS participant_email,
+            events.name AS event_name,
+            events.id AS event_id
+        ');
+        $this->db->from('registrations');
+        $this->db->join('users', 'users.id = registrations.user_id');
+        $this->db->join('events', 'events.id = registrations.event_id');
+
+        return $this->db
+            ->order_by('registrations.created_at', 'DESC')
+            ->order_by('registrations.id', 'DESC')
+            ->limit((int) $limit)
+            ->get()
+            ->result();
+    }
+
     public function get_participant_summary($user_id)
     {
         return array(

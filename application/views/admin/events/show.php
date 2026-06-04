@@ -6,16 +6,16 @@
     <!-- Action Buttons -->
     <div class="mb-4 d-flex flex-wrap gap-2">
         <a href="<?= base_url('event') ?>" class="btn btn-secondary shadow-sm">
-            <i class="bi bi-arrow-left me-2"></i>Kembali
+            <i class="bi bi-arrow-left me-2"></i>Back
         </a>
         <a href="<?= base_url('event/registrations/' . $event->id) ?>" class="btn btn-primary shadow-sm">
-            <i class="bi bi-people me-2"></i>Lihat Peserta
+            <i class="bi bi-people me-2"></i>View Participants
         </a>
         <a href="<?= base_url('event/update/' . $event->id) ?>" class="btn btn-warning shadow-sm">
             <i class="bi bi-pencil-square me-2"></i>Edit Event
         </a>
-        <a href="<?= base_url('event/delete/' . $event->id) ?>" class="btn btn-danger shadow-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus event ini?')">
-            <i class="bi bi-trash me-2"></i>Hapus
+        <a href="<?= base_url('event/delete/' . $event->id) ?>" class="btn btn-danger shadow-sm" onclick="return confirm('Delete this event?')">
+            <i class="bi bi-trash me-2"></i>Delete
         </a>
     </div>
 
@@ -33,7 +33,7 @@
                         <div class="banner-overlay p-4 d-flex flex-column justify-content-end">
                             <div class="container-fluid px-0">
                                 <span class="badge bg-<?= status_badge_class($event->status) ?> mb-3 py-2 px-3 text-uppercase shadow">
-                                    <i class="bi bi-circle-fill me-2 small"></i><?= e($event->status) ?>
+                                    <i class="bi bi-circle-fill me-2 small"></i><?= e(status_label($event->status)) ?>
                                 </span>
                                 <h1 class="text-white display-5 fw-bold mb-2 text-shadow"><?= e($event->name) ?></h1>
                                 <p class="text-white opacity-75 mb-0">
@@ -56,7 +56,7 @@
                         <i class="bi bi-calendar-check fs-3"></i>
                     </div>
                     <div>
-                        <h6 class="text-muted font-semibold mb-1 small text-uppercase">Tanggal</h6>
+                        <h6 class="text-muted font-semibold mb-1 small text-uppercase">Date</h6>
                         <h5 class="fw-bold mb-0"><?= e(human_diff($event->date)) ?></h5>
                         <small class="text-muted"><?= e(app_date($event->date)) ?></small>
                     </div>
@@ -70,8 +70,8 @@
                         <i class="bi bi-clock fs-3"></i>
                     </div>
                     <div>
-                        <h6 class="text-muted font-semibold mb-1 small text-uppercase">Waktu</h6>
-                        <h5 class="fw-bold mb-0 small"><?= e($event->start_time ?: '00:00') ?> - <?= e($event->end_time ?: 'Selesai') ?></h5>
+                        <h6 class="text-muted font-semibold mb-1 small text-uppercase">Time</h6>
+                        <h5 class="fw-bold mb-0 small"><?= e($event->start_time ?: '00:00') ?> - <?= e($event->end_time ?: 'Finished') ?></h5>
                     </div>
                 </div>
             </div>
@@ -83,7 +83,7 @@
                         <i class="bi bi-geo-alt fs-3"></i>
                     </div>
                     <div>
-                        <h6 class="text-muted font-semibold mb-1 small text-uppercase">Lokasi</h6>
+                        <h6 class="text-muted font-semibold mb-1 small text-uppercase">Location</h6>
                         <h5 class="fw-bold mb-0 text-truncate" style="max-width: 140px;" title="<?= e($event->location) ?>"><?= e($event->location) ?></h5>
                     </div>
                 </div>
@@ -96,8 +96,8 @@
                         <i class="bi bi-people fs-3"></i>
                     </div>
                     <div>
-                        <h6 class="text-muted font-semibold mb-1 small text-uppercase">Kuota</h6>
-                        <h5 class="fw-bold mb-0"><?= e($event->total_registrations) ?> / <?= e($event->quota ?: '∞') ?></h5>
+                        <h6 class="text-muted font-semibold mb-1 small text-uppercase">Quota</h6>
+                        <h5 class="fw-bold mb-0"><?= e($event->total_registrations) ?> / <?= e($event->quota ?: 'Unlimited') ?></h5>
                     </div>
                 </div>
             </div>
@@ -109,10 +109,10 @@
         <div class="col-12">
             <div class="card border-0 shadow-sm rounded-4">
                 <div class="card-header bg-white border-bottom py-3 px-4">
-                    <h5 class="fw-bold mb-0"><i class="bi bi-info-circle me-2 text-primary"></i>Deskripsi Event</h5>
+                    <h5 class="fw-bold mb-0"><i class="bi bi-info-circle me-2 text-primary"></i>Event Description</h5>
                 </div>
                 <div class="card-body p-4">
-                    <div class="event-description text-gray-700 fs-6 lh-base" style="white-space: pre-wrap;"><?= $event->description ? nl2br(e($event->description)) : '<span class="text-muted italic">Tidak ada deskripsi untuk event ini.</span>' ?></div>
+                    <div class="event-description text-gray-700 fs-6 lh-base" style="white-space: pre-wrap;"><?= $event->description ? nl2br(e($event->description)) : '<span class="text-muted italic">No description available for this event.</span>' ?></div>
                 </div>
             </div>
         </div>

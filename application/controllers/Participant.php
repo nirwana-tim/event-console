@@ -16,9 +16,24 @@ class Participant extends MY_Controller
     {
         $this->set_active_menu('my_participants');
 
+        $keyword = trim((string) $this->input->get('keyword', TRUE));
+        $status = trim((string) $this->input->get('status', TRUE));
+        $attendance = trim((string) $this->input->get('attendance', TRUE));
+
+        if (!in_array($status, array('pending', 'approved', 'rejected'), TRUE)) {
+            $status = '';
+        }
+
+        if (!in_array($attendance, array('unconfirmed', 'present', 'absent'), TRUE)) {
+            $attendance = '';
+        }
+
         $this->render('participant/registrations/index', array(
             'page_title' => 'My Participants',
-            'registrations' => $this->registration_model->get_user_registrations($this->session->userdata('id')),
+            'registrations' => $this->registration_model->get_user_registrations($this->session->userdata('id'), $keyword, $status, $attendance),
+            'keyword' => $keyword,
+            'selected_status' => $status,
+            'selected_attendance' => $attendance,
         ));
     }
 
@@ -26,9 +41,51 @@ class Participant extends MY_Controller
     {
         $this->set_active_menu('participant_events');
 
+        $this->load->library('pagination');
+
+        $keyword = trim((string) $this->input->get('keyword', TRUE));
+        $status = trim((string) $this->input->get('status', TRUE));
+        $limit = 12;
+        $offset = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+
+        if (!in_array($status, array('dibuka', 'ditutup', 'selesai'), TRUE)) {
+            $status = '';
+        }
+
+        $config['base_url'] = base_url('participant/events');
+        $config['total_rows'] = $this->event_model->count_events_with_registration($keyword, $status);
+        $config['per_page'] = $limit;
+        $config['uri_segment'] = 3;
+        $config['reuse_query_string'] = TRUE;
+        
+        $config['full_tag_open'] = '<ul class="pagination pagination-primary justify-content-center">';
+        $config['full_tag_close'] = '</ul>';
+        $config['first_link'] = 'First';
+        $config['last_link'] = 'Last';
+        $config['first_tag_open'] = '<li class="page-item">';
+        $config['first_tag_close'] = '</li>';
+        $config['prev_link'] = '&laquo;';
+        $config['prev_tag_open'] = '<li class="page-item prev">';
+        $config['prev_tag_close'] = '</li>';
+        $config['next_link'] = '&raquo;';
+        $config['next_tag_open'] = '<li class="page-item next">';
+        $config['next_tag_close'] = '</li>';
+        $config['last_tag_open'] = '<li class="page-item">';
+        $config['last_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="page-item active"><a href="#" class="page-link">';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['num_tag_open'] = '<li class="page-item">';
+        $config['num_tag_close'] = '</li>';
+        $config['attributes'] = array('class' => 'page-link');
+
+        $this->pagination->initialize($config);
+
         $this->render('participant/events/index', array(
             'page_title' => 'Events',
-            'events' => $this->event_model->get_events_with_registration($this->session->userdata('id')),
+            'events' => $this->event_model->get_events_with_registration($this->session->userdata('id'), $limit, $offset, $keyword, $status),
+            'pagination' => $this->pagination->create_links(),
+            'keyword' => $keyword,
+            'selected_status' => $status
         ));
     }
 
@@ -148,9 +205,12 @@ class Participant extends MY_Controller
     {
         $this->set_active_menu('certificates');
 
+        $keyword = trim((string) $this->input->get('keyword', TRUE));
+
         $this->render('participant/certificates/index', array(
             'page_title' => 'My Certificates',
-            'certificates' => $this->event_model->get_user_certificates($this->session->userdata('id')),
+            'certificates' => $this->event_model->get_user_certificates($this->session->userdata('id'), $keyword),
+            'keyword' => $keyword,
         ));
     }
 

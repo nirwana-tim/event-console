@@ -19,9 +19,6 @@
         href="<?= base_url('mazer/dist/assets/extensions/bootstrap-icons/font/bootstrap-icons.css') ?>">
 
     <link rel="stylesheet"
-        href="<?= base_url('mazer/dist/assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css') ?>">
-
-    <link rel="stylesheet"
         href="<?= base_url('mazer/dist/assets/compiled/css/EventConsole.css?v=1.0.1') ?>">
 
     <style>

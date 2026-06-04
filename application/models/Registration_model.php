@@ -18,7 +18,7 @@ class Registration_model extends CI_Model
             ->row();
     }
 
-    public function get_user_registrations($user_id)
+    public function get_user_registrations($user_id, $keyword = null, $status = null, $attendance = null)
     {
         $this->db->select('
             registrations.*,
@@ -33,6 +33,24 @@ class Registration_model extends CI_Model
         $this->db->join('events', 'events.id = registrations.event_id');
         $this->db->join('certificates', 'certificates.registration_id = registrations.id', 'left');
         $this->db->where('registrations.user_id', (int) $user_id);
+
+        $keyword = trim((string) $keyword);
+        if ($keyword !== '') {
+            $this->db->group_start();
+            $this->db->like('events.name', $keyword);
+            $this->db->or_like('events.location', $keyword);
+            $this->db->or_like('registrations.institution', $keyword);
+            $this->db->or_like('registrations.team', $keyword);
+            $this->db->group_end();
+        }
+
+        if (in_array($status, array('pending', 'approved', 'rejected'), TRUE)) {
+            $this->db->where('registrations.status', $status);
+        }
+
+        if (in_array($attendance, array('unconfirmed', 'present', 'absent'), TRUE)) {
+            $this->db->where('registrations.attendance', $attendance);
+        }
 
         return $this->db
             ->order_by('registrations.id', 'DESC')

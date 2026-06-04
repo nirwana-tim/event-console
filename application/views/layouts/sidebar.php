@@ -92,12 +92,12 @@
                             <h6 class="mb-0 text-truncate text-gray-800" style="font-size: 0.95rem; font-weight: 600;"><?= e($current_user_name) ?></h6>
                             <small class="text-muted text-capitalize text-truncate d-block" style="font-size: 0.8rem;"><?= e($current_user_role) ?></small>
                         </div>
-                        <div class="d-flex gap-2 ms-2">
-                            <a href="<?= base_url('settings') ?>" class="text-secondary" title="Settings" onmouseover="this.className='text-primary'" onmouseout="this.className='text-secondary'">
-                                <i class="bi bi-gear fs-5"></i>
+                        <div class="d-flex gap-3 ms-2">
+                            <a href="<?= base_url('settings') ?>" class="text-muted text-decoration-none d-flex align-items-center justify-content-center" title="Settings" style="transition: color 0.2s;" onmouseover="this.classList.remove('text-muted'); this.classList.add('text-primary');" onmouseout="this.classList.remove('text-primary'); this.classList.add('text-muted');">
+                                <i class="bi bi-gear-fill fs-5"></i>
                             </a>
-                            <a href="<?= base_url('auth/logout') ?>" class="text-secondary" title="Logout" onmouseover="this.className='text-danger'" onmouseout="this.className='text-secondary'">
-                                <i class="bi bi-box-arrow-right fs-5"></i>
+                            <a href="<?= base_url('auth/logout') ?>" onclick="return confirm('Are you sure you want to log out?');" class="text-muted text-decoration-none d-flex align-items-center justify-content-center" title="Logout" style="transition: color 0.2s;" onmouseover="this.classList.remove('text-muted'); this.classList.add('text-danger');" onmouseout="this.classList.remove('text-danger'); this.classList.add('text-muted');">
+                                <i class="bi bi-box-arrow-right fs-5" style="stroke-width: 1px;"></i>
                             </a>
                         </div>
                     </div>
@@ -118,7 +118,7 @@
                         </div>
 
                         <div class="ms-auto d-none d-md-block">
-                            <h6 class="mb-0 text-gray-600">Halo, <?= e($current_user_name) ?></h6>
+                            <h6 class="mb-0 text-gray-600">Hi, <?= e($current_user_name) ?></h6>
                         </div>
                     </div>
                 </nav>
