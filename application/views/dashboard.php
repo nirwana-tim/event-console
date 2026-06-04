@@ -2,7 +2,7 @@
 
     <h3>Dashboard</h3>
     <p class="page-subtitle">
-        Summary of the online event and certificate system.
+        <?= $dashboard_role === 'participant' ? 'Track your event registrations, attendance, and certificates.' : 'Summary of the online event and certificate system.' ?>
     </p>
 
 </div>
@@ -10,6 +10,90 @@
 <div class="page-content">
 
     <section class="row">
+
+        <?php if ($dashboard_role === 'participant') { ?>
+
+        <div class="col-12 col-md-6 col-xl-3">
+
+            <div class="card stat-card">
+
+                <div class="card-body py-4">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="stat-icon bg-primary">
+                            <i class="bi bi-calendar-event"></i>
+                        </div>
+                        <div>
+                            <h6>Registered Events</h6>
+                            <h2><?= e($summary['registered_events']) ?></h2>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+
+            <div class="card stat-card">
+
+                <div class="card-body py-4">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="stat-icon bg-success">
+                            <i class="bi bi-person-check"></i>
+                        </div>
+                        <div>
+                            <h6>Attendance Present</h6>
+                            <h2><?= e($summary['attendance_present']) ?></h2>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+
+            <div class="card stat-card">
+
+                <div class="card-body py-4">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="stat-icon bg-warning">
+                            <i class="bi bi-hourglass-split"></i>
+                        </div>
+                        <div>
+                            <h6>Pending Payment</h6>
+                            <h2><?= e($summary['pending_payments']) ?></h2>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3">
+
+            <div class="card stat-card">
+
+                <div class="card-body py-4">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="stat-icon bg-info">
+                            <i class="bi bi-award"></i>
+                        </div>
+                        <div>
+                            <h6>Certificates</h6>
+                            <h2><?= e($summary['certificates']) ?></h2>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <?php } else { ?>
 
         <div class="col-12 col-md-6 col-xl-3">
 
@@ -93,6 +177,8 @@
 
         </div>
 
+        <?php } ?>
+
     </section>
 
     <section class="row">
@@ -109,7 +195,9 @@
 
                 <div class="card-body">
                     <p class="mb-0 text-muted">
-                        Use the sidebar menu to manage events, registrations, payments, and certificates.
+                        <?= $dashboard_role === 'participant'
+                            ? 'Use the sidebar menu to browse events, review your registrations, and download certificates.'
+                            : 'Use the sidebar menu to manage events, registrations, payments, and certificates.' ?>
                     </p>
                 </div>
 

@@ -5,7 +5,7 @@
 <div class="page-heading">
 
     <h3>Payment Data</h3>
-    <p class="page-subtitle">Verify payments and generate participant certificates.</p>
+    <p class="page-subtitle">Verify payment proofs before marking participant attendance.</p>
 
 </div>
 

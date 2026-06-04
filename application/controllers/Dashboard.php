@@ -18,9 +18,14 @@ class Dashboard extends MY_Controller
     {
         $this->set_active_menu('dashboard');
 
+        $role = $this->session->userdata('role');
+
         $this->render('dashboard', array(
             'page_title' => 'Dashboard - EventConsole',
-            'summary' => $this->dashboard_model->get_summary(),
+            'summary' => $role === 'participant'
+                ? $this->dashboard_model->get_participant_summary($this->session->userdata('id'))
+                : $this->dashboard_model->get_summary(),
+            'dashboard_role' => $role,
         ));
     }
 }

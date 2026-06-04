@@ -12,14 +12,6 @@
                         <h4 class="mb-0 text-primary">EventConsole</h4>
                     </a>
                 </div>
-                <div class="theme-toggle d-flex gap-2 align-items-center mt-2">
-                    <i class="bi bi-sun-fill text-warning"></i>
-                    <div class="form-check form-switch fs-6 mb-0">
-                        <input class="form-check-input me-0" type="checkbox" id="toggle-dark" style="cursor: pointer">
-                        <label class="form-check-label"></label>
-                    </div>
-                    <i class="bi bi-moon-stars-fill text-primary"></i>
-                </div>
                 <div class="sidebar-toggler x">
                     <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
                 </div>
@@ -96,7 +88,19 @@
                         class="sidebar-link">
 
                         <i class="bi bi-calendar2-event-fill"></i>
-                        <span>Event</span>
+                        <span>Events</span>
+
+                    </a>
+
+                </li>
+
+                <li class="sidebar-item<?= active_sidebar_class('my_participants', $active_menu) ?>">
+
+                    <a href="<?= base_url('participant') ?>"
+                        class="sidebar-link">
+
+                        <i class="bi bi-clipboard-check-fill"></i>
+                        <span>My Participants</span>
 
                     </a>
 
@@ -116,17 +120,7 @@
 
                 <?php } ?>
 
-                <li class="sidebar-item">
 
-                    <a href="<?= base_url('auth/logout') ?>"
-                        class="sidebar-link">
-
-                        <i class="bi bi-box-arrow-right"></i>
-                        <span>Logout</span>
-
-                    </a>
-
-                </li>
 
             </ul>
 
@@ -174,6 +168,11 @@
                             <li>
                                 <a class="dropdown-item" href="<?= base_url('dashboard') ?>">
                                     <i class="icon-mid bi bi-grid me-2"></i> Dashboard
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="<?= base_url('settings') ?>">
+                                    <i class="icon-mid bi bi-gear me-2"></i> Settings
                                 </a>
                             </li>
                             <li>

@@ -1,7 +1,7 @@
 <div class="page-heading">
 
     <h3>My Certificates</h3>
-    <p class="page-subtitle">Download certificates after the admin verifies your payment.</p>
+    <p class="page-subtitle">Download certificates after the admin verifies your payment and attendance.</p>
 
 </div>
 

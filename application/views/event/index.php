@@ -25,7 +25,7 @@
                 Excel Event
             </a>
 
-            <a href="<?= base_url('event/add') ?>"
+            <a href="<?= base_url('event/create') ?>"
                 class="btn btn-primary">
                 <i class="bi bi-plus-circle me-1"></i>
                 Add
@@ -140,7 +140,7 @@
                                         Participants
                                     </a>
 
-                                    <a href="<?= base_url('event/edit/' . $event->id) ?>"
+                                    <a href="<?= base_url('event/update/' . $event->id) ?>"
                                         class="btn btn-warning btn-sm">
                                         <i class="bi bi-pencil-square me-1"></i>
                                         Edit

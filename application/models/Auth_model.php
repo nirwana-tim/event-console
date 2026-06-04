@@ -44,4 +44,19 @@ class Auth_model extends CI_Model
     {
         return $this->find_by_email($email);
     }
+
+    public function find_by_id($id)
+    {
+        return $this->db
+            ->where('id', (int) $id)
+            ->get(self::TABLE)
+            ->row();
+    }
+
+    public function update_user($id, $data)
+    {
+        return $this->db
+            ->where('id', (int) $id)
+            ->update(self::TABLE, $data);
+    }
 }

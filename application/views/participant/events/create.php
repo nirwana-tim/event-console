@@ -16,7 +16,8 @@
             <div class="card event-card">
                 <img src="<?= e(base_url('uploads/banner/' . $event->banner)) ?>"
                     class="card-img-top"
-                    alt="<?= e($event->name) ?>">
+                    alt="<?= e($event->name) ?>"
+                    onerror="this.src='<?= base_url('mazer/dist/assets/static/images/samples/error-404.svg') ?>'">
                 <div class="card-body">
                     <h5><?= e($event->name) ?></h5>
                     <div class="event-meta">
@@ -49,7 +50,7 @@
 
                             <div class="col-md-6">
 
-                            <div class="mb-3">
+                                <div class="mb-3">
                                     <label for="phone_number" class="form-label">Phone Number</label>
                                     <input type="text"
                                         id="phone_number"

@@ -90,6 +90,8 @@
                             <th>Team</th>
                             <th>Registration Status</th>
                             <th>Payment Status</th>
+                            <th>Attendance</th>
+                            <th>Actions</th>
                         </tr>
 
                     </thead>
@@ -99,7 +101,7 @@
                         <?php if (empty($registrations)) { ?>
 
                         <tr>
-                            <td colspan="8">
+                            <td colspan="10">
                                 <div class="empty-state">
                                     <i class="bi bi-people d-block mb-2"></i>
                                     No registrations yet
@@ -132,6 +134,33 @@
                                 <?php } else { ?>
                                     <span class="badge bg-secondary">not uploaded</span>
                                 <?php } ?>
+                            </td>
+                            <td>
+                                <span class="badge bg-<?= attendance_badge_class($registration->attendance) ?>">
+                                    <?= e($registration->attendance) ?>
+                                </span>
+                            </td>
+                            <td>
+                                <div class="btn-group-wrap">
+                                    <a href="<?= base_url('event/attendance/' . $registration->id . '/present') ?>"
+                                        class="btn btn-success btn-sm">
+                                        <i class="bi bi-check2 me-1"></i>
+                                        Present
+                                    </a>
+
+                                    <a href="<?= base_url('event/attendance/' . $registration->id . '/absent') ?>"
+                                        class="btn btn-danger btn-sm">
+                                        <i class="bi bi-x-lg me-1"></i>
+                                        Absent
+                                    </a>
+
+                                    <?php if ($registration->attendance !== 'unconfirmed') { ?>
+                                        <a href="<?= base_url('event/attendance/' . $registration->id . '/unconfirmed') ?>"
+                                            class="btn btn-light btn-sm">
+                                            Reset
+                                        </a>
+                                    <?php } ?>
+                                </div>
                             </td>
 
                         </tr>

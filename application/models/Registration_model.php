@@ -18,6 +18,55 @@ class Registration_model extends CI_Model
             ->row();
     }
 
+    public function get_user_registrations($user_id)
+    {
+        $this->db->select('
+            registrations.*,
+            events.name AS event_name,
+            events.date,
+            events.location,
+            events.banner,
+            payments.status AS payment_status,
+            payments.payment_proof,
+            certificates.id AS certificate_id,
+            certificates.certificate_number
+        ');
+        $this->db->from('registrations');
+        $this->db->join('events', 'events.id = registrations.event_id');
+        $this->db->join('payments', 'payments.registration_id = registrations.id', 'left');
+        $this->db->join('certificates', 'certificates.registration_id = registrations.id', 'left');
+        $this->db->where('registrations.user_id', (int) $user_id);
+
+        return $this->db
+            ->order_by('registrations.id', 'DESC')
+            ->get()
+            ->result();
+    }
+
+    public function get_user_registration_detail($registration_id, $user_id)
+    {
+        $this->db->select('
+            registrations.*,
+            events.name AS event_name,
+            events.description,
+            events.date,
+            events.location,
+            events.banner,
+            payments.status AS payment_status,
+            payments.payment_proof,
+            certificates.id AS certificate_id,
+            certificates.certificate_number
+        ');
+        $this->db->from('registrations');
+        $this->db->join('events', 'events.id = registrations.event_id');
+        $this->db->join('payments', 'payments.registration_id = registrations.id', 'left');
+        $this->db->join('certificates', 'certificates.registration_id = registrations.id', 'left');
+        $this->db->where('registrations.id', (int) $registration_id);
+        $this->db->where('registrations.user_id', (int) $user_id);
+
+        return $this->db->get()->row();
+    }
+
     public function find_payment($registration_id)
     {
         return $this->db

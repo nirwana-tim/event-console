@@ -4,7 +4,7 @@
 
 <div class="page-heading">
 
-    <h3>Event List</h3>
+    <h3>Events</h3>
     <p class="page-subtitle">Choose the event you want to join.</p>
 
 </div>
@@ -34,7 +34,8 @@
 
                 <img src="<?= e(base_url('uploads/banner/' . $event->banner)) ?>"
                     class="card-img-top"
-                    alt="<?= e($event->name) ?>">
+                    alt="<?= e($event->name) ?>"
+                    onerror="this.src='<?= base_url('mazer/dist/assets/static/images/samples/error-404.svg') ?>'">
 
                 <div class="card-body d-flex flex-column">
 
@@ -54,7 +55,7 @@
                         <?= e(substr(strip_tags($event->description), 0, 120)) ?>
                     </p>
 
-                    <a href="<?= base_url('participant/registration_form/' . $event->id) ?>"
+                    <a href="<?= base_url('participant/create/' . $event->id) ?>"
                         class="btn btn-primary w-100">
                         <i class="bi bi-pencil-square me-1"></i>
                         Register for Event

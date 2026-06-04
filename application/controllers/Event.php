@@ -33,11 +33,16 @@ class Event extends MY_Controller
 
     public function add()
     {
+        $this->create();
+    }
+
+    public function create()
+    {
         $this->set_active_menu('event');
         $this->set_event_rules();
 
         if ($this->form_validation->run() === FALSE) {
-            $this->render('event/add', array('page_title' => 'Add Event - EventConsole'));
+            $this->render('event/create', array('page_title' => 'Create Event - EventConsole'));
             return;
         }
 
@@ -45,7 +50,7 @@ class Event extends MY_Controller
 
         if (!$upload) {
             $this->session->set_flashdata('error', trim(strip_tags($this->upload->display_errors('', ''))));
-            redirect('event/add');
+            redirect('event/create');
         }
 
         $data = $this->event_payload();
@@ -59,6 +64,11 @@ class Event extends MY_Controller
 
     public function edit($id = null)
     {
+        $this->update($id);
+    }
+
+    public function update($id = null)
+    {
         $this->set_active_menu('event');
 
         $event = $this->event_model->get_by_id($id);
@@ -70,8 +80,8 @@ class Event extends MY_Controller
         $this->set_event_rules();
 
         if ($this->form_validation->run() === FALSE) {
-            $this->render('event/edit', array(
-                'page_title' => 'Edit Event - EventConsole',
+            $this->render('event/update', array(
+                'page_title' => 'Update Event - EventConsole',
                 'event' => $event,
             ));
             return;
@@ -84,7 +94,7 @@ class Event extends MY_Controller
 
             if (!$upload) {
                 $this->session->set_flashdata('error', trim(strip_tags($this->upload->display_errors('', ''))));
-                redirect('event/edit/' . $id);
+                redirect('event/update/' . $id);
             }
 
             $data['banner'] = $upload['file_name'];
@@ -130,6 +140,23 @@ class Event extends MY_Controller
         ));
     }
 
+    public function attendance($registration_id = null, $attendance = null)
+    {
+        if (!$registration_id || !$attendance) {
+            show_404();
+        }
+
+        if ($this->event_model->update_attendance($registration_id, $attendance)) {
+            $this->session->set_flashdata('success', 'Attendance updated successfully.');
+        } else {
+            $this->session->set_flashdata('error', 'Attendance update failed.');
+        }
+
+        $referrer = $this->input->server('HTTP_REFERER', TRUE);
+
+        redirect($referrer ? $referrer : 'event/registrations');
+    }
+
     public function payments()
     {
         $this->set_active_menu('payments');
@@ -154,7 +181,7 @@ class Event extends MY_Controller
         }
 
         if ($this->event_model->approve_payment($id)) {
-            $this->session->set_flashdata('success', 'Payment verified successfully and certificate created.');
+            $this->session->set_flashdata('success', 'Payment verified successfully. Certificate will be available after attendance is marked present.');
         } else {
             $this->session->set_flashdata('error', 'Payment verification failed.');
         }
@@ -221,7 +248,7 @@ class Event extends MY_Controller
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setTitle('Participants');
 
-        $headers = array('No', 'Name', 'Email', 'Phone', 'Institution', 'Address', 'Team', 'Registration Status', 'Payment Status');
+        $headers = array('No', 'Name', 'Email', 'Phone', 'Institution', 'Address', 'Team', 'Registration Status', 'Payment Status', 'Attendance');
         $column = 'A';
 
         foreach ($headers as $header) {
@@ -243,10 +270,11 @@ class Event extends MY_Controller
             $sheet->setCellValue('G' . $row, $participant->team);
             $sheet->setCellValue('H' . $row, $participant->status);
             $sheet->setCellValue('I' . $row, $participant->status_payment ?: 'not_uploaded');
+            $sheet->setCellValue('J' . $row, $participant->attendance);
             $row++;
         }
 
-        foreach (range('A', 'I') as $column) {
+        foreach (range('A', 'J') as $column) {
             $sheet->getColumnDimension($column)->setAutoSize(TRUE);
         }
 

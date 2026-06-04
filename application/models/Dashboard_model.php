@@ -16,4 +16,26 @@ class Dashboard_model extends CI_Model
                 ->count_all_results('payments'),
         );
     }
+
+    public function get_participant_summary($user_id)
+    {
+        return array(
+            'registered_events' => $this->db
+                ->where('user_id', (int) $user_id)
+                ->count_all_results('registrations'),
+            'pending_payments' => $this->db
+                ->join('registrations', 'registrations.id = payments.registration_id')
+                ->where('registrations.user_id', (int) $user_id)
+                ->where('payments.status', 'pending')
+                ->count_all_results('payments'),
+            'attendance_present' => $this->db
+                ->where('user_id', (int) $user_id)
+                ->where('attendance', 'present')
+                ->count_all_results('registrations'),
+            'certificates' => $this->db
+                ->join('registrations', 'registrations.id = certificates.registration_id')
+                ->where('registrations.user_id', (int) $user_id)
+                ->count_all_results('certificates'),
+        );
+    }
 }

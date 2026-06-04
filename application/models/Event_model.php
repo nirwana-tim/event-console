@@ -71,12 +71,14 @@ class Event_model extends CI_Model
             users.name AS user_name,
             users.email,
             events.name AS event_name,
-            payments.status AS status_payment
+            payments.status AS status_payment,
+            certificates.id AS certificate_id
         ');
         $this->db->from('registrations');
         $this->db->join('users', 'users.id = registrations.user_id');
         $this->db->join('events', 'events.id = registrations.event_id');
         $this->db->join('payments', 'payments.registration_id = registrations.id', 'left');
+        $this->db->join('certificates', 'certificates.registration_id = registrations.id', 'left');
 
         if ($event_id) {
             $this->db->where('registrations.event_id', (int) $event_id);
@@ -86,6 +88,31 @@ class Event_model extends CI_Model
             ->order_by('registrations.id', 'DESC')
             ->get()
             ->result();
+    }
+
+    public function update_attendance($registration_id, $attendance)
+    {
+        if (!in_array($attendance, array('unconfirmed', 'present', 'absent'), TRUE)) {
+            return false;
+        }
+
+        $updated = $this->db
+            ->where('id', (int) $registration_id)
+            ->update('registrations', array('attendance' => $attendance));
+
+        if (!$updated) {
+            return false;
+        }
+
+        if ($attendance === 'present') {
+            $this->ensure_certificate((int) $registration_id);
+        } else {
+            $this->db
+                ->where('registration_id', (int) $registration_id)
+                ->delete('certificates');
+        }
+
+        return true;
     }
 
     public function get_payments()
@@ -134,23 +161,49 @@ class Event_model extends CI_Model
             ->where('id', (int) $payment->registration_id)
             ->update('registrations', array('status' => 'approved'));
 
-        $certificate = $this->db
-            ->get_where('certificates', array('registration_id' => (int) $payment->registration_id))
-            ->row();
-
-        if (!$certificate) {
-            $certificate_number = 'SRT-' . $payment->registration_id . '-' . date('YmdHis');
-
-            $this->db->insert('certificates', array(
-                'registration_id' => (int) $payment->registration_id,
-                'certificate_number' => $certificate_number,
-                'certificate_file' => $certificate_number . '.pdf',
-            ));
-        }
+        $this->ensure_certificate((int) $payment->registration_id);
 
         $this->db->trans_complete();
 
         return $this->db->trans_status();
+    }
+
+    public function ensure_certificate($registration_id)
+    {
+        $this->db->select('registrations.*, payments.status AS payment_status');
+        $this->db->from('registrations');
+        $this->db->join('payments', 'payments.registration_id = registrations.id');
+        $this->db->where('registrations.id', (int) $registration_id);
+        $registration = $this->db->get()->row();
+
+        if (!$registration) {
+            return false;
+        }
+
+        if (
+            $registration->status !== 'approved' ||
+            $registration->payment_status !== 'verified' ||
+            $registration->attendance !== 'present'
+        ) {
+            return false;
+        }
+
+        $certificate = $this->db
+            ->get_where('certificates', array('registration_id' => (int) $registration_id))
+            ->row();
+
+        if ($certificate) {
+            return true;
+        }
+
+        $certificate_number = 'SRT-' . $registration_id . '-' . date('YmdHis');
+
+        return $this->db->insert('certificates', array(
+            'registration_id' => (int) $registration_id,
+            'certificate_number' => $certificate_number,
+            'certificate_file' => $certificate_number . '.pdf',
+            'verification_code' => 'VERIFY-' . $certificate_number,
+        ));
     }
 
     public function get_certificate_by_id($id, $user_id = null)
@@ -194,6 +247,7 @@ class Event_model extends CI_Model
             registrations.address,
             registrations.team,
             registrations.status,
+            registrations.attendance,
             payments.status AS status_payment
         ');
         $this->db->from('registrations');

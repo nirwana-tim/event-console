@@ -12,14 +12,29 @@ class Participant extends MY_Controller
         $this->load->model('Registration_model', 'registration_model');
     }
 
+    public function index()
+    {
+        $this->set_active_menu('my_participants');
+
+        $this->render('participant/index', array(
+            'page_title' => 'My Participants - EventConsole',
+            'registrations' => $this->registration_model->get_user_registrations($this->session->userdata('id')),
+        ));
+    }
+
     public function events()
     {
         $this->set_active_menu('participant_events');
 
-        $this->render('participant/events', array(
-            'page_title' => 'Event - EventConsole',
+        $this->render('participant/events/index', array(
+            'page_title' => 'Events - EventConsole',
             'events' => $this->event_model->get_all(),
         ));
+    }
+
+    public function create($id = null)
+    {
+        $this->registration_form($id);
     }
 
     public function registration_form($id = null)
@@ -43,6 +58,25 @@ class Participant extends MY_Controller
         $this->render_registration_form($event);
     }
 
+    public function show($id = null)
+    {
+        $this->set_active_menu('my_participants');
+
+        $registration = $this->registration_model->get_user_registration_detail(
+            $id,
+            $this->session->userdata('id')
+        );
+
+        if (!$registration) {
+            show_404();
+        }
+
+        $this->render('participant/show', array(
+            'page_title' => 'Registration Detail - EventConsole',
+            'registration' => $registration,
+        ));
+    }
+
     public function register($id = null)
     {
         $this->set_active_menu('participant_events');
@@ -53,7 +87,7 @@ class Participant extends MY_Controller
         }
 
         if ($this->input->method() !== 'post') {
-            redirect('participant/registration_form/' . $id);
+            redirect('participant/create/' . $id);
         }
 
         $existing_registration = $this->registration_model->find_by_user_event(
@@ -79,7 +113,7 @@ class Participant extends MY_Controller
 
     public function upload_payment_proof($id = null)
     {
-        $this->set_active_menu('participant_events');
+        $this->set_active_menu('my_participants');
 
         if (!$this->registration_model->user_owns_registration($id, $this->session->userdata('id'))) {
             show_404();
@@ -87,7 +121,7 @@ class Participant extends MY_Controller
 
         if ($this->registration_model->find_payment($id)) {
             $this->session->set_flashdata('info', 'Payment proof has already been uploaded.');
-            redirect('participant/events');
+            redirect('participant');
         }
 
         if ($this->input->method() === 'post') {
@@ -101,10 +135,10 @@ class Participant extends MY_Controller
             $this->registration_model->create_payment($id, $upload['file_name']);
             $this->session->set_flashdata('success', 'Payment proof uploaded successfully.');
 
-            redirect('participant/events');
+            redirect('participant');
         }
 
-        $this->render('participant/upload_payment', array(
+        $this->render('participant/payments/create', array(
             'page_title' => 'Upload Payment Proof - EventConsole',
         ));
     }
@@ -113,7 +147,7 @@ class Participant extends MY_Controller
     {
         $this->set_active_menu('certificates');
 
-        $this->render('participant/certificates', array(
+        $this->render('participant/certificates/index', array(
             'page_title' => 'My Certificates - EventConsole',
             'certificates' => $this->event_model->get_user_certificates($this->session->userdata('id')),
         ));
@@ -140,7 +174,7 @@ class Participant extends MY_Controller
 
     private function render_registration_form($event)
     {
-        $this->render('participant/registration_form', array(
+        $this->render('participant/events/create', array(
             'page_title' => 'Event Registration Form - EventConsole',
             'event' => $event,
         ));
@@ -153,7 +187,7 @@ class Participant extends MY_Controller
         }
 
         $this->session->set_flashdata('info', 'You are already registered and have uploaded payment proof.');
-        redirect('participant/events');
+        redirect('participant');
     }
 
     private function set_registration_rules()

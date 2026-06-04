@@ -37,12 +37,16 @@
                                 accept="image/png,image/jpeg"
                                 class="form-control"
                                 required>
+                            <small class="text-muted">Allowed file types: JPG, JPEG, PNG. Max size 2 MB.</small>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-cloud-arrow-up me-1"></i>
-                            Upload Now
-                        </button>
+                        <div class="btn-group-wrap">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-cloud-arrow-up me-1"></i>
+                                Upload Now
+                            </button>
+                            <a href="<?= base_url('participant') ?>" class="btn btn-light">Back</a>
+                        </div>
 
                     </form>
 

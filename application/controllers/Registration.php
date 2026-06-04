@@ -13,6 +13,6 @@ class Registration extends MY_Controller
 
     public function index()
     {
-        redirect('participant/events');
+        redirect('participant');
     }
 }

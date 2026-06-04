@@ -60,6 +60,19 @@ if (!function_exists('status_badge_class')) {
     }
 }
 
+if (!function_exists('attendance_badge_class')) {
+    function attendance_badge_class($attendance)
+    {
+        $classes = array(
+            'present' => 'success',
+            'absent' => 'danger',
+            'unconfirmed' => 'secondary',
+        );
+
+        return isset($classes[$attendance]) ? $classes[$attendance] : 'secondary';
+    }
+}
+
 if (!function_exists('app_date')) {
     function app_date($date)
     {
