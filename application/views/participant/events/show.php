@@ -5,15 +5,15 @@
 
     <!-- Action Buttons -->
     <div class="mb-4 d-flex flex-wrap gap-2">
-        <a href="<?= base_url('participant/events') ?>" class="btn btn-secondary shadow-sm">
+        <a href="<?= base_url('participant/event') ?>" class="btn btn-secondary shadow-sm">
             <i class="bi bi-arrow-left me-2"></i>Back
         </a>
         <?php if ($user_registration) { ?>
-            <a href="<?= base_url('participant/show/' . $user_registration->id) ?>" class="btn btn-success shadow-sm">
+            <a href="<?= base_url('participant/registration/show/' . $user_registration->id) ?>" class="btn btn-success shadow-sm">
                 <i class="bi bi-check-circle-fill me-2"></i>You Are Registered
             </a>
         <?php } elseif ($event->status === 'dibuka') { ?>
-            <a href="<?= base_url('participant/create/' . $event->id) ?>" class="btn btn-primary shadow-sm">
+            <a href="<?= base_url('participant/registration/create/' . $event->id) ?>" class="btn btn-primary shadow-sm">
                 <i class="bi bi-plus-circle me-2"></i>Register Now
             </a>
         <?php } else { ?>

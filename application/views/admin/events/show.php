@@ -5,16 +5,16 @@
 
     <!-- Action Buttons -->
     <div class="mb-4 d-flex flex-wrap gap-2">
-        <a href="<?= base_url('event') ?>" class="btn btn-secondary shadow-sm">
+        <a href="<?= base_url('admin/event') ?>" class="btn btn-secondary shadow-sm">
             <i class="bi bi-arrow-left me-2"></i>Back
         </a>
-        <a href="<?= base_url('event/registrations/' . $event->id) ?>" class="btn btn-primary shadow-sm">
+        <a href="<?= base_url('admin/registration/index/' . $event->id) ?>" class="btn btn-primary shadow-sm">
             <i class="bi bi-people me-2"></i>View Participants
         </a>
-        <a href="<?= base_url('event/update/' . $event->id) ?>" class="btn btn-warning shadow-sm">
+        <a href="<?= base_url('admin/event/edit/' . $event->id) ?>" class="btn btn-warning shadow-sm">
             <i class="bi bi-pencil-square me-2"></i>Edit Event
         </a>
-        <a href="<?= base_url('event/delete/' . $event->id) ?>" class="btn btn-danger shadow-sm" onclick="return confirm('Delete this event?')">
+        <a href="<?= base_url('admin/event/delete/' . $event->id) ?>" class="btn btn-danger shadow-sm" onclick="return confirm('Delete this event?')">
             <i class="bi bi-trash me-2"></i>Delete
         </a>
     </div>

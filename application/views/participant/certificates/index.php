@@ -10,7 +10,7 @@
         </div>
 
         <div class="card-body">
-            <form method="get" action="<?= base_url('participant/certificates') ?>">
+            <form method="get" action="<?= base_url('participant/certificate') ?>">
                 <div class="row g-2 align-items-end">
 
                     <div class="col-md-10">
@@ -28,7 +28,7 @@
                     </div>
 
                     <div class="col-md-1">
-                        <a href="<?= base_url('participant/certificates') ?>" class="btn btn-light w-100" title="Reset filter">
+                        <a href="<?= base_url('participant/certificate') ?>" class="btn btn-light w-100" title="Reset filter">
                             <i class="bi bi-arrow-clockwise"></i>
                         </a>
                     </div>
@@ -83,7 +83,7 @@
                         </div>
 
                         <div class="mt-auto">
-                            <a href="<?= base_url('participant/download/' . $certificate->id) ?>" class="btn btn-primary btn-sm w-100 py-2 rounded-3 shadow-sm">
+                            <a href="<?= base_url('participant/certificate/show/' . $certificate->id) ?>" class="btn btn-primary btn-sm w-100 py-2 rounded-3 shadow-sm">
                                 <i class="bi bi-download me-1"></i>
                                 Download Certificate
                             </a>

@@ -34,17 +34,17 @@
             <h4 class="card-title mb-0">Event List</h4>
 
             <div class="btn-group-wrap">
-                <a href="<?= base_url('event/create') ?>" class="btn btn-primary">
+                <a href="<?= base_url('admin/event/create') ?>" class="btn btn-primary">
                     <i class="bi bi-plus-circle me-1"></i>
                     Create
                 </a>
 
-                <a href="<?= base_url('event/pdf') . $filter_query ?>" class="btn btn-light" target="_blank">
+                <a href="<?= base_url('admin/event_report/pdf') . $filter_query ?>" class="btn btn-light" target="_blank">
                     <i class="bi bi-file-earmark-pdf me-1"></i>
                     PDF
                 </a>
 
-                <a href="<?= base_url('event/excel') . $filter_query ?>" class="btn btn-light">
+                <a href="<?= base_url('admin/event_report/excel') . $filter_query ?>" class="btn btn-light">
                     <i class="bi bi-file-earmark-excel me-1"></i>
                     Excel
                 </a>
@@ -53,7 +53,7 @@
 
         <div class="card-body">
 
-            <form method="get" action="<?= base_url('event') ?>" class="mb-4">
+            <form method="get" action="<?= base_url('admin/event') ?>" class="mb-4">
 
                 <div class="row g-2 align-items-end">
 
@@ -93,7 +93,7 @@
                     </div>
 
                     <div class="col-md-1">
-                        <a href="<?= base_url('event') ?>" class="btn btn-light w-100" title="Reset filter">
+                        <a href="<?= base_url('admin/event') ?>" class="btn btn-light w-100" title="Reset filter">
                             <i class="bi bi-arrow-clockwise"></i>
                         </a>
                     </div>
@@ -166,19 +166,19 @@
 
                                 <div class="btn-group-wrap">
 
-                                    <a href="<?= base_url('event/show/' . $event->id) ?>"
+                                    <a href="<?= base_url('admin/event/show/' . $event->id) ?>"
                                         class="btn btn-primary btn-sm">
                                         <i class="bi bi-eye me-1"></i>
                                         Show
                                     </a>
 
-                                    <a href="<?= base_url('event/update/' . $event->id) ?>"
+                                    <a href="<?= base_url('admin/event/edit/' . $event->id) ?>"
                                         class="btn btn-warning btn-sm">
                                         <i class="bi bi-pencil-square me-1"></i>
                                         Edit
                                     </a>
 
-                                    <a href="<?= base_url('event/delete/' . $event->id) ?>"
+                                    <a href="<?= base_url('admin/event/delete/' . $event->id) ?>"
                                         class="btn btn-danger btn-sm"
                                         onclick="return confirm('Delete this event?')">
                                         <i class="bi bi-trash me-1"></i>

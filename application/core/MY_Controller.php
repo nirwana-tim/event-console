@@ -39,7 +39,7 @@ class MY_Controller extends CI_Controller
         $this->require_login();
 
         if ($this->session->userdata('role') !== 'admin') {
-            redirect('dashboard');
+            redirect($this->dashboard_route());
             exit;
         }
     }
@@ -49,7 +49,7 @@ class MY_Controller extends CI_Controller
         $this->require_login();
 
         if ($this->session->userdata('role') !== $role) {
-            redirect('dashboard');
+            redirect($this->dashboard_route());
             exit;
         }
     }
@@ -57,6 +57,15 @@ class MY_Controller extends CI_Controller
     protected function set_active_menu($menu)
     {
         $this->active_menu = $menu;
+    }
+
+    protected function dashboard_route($role = null)
+    {
+        $role = $role ?: $this->session->userdata('role');
+
+        return $role === 'participant'
+            ? 'participant/dashboard'
+            : 'admin/dashboard';
     }
 
     protected function load_composer()

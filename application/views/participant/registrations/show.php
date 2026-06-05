@@ -5,11 +5,11 @@
 
     <!-- Action Buttons -->
     <div class="mb-4 d-flex flex-wrap gap-2">
-        <a href="<?= base_url('participant') ?>" class="btn btn-secondary shadow-sm">
+        <a href="<?= base_url('participant/registration') ?>" class="btn btn-secondary shadow-sm">
             <i class="bi bi-arrow-left me-2"></i>Back
         </a>
         <?php if ($registration->certificate_id) { ?>
-            <a href="<?= base_url('participant/download/' . $registration->certificate_id) ?>" class="btn btn-success shadow-sm">
+            <a href="<?= base_url('participant/certificate/show/' . $registration->certificate_id) ?>" class="btn btn-success shadow-sm">
                 <i class="bi bi-award-fill me-2"></i>Download Certificate
             </a>
         <?php } ?>

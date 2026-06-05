@@ -19,7 +19,11 @@ if (!function_exists('check_admin')) {
         $CI = &get_instance();
 
         if ($CI->session->userdata('role') !== 'admin') {
-            redirect('dashboard');
+            $route = $CI->session->userdata('role') === 'participant'
+                ? 'participant/dashboard'
+                : 'admin/dashboard';
+
+            redirect($route);
             exit;
         }
     }

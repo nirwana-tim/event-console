@@ -37,7 +37,7 @@
                 <div class="card-body">
 
                     <form method="post"
-                        action="<?= base_url('participant/register/' . $event->id) ?>">
+                        action="<?= base_url('participant/registration/store/' . $event->id) ?>">
 
                         <div class="row">
 
@@ -105,7 +105,7 @@
                                 Register Now
                             </button>
 
-                            <a href="<?= base_url('participant/events') ?>" class="btn btn-light">
+                            <a href="<?= base_url('participant/event') ?>" class="btn btn-light">
                                 Back
                             </a>
                         </div>

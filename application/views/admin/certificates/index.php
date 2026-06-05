@@ -12,7 +12,7 @@
 
         <div class="card-body">
 
-            <form method="get" action="<?= base_url('event/certificates') ?>" class="mb-4">
+            <form method="get" action="<?= base_url('admin/certificate') ?>" class="mb-4">
                 <div class="row g-2 align-items-end">
 
                     <div class="col-md-5">
@@ -42,7 +42,7 @@
                     </div>
 
                     <div class="col-md-1">
-                        <a href="<?= base_url('event/certificates') ?>" class="btn btn-light w-100" title="Reset filter">
+                        <a href="<?= base_url('admin/certificate') ?>" class="btn btn-light w-100" title="Reset filter">
                             <i class="bi bi-arrow-clockwise"></i>
                         </a>
                     </div>
@@ -86,7 +86,7 @@
                                 <td><?= e($certificate->verification_code ?: '-') ?></td>
                                 <td><?= e(app_date($certificate->created_at)) ?></td>
                                 <td>
-                                    <a href="<?= base_url('event/certificate/' . $certificate->id) ?>"
+                                    <a href="<?= base_url('admin/certificate/show/' . $certificate->id) ?>"
                                         class="btn btn-primary btn-sm"
                                         target="_blank">
                                         <i class="bi bi-file-earmark-pdf me-1"></i>

@@ -11,7 +11,7 @@
 
         <div class="card-body">
 
-            <form method="POST" enctype="multipart/form-data">
+            <form method="POST" enctype="multipart/form-data" action="<?= base_url('admin/event/update/' . $event->id) ?>">
 
                 <div class="row">
 
@@ -107,7 +107,7 @@
                         Save Changes
                     </button>
 
-                    <a href="<?= base_url('event') ?>" class="btn btn-light">
+                    <a href="<?= base_url('admin/event') ?>" class="btn btn-light">
                         Back
                     </a>
                 </div>

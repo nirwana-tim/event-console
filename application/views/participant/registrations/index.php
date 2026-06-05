@@ -10,7 +10,7 @@
         </div>
 
         <div class="card-body">
-            <form method="get" action="<?= base_url('participant') ?>">
+            <form method="get" action="<?= base_url('participant/registration') ?>">
                 <div class="row g-2 align-items-end">
 
                     <div class="col-md-7">
@@ -38,7 +38,7 @@
                     </div>
 
                     <div class="col-md-1">
-                        <a href="<?= base_url('participant') ?>" class="btn btn-light w-100" title="Reset filter">
+                        <a href="<?= base_url('participant/registration') ?>" class="btn btn-light w-100" title="Reset filter">
                             <i class="bi bi-arrow-clockwise"></i>
                         </a>
                     </div>
@@ -55,7 +55,7 @@
                     <i class="bi bi-clipboard-x d-block mb-2"></i>
                     No matching participation found
                     <div class="mt-3">
-                        <a href="<?= base_url('participant/events') ?>" class="btn btn-primary">
+                        <a href="<?= base_url('participant/event') ?>" class="btn btn-primary">
                             <i class="bi bi-search me-1"></i>
                             Find Events
                         </a>
@@ -89,7 +89,7 @@
                         </div>
 
                         <h5 class="card-title fw-bold mb-2 fs-6">
-                            <a href="<?= base_url('participant/show/' . $registration->id) ?>" class="stretched-link text-gray-800 text-decoration-none">
+                            <a href="<?= base_url('participant/registration/show/' . $registration->id) ?>" class="stretched-link text-gray-800 text-decoration-none">
                                 <?= e($registration->event_name) ?>
                             </a>
                         </h5>

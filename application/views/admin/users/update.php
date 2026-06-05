@@ -10,7 +10,7 @@
 
         <div class="card-body">
 
-            <form method="post">
+            <form method="post" action="<?= base_url('admin/user/update/' . $user->id) ?>">
 
                 <div class="row">
 
@@ -86,7 +86,7 @@
                         Save Changes
                     </button>
 
-                    <a href="<?= base_url('users') ?>" class="btn btn-light">
+                    <a href="<?= base_url('admin/user') ?>" class="btn btn-light">
                         Back
                     </a>
                 </div>

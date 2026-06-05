@@ -10,7 +10,7 @@
             <h4 class="card-title mb-0">Participant Data</h4>
 
             <?php if ($selected_event_id) { ?>
-                <a href="<?= base_url('event/export_participants/' . $selected_event_id) ?>" class="btn btn-success">
+                <a href="<?= base_url('admin/registration/export/' . $selected_event_id) ?>" class="btn btn-success">
                     <i class="bi bi-file-earmark-excel me-1"></i>
                     Export
                 </a>
@@ -19,7 +19,7 @@
 
         <div class="card-body">
 
-            <form method="get" action="<?= base_url('event/registrations') ?>" class="mb-4">
+            <form method="get" action="<?= base_url('admin/registration') ?>" class="mb-4">
                 <div class="row g-2 align-items-end">
 
                     <div class="col-md-4">
@@ -59,7 +59,7 @@
                     </div>
 
                     <div class="col-md-1">
-                        <a href="<?= base_url('event/registrations') ?>" class="btn btn-light w-100" title="Reset filter">
+                        <a href="<?= base_url('admin/registration') ?>" class="btn btn-light w-100" title="Reset filter">
                             <i class="bi bi-arrow-clockwise"></i>
                         </a>
                     </div>
@@ -111,7 +111,7 @@
                                 </td>
                                 <td>
                                     <?php if ($registration->certificate_id) { ?>
-                                        <a href="<?= base_url('event/certificate/' . $registration->certificate_id) ?>"
+                                        <a href="<?= base_url('admin/certificate/show/' . $registration->certificate_id) ?>"
                                             class="btn btn-primary btn-sm"
                                             target="_blank">
                                             <i class="bi bi-file-earmark-pdf me-1"></i>
@@ -124,24 +124,28 @@
                                 <td>
                                     <div class="btn-group-wrap">
                                         <?php if ($registration->attendance === 'unconfirmed') { ?>
-                                            <a href="<?= base_url('event/attendance/' . $registration->id . '/present') ?>"
-                                                class="btn btn-success btn-sm"
-                                                onclick="return confirm('Mark this participant as present?')">
-                                                <i class="bi bi-check2 me-1"></i>
-                                                Present
-                                            </a>
+                                            <form method="post" action="<?= base_url('admin/registration/update/' . $registration->id) ?>" class="d-inline" onsubmit="return confirm('Mark this participant as present?')">
+                                                <input type="hidden" name="attendance" value="present">
+                                                <button type="submit" class="btn btn-success btn-sm">
+                                                    <i class="bi bi-check2 me-1"></i>
+                                                    Present
+                                                </button>
+                                            </form>
 
-                                            <a href="<?= base_url('event/attendance/' . $registration->id . '/absent') ?>"
-                                                class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Mark this participant as absent?')">
-                                                <i class="bi bi-x-lg me-1"></i>
-                                                Absent
-                                            </a>
+                                            <form method="post" action="<?= base_url('admin/registration/update/' . $registration->id) ?>" class="d-inline" onsubmit="return confirm('Mark this participant as absent?')">
+                                                <input type="hidden" name="attendance" value="absent">
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    <i class="bi bi-x-lg me-1"></i>
+                                                    Absent
+                                                </button>
+                                            </form>
                                         <?php } else { ?>
-                                            <a href="<?= base_url('event/attendance/' . $registration->id . '/unconfirmed') ?>"
-                                                class="btn btn-light btn-sm">
-                                                Reset
-                                            </a>
+                                            <form method="post" action="<?= base_url('admin/registration/update/' . $registration->id) ?>" class="d-inline" onsubmit="return confirm('Reset attendance?')">
+                                                <input type="hidden" name="attendance" value="unconfirmed">
+                                                <button type="submit" class="btn btn-light btn-sm">
+                                                    Reset
+                                                </button>
+                                            </form>
                                         <?php } ?>
                                     </div>
                                 </td>

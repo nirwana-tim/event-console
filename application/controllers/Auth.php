@@ -12,7 +12,7 @@ class Auth extends MY_Controller
     public function register()
     {
         if ($this->session->userdata('login')) {
-            redirect('dashboard');
+            redirect($this->dashboard_route());
         }
 
         $this->form_validation->set_rules('name', 'Name', 'trim|required');
@@ -44,7 +44,7 @@ class Auth extends MY_Controller
     public function login()
     {
         if ($this->session->userdata('login')) {
-            redirect('dashboard');
+            redirect($this->dashboard_route());
         }
 
         $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
@@ -66,7 +66,7 @@ class Auth extends MY_Controller
                 $this->session->sess_regenerate(TRUE);
                 $this->session->set_userdata($session_data);
 
-                redirect('dashboard');
+                redirect($this->dashboard_route($user->role));
             }
 
             $this->session->set_flashdata('error', 'Email or password is incorrect.');
@@ -82,4 +82,5 @@ class Auth extends MY_Controller
 
         redirect('auth/login');
     }
+
 }

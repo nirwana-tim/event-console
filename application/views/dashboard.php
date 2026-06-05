@@ -11,7 +11,7 @@
                                 ? 'Check your registration status and discover more events today.' 
                                 : 'Monitor event progress, registrations, and participant activity in one place.' ?>
                         </p>
-                        <a href="<?= $dashboard_role === 'participant' ? base_url('participant/events') : base_url('event') ?>" class="btn btn-white text-primary fw-bold px-4 py-2 rounded-3 shadow">
+                        <a href="<?= $dashboard_role === 'participant' ? base_url('participant/event') : base_url('admin/event') ?>" class="btn btn-white text-primary fw-bold px-4 py-2 rounded-3 shadow">
                             <?= $dashboard_role === 'participant' ? 'Find New Events' : 'Manage Events' ?>
                         </a>
                     </div>
@@ -126,7 +126,7 @@
         <section class="row">
             <div class="col-12 mb-3 d-flex justify-content-between align-items-center">
                 <h4 class="fw-bold mb-0">Latest Events</h4>
-                <a href="<?= base_url('participant/events') ?>" class="text-primary fw-bold text-decoration-none small">View All <i class="bi bi-arrow-right"></i></a>
+                <a href="<?= base_url('participant/event') ?>" class="text-primary fw-bold text-decoration-none small">View All <i class="bi bi-arrow-right"></i></a>
             </div>
             <div class="col-12">
                 <div class="row g-4">
@@ -151,7 +151,7 @@
                                         </small>
                                     </div>
                                     <h5 class="card-title fw-bold mb-2 fs-6">
-                                        <a href="<?= base_url('participant/event_show/' . $event->id) ?>" class="stretched-link text-gray-800 text-decoration-none">
+                                        <a href="<?= base_url('participant/event/show/' . $event->id) ?>" class="stretched-link text-gray-800 text-decoration-none">
                                             <?= e($event->name) ?>
                                         </a>
                                     </h5>
@@ -176,7 +176,7 @@
                             <i class="bi bi-calendar2-event-fill text-primary me-2"></i>
                             Latest Events
                         </h5>
-                        <a href="<?= base_url('event') ?>" class="text-primary fw-bold text-decoration-none small">
+                        <a href="<?= base_url('admin/event') ?>" class="text-primary fw-bold text-decoration-none small">
                             View All <i class="bi bi-arrow-right"></i>
                         </a>
                     </div>
@@ -202,7 +202,7 @@
                                         <?php foreach ($latest_events as $event) { ?>
                                             <tr>
                                                 <td>
-                                                    <a href="<?= base_url('event/show/' . $event->id) ?>" class="fw-bold text-gray-800 text-decoration-none">
+                                                    <a href="<?= base_url('admin/event/show/' . $event->id) ?>" class="fw-bold text-gray-800 text-decoration-none">
                                                         <?= e($event->name) ?>
                                                     </a>
                                                     <div class="text-muted small">
@@ -234,7 +234,7 @@
                             <i class="bi bi-activity text-success me-2"></i>
                             Recent Activities
                         </h5>
-                        <a href="<?= base_url('event/registrations') ?>" class="text-primary fw-bold text-decoration-none small">
+                        <a href="<?= base_url('admin/registration') ?>" class="text-primary fw-bold text-decoration-none small">
                             View All <i class="bi bi-arrow-right"></i>
                         </a>
                     </div>
@@ -261,7 +261,7 @@
 
                                             <div class="text-muted small">
                                                 Registered for
-                                                <a href="<?= base_url('event/registrations?event_id=' . $activity->event_id) ?>" class="fw-bold text-decoration-none">
+                                                    <a href="<?= base_url('admin/registration?event_id=' . $activity->event_id) ?>" class="fw-bold text-decoration-none">
                                                     <?= e($activity->event_name) ?>
                                                 </a>
                                             </div>
@@ -289,7 +289,7 @@
                 </div>
                 <div class="row g-4">
                     <div class="col-6 col-md-3">
-                        <a href="<?= base_url('event/create') ?>" class="quick-action-link text-decoration-none">
+                        <a href="<?= base_url('admin/event/create') ?>" class="quick-action-link text-decoration-none">
                             <div class="card h-100 border-0 shadow-sm rounded-4 text-center qa-card border-primary">
                                 <div class="card-body p-4 d-flex flex-column align-items-center justify-content-center">
                                     <div class="qa-icon-wrapper bg-light-primary text-primary rounded-circle mb-3">
@@ -302,7 +302,7 @@
                         </a>
                     </div>
                     <div class="col-6 col-md-3">
-                        <a href="<?= base_url('event/registrations') ?>" class="quick-action-link text-decoration-none">
+                        <a href="<?= base_url('admin/registration') ?>" class="quick-action-link text-decoration-none">
                             <div class="card h-100 border-0 shadow-sm rounded-4 text-center qa-card border-success">
                                 <div class="card-body p-4 d-flex flex-column align-items-center justify-content-center">
                                     <div class="qa-icon-wrapper bg-light-success text-success rounded-circle mb-3">
@@ -315,7 +315,7 @@
                         </a>
                     </div>
                     <div class="col-6 col-md-3">
-                        <a href="<?= base_url('event/certificates') ?>" class="quick-action-link text-decoration-none">
+                        <a href="<?= base_url('admin/certificate') ?>" class="quick-action-link text-decoration-none">
                             <div class="card h-100 border-0 shadow-sm rounded-4 text-center qa-card border-warning">
                                 <div class="card-body p-4 d-flex flex-column align-items-center justify-content-center">
                                     <div class="qa-icon-wrapper bg-light-warning text-warning rounded-circle mb-3">
@@ -328,7 +328,7 @@
                         </a>
                     </div>
                     <div class="col-6 col-md-3">
-                        <a href="<?= base_url('users') ?>" class="quick-action-link text-decoration-none">
+                        <a href="<?= base_url('admin/user') ?>" class="quick-action-link text-decoration-none">
                             <div class="card h-100 border-0 shadow-sm rounded-4 text-center qa-card border-info">
                                 <div class="card-body p-4 d-flex flex-column align-items-center justify-content-center">
                                     <div class="qa-icon-wrapper bg-light-info text-info rounded-circle mb-3">

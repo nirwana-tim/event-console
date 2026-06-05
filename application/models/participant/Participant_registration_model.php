@@ -1,10 +1,9 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Registration_model extends CI_Model
+class Participant_registration_model extends CI_Model
 {
-    // Mengecek apakah peserta sudah mendaftar pada event tertentu
-    public function get_registration_by_user_event($user_id, $event_id)
+    public function find_by_user_event($user_id, $event_id)
     {
         return $this->db
             ->where('user_id', (int) $user_id)
@@ -13,8 +12,7 @@ class Registration_model extends CI_Model
             ->row();
     }
 
-    // Mengambil daftar pendaftaran milik peserta yang sedang login
-    public function get_participant_registrations($user_id, $keyword = null, $attendance = null)
+    public function get_all($user_id, $keyword = null, $attendance = null)
     {
         $this->db->select('
             registrations.*,
@@ -49,8 +47,7 @@ class Registration_model extends CI_Model
         return $this->db->get()->result();
     }
 
-    // Mengambil detail satu pendaftaran milik peserta
-    public function get_participant_registration_detail($registration_id, $user_id)
+    public function find($registration_id, $user_id)
     {
         $this->db->select('
             registrations.*,
@@ -71,8 +68,7 @@ class Registration_model extends CI_Model
         return $this->db->get()->row();
     }
 
-    // Menyimpan data pendaftaran event
-    public function insert_registration($data)
+    public function create($data)
     {
         $this->db->insert('registrations', $data);
 

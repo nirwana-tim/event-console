@@ -36,13 +36,13 @@
 
                     <div class="btn-group-wrap mt-4">
                         <?php if ((int) $user->id !== (int) $current_user_id) { ?>
-                            <a href="<?= base_url('users/update/' . $user->id) ?>" class="btn btn-primary">
+                            <a href="<?= base_url('admin/user/edit/' . $user->id) ?>" class="btn btn-primary">
                                 <i class="bi bi-pencil-square me-1"></i>
                                 Update
                             </a>
                         <?php } ?>
 
-                        <a href="<?= base_url('users') ?>" class="btn btn-light">
+                        <a href="<?= base_url('admin/user') ?>" class="btn btn-light">
                             Back
                         </a>
                     </div>

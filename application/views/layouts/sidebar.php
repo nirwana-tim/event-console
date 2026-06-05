@@ -3,7 +3,7 @@
                 <div class="sidebar-header position-relative">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="logo">
-                            <a href="<?= base_url('dashboard') ?>" class="d-flex align-items-center gap-2 text-decoration-none">
+                            <a href="<?= base_url($current_user_role === 'participant' ? 'participant/dashboard' : 'admin/dashboard') ?>" class="d-flex align-items-center gap-2 text-decoration-none">
                                 <div class="brand-mark">
                                     <i class="bi bi-calendar2-check"></i>
                                 </div>
@@ -21,7 +21,7 @@
                         <li class="sidebar-title">MENU</li>
 
                         <li class="sidebar-item<?= active_sidebar_class('dashboard', $active_menu) ?>">
-                            <a href="<?= base_url('dashboard') ?>" class="sidebar-link">
+                            <a href="<?= base_url($current_user_role === 'participant' ? 'participant/dashboard' : 'admin/dashboard') ?>" class="sidebar-link">
                                 <i class="bi bi-grid-fill"></i>
                                 <span>Dashboard</span>
                             </a>
@@ -29,28 +29,28 @@
 
                         <?php if ($current_user_role === 'admin') { ?>
                             <li class="sidebar-item<?= active_sidebar_class('event', $active_menu) ?>">
-                                <a href="<?= base_url('event') ?>" class="sidebar-link">
+                                <a href="<?= base_url('admin/event') ?>" class="sidebar-link">
                                     <i class="bi bi-calendar2-event-fill"></i>
                                     <span>Event Data</span>
                                 </a>
                             </li>
 
                             <li class="sidebar-item<?= active_sidebar_class('registrations', $active_menu) ?>">
-                                <a href="<?= base_url('event/registrations') ?>" class="sidebar-link">
+                                <a href="<?= base_url('admin/registration') ?>" class="sidebar-link">
                                     <i class="bi bi-person-lines-fill"></i>
                                     <span>Registrations</span>
                                 </a>
                             </li>
 
                             <li class="sidebar-item<?= active_sidebar_class('certificates_admin', $active_menu) ?>">
-                                <a href="<?= base_url('event/certificates') ?>" class="sidebar-link">
+                                <a href="<?= base_url('admin/certificate') ?>" class="sidebar-link">
                                     <i class="bi bi-award-fill"></i>
                                     <span>Certificates</span>
                                 </a>
                             </li>
 
                             <li class="sidebar-item<?= active_sidebar_class('users', $active_menu) ?>">
-                                <a href="<?= base_url('users') ?>" class="sidebar-link">
+                                <a href="<?= base_url('admin/user') ?>" class="sidebar-link">
                                     <i class="bi bi-person-gear"></i>
                                     <span>User Management</span>
                                 </a>
@@ -59,21 +59,21 @@
 
                         <?php if ($current_user_role === 'participant') { ?>
                             <li class="sidebar-item<?= active_sidebar_class('participant_events', $active_menu) ?>">
-                                <a href="<?= base_url('participant/events') ?>" class="sidebar-link">
+                                <a href="<?= base_url('participant/event') ?>" class="sidebar-link">
                                     <i class="bi bi-calendar2-event-fill"></i>
                                     <span>Events</span>
                                 </a>
                             </li>
 
                             <li class="sidebar-item<?= active_sidebar_class('my_participants', $active_menu) ?>">
-                                <a href="<?= base_url('participant') ?>" class="sidebar-link">
+                                <a href="<?= base_url('participant/registration') ?>" class="sidebar-link">
                                     <i class="bi bi-clipboard-check-fill"></i>
                                     <span>My Participants</span>
                                 </a>
                             </li>
 
                             <li class="sidebar-item<?= active_sidebar_class('certificates', $active_menu) ?>">
-                                <a href="<?= base_url('participant/certificates') ?>" class="sidebar-link">
+                                <a href="<?= base_url('participant/certificate') ?>" class="sidebar-link">
                                     <i class="bi bi-award-fill"></i>
                                     <span>My Certificates</span>
                                 </a>

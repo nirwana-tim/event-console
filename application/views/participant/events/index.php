@@ -10,7 +10,7 @@
         </div>
 
         <div class="card-body">
-            <form method="get" action="<?= base_url('participant/events') ?>">
+            <form method="get" action="<?= base_url('participant/event') ?>">
                 <div class="row g-2 align-items-end">
 
                     <div class="col-md-6">
@@ -38,7 +38,7 @@
                     </div>
 
                     <div class="col-md-1">
-                        <a href="<?= base_url('participant/events') ?>" class="btn btn-light w-100" title="Reset filter">
+                        <a href="<?= base_url('participant/event') ?>" class="btn btn-light w-100" title="Reset filter">
                             <i class="bi bi-arrow-clockwise"></i>
                         </a>
                     </div>
@@ -83,7 +83,7 @@
                         </div>
 
                         <h5 class="card-title fw-bold mb-2 fs-6">
-                            <a href="<?= base_url('participant/event_show/' . $event->id) ?>" class="stretched-link text-gray-800 text-decoration-none">
+                            <a href="<?= base_url('participant/event/show/' . $event->id) ?>" class="stretched-link text-gray-800 text-decoration-none">
                                 <?= e($event->name) ?>
                             </a>
                         </h5>

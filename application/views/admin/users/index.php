@@ -9,7 +9,7 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <h4 class="card-title mb-0">User Management</h4>
 
-            <a href="<?= base_url('users/create') ?>" class="btn btn-primary">
+            <a href="<?= base_url('admin/user/create') ?>" class="btn btn-primary">
                 <i class="bi bi-person-plus me-1"></i>
                 Create User
             </a>
@@ -17,7 +17,7 @@
 
         <div class="card-body">
 
-            <form method="get" action="<?= base_url('users') ?>" class="mb-4">
+            <form method="get" action="<?= base_url('admin/user') ?>" class="mb-4">
 
                 <div class="row g-2 align-items-end">
 
@@ -51,7 +51,7 @@
                     </div>
 
                     <div class="col-md-1">
-                        <a href="<?= base_url('users') ?>" class="btn btn-light w-100" title="Reset filter">
+                        <a href="<?= base_url('admin/user') ?>" class="btn btn-light w-100" title="Reset filter">
                             <i class="bi bi-arrow-clockwise"></i>
                         </a>
                     </div>
@@ -105,13 +105,13 @@
                                     <span class="text-muted">Current account</span>
                                 <?php } else { ?>
                                     <div class="btn-group-wrap">
-                                        <a href="<?= base_url('users/show/' . $user->id) ?>"
+                                        <a href="<?= base_url('admin/user/show/' . $user->id) ?>"
                                             class="btn btn-info btn-sm">
                                             <i class="bi bi-eye me-1"></i>
                                             Show
                                         </a>
 
-                                        <a href="<?= base_url('users/update/' . $user->id) ?>"
+                                        <a href="<?= base_url('admin/user/edit/' . $user->id) ?>"
                                             class="btn btn-warning btn-sm">
                                             <i class="bi bi-pencil-square me-1"></i>
                                             Update

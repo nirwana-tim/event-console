@@ -5,6 +5,14 @@ class Welcome extends MY_Controller
 {
 	public function index()
 	{
-		redirect($this->session->userdata('login') ? 'dashboard' : 'auth/login');
+		if (!$this->session->userdata('login')) {
+			redirect('auth/login');
+		}
+
+		$route = $this->session->userdata('role') === 'participant'
+			? 'participant/dashboard'
+			: 'admin/dashboard';
+
+		redirect($route);
 	}
 }

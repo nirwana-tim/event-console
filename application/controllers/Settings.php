@@ -1,9 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-/**
- * @property Auth_model $auth_model
- */
 class Settings extends MY_Controller
 {
     public function __construct()
@@ -11,13 +8,13 @@ class Settings extends MY_Controller
         parent::__construct();
 
         $this->require_login();
-        $this->load->model('Auth_model', 'auth_model');
+        $this->load->model('User_profile_model', 'profile_model');
     }
 
     public function index()
     {
         $user_id = $this->session->userdata('id');
-        $user = $this->auth_model->find_by_id($user_id);
+        $user = $this->profile_model->find($user_id);
 
         if (!$user) {
             show_error('User not found.');
@@ -47,7 +44,7 @@ class Settings extends MY_Controller
                 $data['password'] = password_hash($this->input->post('new_password'), PASSWORD_DEFAULT);
             }
 
-            if ($this->auth_model->update_user($user_id, $data)) {
+            if ($this->profile_model->update($user_id, $data)) {
                 $this->session->set_userdata('name', $data['name']);
                 $this->session->set_flashdata('success', 'Settings updated successfully.');
             } else {

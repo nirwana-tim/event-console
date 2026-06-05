@@ -1,9 +1,9 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Dashboard_model extends CI_Model
+class Admin_dashboard_model extends CI_Model
 {
-    public function get_summary()
+    public function summary()
     {
         return array(
             'total_events' => $this->db->count_all('events'),
@@ -15,7 +15,7 @@ class Dashboard_model extends CI_Model
         );
     }
 
-    public function get_latest_events($limit = 5)
+    public function latest_events($limit = 5)
     {
         $this->db->select('
             events.*,
@@ -33,7 +33,7 @@ class Dashboard_model extends CI_Model
             ->result();
     }
 
-    public function get_recent_activities($limit = 6)
+    public function recent_activities($limit = 6)
     {
         $this->db->select('
             registrations.id,
@@ -54,23 +54,5 @@ class Dashboard_model extends CI_Model
             ->limit((int) $limit)
             ->get()
             ->result();
-    }
-
-    public function get_participant_summary($user_id)
-    {
-        return array(
-            'registered_events' => $this->db
-                ->where('user_id', (int) $user_id)
-                ->count_all_results('registrations'),
-
-            'attendance_present' => $this->db
-                ->where('user_id', (int) $user_id)
-                ->where('attendance', 'present')
-                ->count_all_results('registrations'),
-            'certificates' => $this->db
-                ->join('registrations', 'registrations.id = certificates.registration_id')
-                ->where('registrations.user_id', (int) $user_id)
-                ->count_all_results('certificates'),
-        );
     }
 }
