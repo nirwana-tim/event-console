@@ -184,8 +184,8 @@
                     <div class="card-body">
                         <?php if (empty($latest_events)) { ?>
                             <div class="empty-state py-5">
-                                <i class="bi bi-calendar-x d-block mb-2"></i>
-                                No events yet
+                                <i class="bi bi-calendar-x"></i>
+                                <span>No events yet</span>
                             </div>
                         <?php } else { ?>
                             <div class="table-responsive">
@@ -242,8 +242,8 @@
                     <div class="card-body">
                         <?php if (empty($recent_activities)) { ?>
                             <div class="empty-state py-5">
-                                <i class="bi bi-inbox d-block mb-2"></i>
-                                No registration activity yet
+                                <i class="bi bi-inbox"></i>
+                                <span>No registration activity yet</span>
                             </div>
                         <?php } else { ?>
                             <div class="activity-list">
@@ -293,7 +293,7 @@
                 <div class="row g-4">
                     <div class="col-6 col-md-3">
                         <a href="<?= base_url('event/create') ?>" class="quick-action-link text-decoration-none">
-                            <div class="card h-100 border-0 shadow-sm rounded-4 text-center qa-card border-bottom border-3 border-primary">
+                            <div class="card h-100 border-0 shadow-sm rounded-4 text-center qa-card border-primary">
                                 <div class="card-body p-4 d-flex flex-column align-items-center justify-content-center">
                                     <div class="qa-icon-wrapper bg-light-primary text-primary rounded-circle mb-3">
                                         <i class="bi bi-plus-lg fs-3"></i>
@@ -306,20 +306,20 @@
                     </div>
                     <div class="col-6 col-md-3">
                         <a href="<?= base_url('event/registrations') ?>" class="quick-action-link text-decoration-none">
-                            <div class="card h-100 border-0 shadow-sm rounded-4 text-center qa-card border-bottom border-3 border-success">
+                            <div class="card h-100 border-0 shadow-sm rounded-4 text-center qa-card border-success">
                                 <div class="card-body p-4 d-flex flex-column align-items-center justify-content-center">
                                     <div class="qa-icon-wrapper bg-light-success text-success rounded-circle mb-3">
                                         <i class="bi bi-check2-square fs-3"></i>
                                     </div>
                                     <h6 class="fw-bold text-gray-800 mb-1">Attendance</h6>
-                                    <small class="text-muted qa-subtitle">Check presence</small>
+                                    <small class="text-muted qa-subtitle">Track attendance</small>
                                 </div>
                             </div>
                         </a>
                     </div>
                     <div class="col-6 col-md-3">
                         <a href="<?= base_url('event/certificates') ?>" class="quick-action-link text-decoration-none">
-                            <div class="card h-100 border-0 shadow-sm rounded-4 text-center qa-card border-bottom border-3 border-warning">
+                            <div class="card h-100 border-0 shadow-sm rounded-4 text-center qa-card border-warning">
                                 <div class="card-body p-4 d-flex flex-column align-items-center justify-content-center">
                                     <div class="qa-icon-wrapper bg-light-warning text-warning rounded-circle mb-3">
                                         <i class="bi bi-award fs-3"></i>
@@ -332,13 +332,13 @@
                     </div>
                     <div class="col-6 col-md-3">
                         <a href="<?= base_url('users') ?>" class="quick-action-link text-decoration-none">
-                            <div class="card h-100 border-0 shadow-sm rounded-4 text-center qa-card border-bottom border-3 border-info">
+                            <div class="card h-100 border-0 shadow-sm rounded-4 text-center qa-card border-info">
                                 <div class="card-body p-4 d-flex flex-column align-items-center justify-content-center">
                                     <div class="qa-icon-wrapper bg-light-info text-info rounded-circle mb-3">
                                         <i class="bi bi-people fs-3"></i>
                                     </div>
                                     <h6 class="fw-bold text-gray-800 mb-1">Manage Users</h6>
-                                    <small class="text-muted qa-subtitle">Akses akun</small>
+                                    <small class="text-muted qa-subtitle">Manage accounts</small>
                                 </div>
                             </div>
                         </a>
@@ -372,7 +372,23 @@
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     position: relative;
     top: 0;
+    overflow: hidden; /* Clips the pseudo-element to match the rounded-4 corners */
 }
+/* Premium bottom border using a pseudo-element that scales and clips perfectly */
+.qa-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    transition: all 0.3s ease;
+}
+.qa-card.border-primary::after { background-color: #435ebe; }
+.qa-card.border-success::after { background-color: #198754; }
+.qa-card.border-warning::after { background-color: #ffc107; }
+.qa-card.border-info::after { background-color: #0dcaf0; }
+
 .qa-icon-wrapper {
     width: 60px;
     height: 60px;
@@ -380,6 +396,34 @@
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
+}
+.stats-icon,
+.qa-icon-wrapper,
+.activity-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    flex-shrink: 0;
+}
+.stats-icon {
+    width: 54px;
+    height: 54px;
+    padding: 0 !important;
+}
+.stats-icon .bi,
+.qa-icon-wrapper .bi,
+.activity-icon .bi {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+.stats-icon .bi::before,
+.qa-icon-wrapper .bi::before,
+.activity-icon .bi::before {
+    line-height: 1;
+    vertical-align: 0;
 }
 .qa-subtitle {
     font-size: 0.8rem;
@@ -423,6 +467,35 @@
     align-items: center;
     justify-content: center;
     flex: 0 0 42px;
+}
+.empty-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: .75rem;
+    min-height: 150px;
+    text-align: center;
+}
+.empty-state .bi {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    margin: 0 !important;
+    color: #c2cbe0;
+    font-size: 2.25rem;
+    line-height: 1;
+}
+.empty-state .bi::before {
+    line-height: 1;
+    vertical-align: 0;
+}
+.empty-state span {
+    display: block;
+    color: var(--event-console-muted);
+    line-height: 1.4;
 }
 
 </style>
