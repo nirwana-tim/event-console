@@ -50,9 +50,7 @@ if (!function_exists('status_badge_class')) {
     function status_badge_class($status)
     {
         $classes = array(
-            'approved' => 'success',
             'verified' => 'success',
-            'pending' => 'warning',
             'dibuka' => 'success',
             'ditutup' => 'warning',
             'selesai' => 'secondary',
@@ -69,8 +67,6 @@ if (!function_exists('status_label')) {
             'dibuka' => 'Open',
             'ditutup' => 'Closed',
             'selesai' => 'Completed',
-            'pending' => 'Pending',
-            'approved' => 'Approved',
             'verified' => 'Verified',
         );
 

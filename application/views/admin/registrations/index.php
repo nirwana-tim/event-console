@@ -22,7 +22,7 @@
             <form method="get" action="<?= base_url('event/registrations') ?>" class="mb-4">
                 <div class="row g-2 align-items-end">
 
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <label class="form-label mb-1"><small>Search Participant</small></label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-search"></i></span>
@@ -30,7 +30,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <label class="form-label mb-1"><small>Event</small></label>
                         <select name="event_id" class="form-select">
                             <option value="">All Events</option>
@@ -39,15 +39,6 @@
                                     <?= e($event->name) ?>
                                 </option>
                             <?php } ?>
-                        </select>
-                    </div>
-
-                    <div class="col-md-2">
-                        <label class="form-label mb-1"><small>Registration</small></label>
-                        <select name="status" class="form-select">
-                            <option value="">All Status</option>
-                            <option value="pending" <?= isset($selected_status) && $selected_status === 'pending' ? 'selected' : '' ?>>Pending</option>
-                            <option value="approved" <?= isset($selected_status) && $selected_status === 'approved' ? 'selected' : '' ?>>Approved</option>
                         </select>
                     </div>
 
@@ -87,7 +78,6 @@
                             <th>Event</th>
                             <th>Phone</th>
                             <th>Institution</th>
-                            <th>Registration</th>
                             <th>Attendance</th>
                             <th>Certificate</th>
                             <th>Actions</th>
@@ -98,7 +88,7 @@
 
                         <?php if (empty($registrations)) { ?>
                             <tr>
-                                <td colspan="9">
+                                <td colspan="8">
                                     <div class="empty-state">
                                         <i class="bi bi-people d-block mb-2"></i>
                                         No registrations found
@@ -114,11 +104,6 @@
                                 <td><?= e($registration->event_name) ?></td>
                                 <td><?= e($registration->phone_number) ?></td>
                                 <td><?= e($registration->institution) ?></td>
-                                <td>
-                                    <span class="badge bg-<?= status_badge_class($registration->status) ?>">
-                                        <?= e(status_label($registration->status)) ?>
-                                    </span>
-                                </td>
                                 <td>
                                     <span class="badge bg-<?= attendance_badge_class($registration->attendance) ?>">
                                         <?= e(attendance_label($registration->attendance)) ?>

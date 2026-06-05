@@ -29,9 +29,6 @@
                         <div class="banner-overlay p-4 d-flex flex-column justify-content-end">
                             <div class="container-fluid px-0">
                                 <div class="d-flex gap-2 mb-3">
-                                    <span class="badge bg-<?= status_badge_class($registration->status) ?> py-2 px-3 text-uppercase shadow">
-                                        Status: <?= e(status_label($registration->status)) ?>
-                                    </span>
                                     <span class="badge bg-<?= attendance_badge_class($registration->attendance) ?> py-2 px-3 text-uppercase shadow">
                                         Attendance: <?= e(attendance_label($registration->attendance)) ?>
                                     </span>

@@ -20,12 +20,7 @@ class Participant extends MY_Controller
         $this->set_active_menu('my_participants');
 
         $keyword = trim((string) $this->input->get('keyword', TRUE));
-        $status = trim((string) $this->input->get('status', TRUE));
         $attendance = trim((string) $this->input->get('attendance', TRUE));
-
-        if (!in_array($status, array('pending', 'approved'), TRUE)) {
-            $status = '';
-        }
 
         if (!in_array($attendance, array('unconfirmed', 'present', 'absent'), TRUE)) {
             $attendance = '';
@@ -33,9 +28,8 @@ class Participant extends MY_Controller
 
         $this->render('participant/registrations/index', array(
             'page_title' => 'My Participants',
-            'registrations' => $this->registration_model->get_participant_registrations($this->session->userdata('id'), $keyword, $status, $attendance),
+            'registrations' => $this->registration_model->get_participant_registrations($this->session->userdata('id'), $keyword, $attendance),
             'keyword' => $keyword,
-            'selected_status' => $status,
             'selected_attendance' => $attendance,
         ));
     }

@@ -14,7 +14,7 @@ class Registration_model extends CI_Model
     }
 
     // Mengambil daftar pendaftaran milik peserta yang sedang login
-    public function get_participant_registrations($user_id, $keyword = null, $status = null, $attendance = null)
+    public function get_participant_registrations($user_id, $keyword = null, $attendance = null)
     {
         $this->db->select('
             registrations.*,
@@ -38,10 +38,6 @@ class Registration_model extends CI_Model
             $this->db->or_like('registrations.institution', $keyword);
             $this->db->or_like('registrations.team', $keyword);
             $this->db->group_end();
-        }
-
-        if (in_array($status, array('pending', 'approved'), TRUE)) {
-            $this->db->where('registrations.status', $status);
         }
 
         if (in_array($attendance, array('unconfirmed', 'present', 'absent'), TRUE)) {

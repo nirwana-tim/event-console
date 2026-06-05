@@ -267,9 +267,6 @@
                                             </div>
 
                                             <div class="mt-2 d-flex flex-wrap gap-1">
-                                                <span class="badge bg-<?= status_badge_class($activity->status) ?>">
-                                                    <?= e(status_label($activity->status)) ?>
-                                                </span>
                                                 <span class="badge bg-<?= attendance_badge_class($activity->attendance) ?>">
                                                     <?= e(attendance_label($activity->attendance)) ?>
                                                 </span>

@@ -11,10 +11,6 @@ class Dashboard_model extends CI_Model
                 ->where('role', 'participant')
                 ->count_all_results('users'),
             'total_registrations' => $this->db->count_all('registrations'),
-            'total_attendance_pending' => $this->db
-                ->where('registrations.status', 'approved')
-                ->where('registrations.attendance', 'unconfirmed')
-                ->count_all_results('registrations'),
             'total_certificates' => $this->db->count_all('certificates'),
         );
     }
@@ -41,7 +37,6 @@ class Dashboard_model extends CI_Model
     {
         $this->db->select('
             registrations.id,
-            registrations.status,
             registrations.attendance,
             registrations.created_at,
             users.name AS participant_name,

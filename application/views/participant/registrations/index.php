@@ -13,21 +13,12 @@
             <form method="get" action="<?= base_url('participant') ?>">
                 <div class="row g-2 align-items-end">
 
-                    <div class="col-md-4">
+                    <div class="col-md-7">
                         <label class="form-label mb-1"><small>Search Registration</small></label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-search"></i></span>
                             <input type="text" name="keyword" class="form-control" value="<?= e(isset($keyword) ? $keyword : '') ?>" placeholder="Event, location, institution">
                         </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <label class="form-label mb-1"><small>Registration</small></label>
-                        <select name="status" class="form-select">
-                            <option value="">All Status</option>
-                            <option value="pending" <?= isset($selected_status) && $selected_status === 'pending' ? 'selected' : '' ?>>Pending</option>
-                            <option value="approved" <?= isset($selected_status) && $selected_status === 'approved' ? 'selected' : '' ?>>Approved</option>
-                        </select>
                     </div>
 
                     <div class="col-md-3">
@@ -83,9 +74,6 @@
                              style="height: 160px;"
                              onerror="this.src='<?= base_url('mazer/dist/assets/static/images/samples/architecture.jpg') ?>'">
                         <div class="position-absolute top-0 end-0 p-2 d-flex flex-column gap-1 align-items-end">
-                            <span class="badge bg-<?= status_badge_class($registration->status) ?> py-1 px-2 text-uppercase x-small shadow-sm">
-                                <?= e(status_label($registration->status)) ?>
-                            </span>
                             <span class="badge bg-<?= attendance_badge_class($registration->attendance) ?> py-1 px-2 text-uppercase x-small shadow-sm">
                                 <?= e(attendance_label($registration->attendance)) ?>
                             </span>

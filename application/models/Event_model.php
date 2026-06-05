@@ -177,7 +177,7 @@ class Event_model extends CI_Model
     }
 
     // Mengambil daftar registrasi peserta untuk admin
-    public function get_event_registrations($event_id = null, $keyword = null, $status = null, $attendance = null)
+    public function get_event_registrations($event_id = null, $keyword = null, $attendance = null)
     {
         $this->db->select('
             registrations.*,
@@ -204,10 +204,6 @@ class Event_model extends CI_Model
             $this->db->or_like('registrations.phone_number', $keyword);
             $this->db->or_like('registrations.institution', $keyword);
             $this->db->group_end();
-        }
-
-        if (in_array($status, array('pending', 'approved'), TRUE)) {
-            $this->db->where('registrations.status', $status);
         }
 
         if (in_array($attendance, array('unconfirmed', 'present', 'absent'), TRUE)) {
@@ -255,7 +251,6 @@ class Event_model extends CI_Model
             registrations.institution,
             registrations.address,
             registrations.team,
-            registrations.status,
             registrations.attendance
         ');
         $this->db->from('registrations');

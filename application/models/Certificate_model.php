@@ -15,7 +15,7 @@ class Certificate_model extends CI_Model
             return false;
         }
 
-        if ($registration->status !== 'approved' || $registration->attendance !== 'present') {
+        if ($registration->attendance !== 'present') {
             return false;
         }
 

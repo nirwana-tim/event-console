@@ -184,12 +184,7 @@ class Event extends MY_Controller
         $selected_event_id = $selected_event_id > 0 ? $selected_event_id : null;
 
         $keyword = trim((string) $this->input->get('keyword', TRUE));
-        $status = trim((string) $this->input->get('status', TRUE));
         $attendance = trim((string) $this->input->get('attendance', TRUE));
-
-        if (!in_array($status, array('pending', 'approved'), TRUE)) {
-            $status = '';
-        }
 
         if (!in_array($attendance, array('unconfirmed', 'present', 'absent'), TRUE)) {
             $attendance = '';
@@ -200,9 +195,8 @@ class Event extends MY_Controller
             'events' => $this->event_model->get_event_options(),
             'selected_event_id' => $selected_event_id,
             'keyword' => $keyword,
-            'selected_status' => $status,
             'selected_attendance' => $attendance,
-            'registrations' => $this->event_model->get_event_registrations($selected_event_id, $keyword, $status, $attendance),
+            'registrations' => $this->event_model->get_event_registrations($selected_event_id, $keyword, $attendance),
         ));
     }
 
@@ -314,7 +308,7 @@ class Event extends MY_Controller
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setTitle('Participants');
 
-        $this->write_headers($sheet, array('No', 'Name', 'Email', 'Phone', 'Institution', 'Address', 'Team', 'Registration Status', 'Attendance'));
+        $this->write_headers($sheet, array('No', 'Name', 'Email', 'Phone', 'Institution', 'Address', 'Team', 'Attendance'));
 
         $row = 2;
         $number = 1;
@@ -328,12 +322,11 @@ class Event extends MY_Controller
             $sheet->setCellValue('E' . $row, $participant->institution);
             $sheet->setCellValue('F' . $row, $participant->address);
             $sheet->setCellValue('G' . $row, $participant->team);
-            $sheet->setCellValue('H' . $row, $participant->status);
-            $sheet->setCellValue('I' . $row, $participant->attendance);
+            $sheet->setCellValue('H' . $row, $participant->attendance);
             $row++;
         }
 
-        foreach (range('A', 'I') as $column) {
+        foreach (range('A', 'H') as $column) {
             $sheet->getColumnDimension($column)->setAutoSize(TRUE);
         }
 
