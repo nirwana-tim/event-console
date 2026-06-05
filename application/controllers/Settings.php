@@ -34,29 +34,27 @@ class Settings extends MY_Controller
         }
 
         if ($this->input->method() === 'post' && $this->form_validation->run() === TRUE) {
-            $update_data = array(
+            $data = array(
                 'name' => trim($this->input->post('name', TRUE)),
             );
 
-            $password_valid = TRUE;
             if ($change_password) {
-                if (password_verify($this->input->post('old_password'), $user->password)) {
-                    $update_data['password'] = password_hash($this->input->post('new_password'), PASSWORD_DEFAULT);
-                } else {
-                    $password_valid = FALSE;
+                if (!password_verify($this->input->post('old_password'), $user->password)) {
                     $this->session->set_flashdata('error', 'Current Password is incorrect.');
+                    redirect('settings');
                 }
+
+                $data['password'] = password_hash($this->input->post('new_password'), PASSWORD_DEFAULT);
             }
 
-            if ($password_valid) {
-                $this->auth_model->update_user($user_id, $update_data);
-                
-                // Update session variable immediately
-                $this->session->set_userdata('name', $update_data['name']);
-                
+            if ($this->auth_model->update_user($user_id, $data)) {
+                $this->session->set_userdata('name', $data['name']);
                 $this->session->set_flashdata('success', 'Settings updated successfully.');
-                redirect('settings');
+            } else {
+                $this->session->set_flashdata('error', 'Settings update failed.');
             }
+
+            redirect('settings');
         }
 
         $this->set_active_menu('');
