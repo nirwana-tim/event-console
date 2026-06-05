@@ -199,7 +199,7 @@ class Participant extends MY_Controller
 
     public function download($id = null)
     {
-        $this->load_composer();
+        $this->load->library('pdf_gen');
 
         $certificate = $this->certificate_model->get_certificate_by_id($id, $this->session->userdata('id'));
 
@@ -207,7 +207,13 @@ class Participant extends MY_Controller
             show_404();
         }
 
-        $this->stream_certificate($certificate);
+        $this->pdf_gen->generate(
+            'certificates/pdf',
+            array('certificate' => $certificate),
+            'certificate-' . $certificate->certificate_number,
+            'A4',
+            'landscape'
+        );
     }
 
     private function event_pagination_config($keyword, $status)
@@ -238,15 +244,6 @@ class Participant extends MY_Controller
             'num_tag_close' => '</li>',
             'attributes' => array('class' => 'page-link'),
         );
-    }
-
-    private function stream_certificate($certificate)
-    {
-        $dompdf = new \Dompdf\Dompdf();
-        $dompdf->loadHtml($this->load->view('certificates/pdf', array('certificate' => $certificate), TRUE));
-        $dompdf->setPaper('A4', 'landscape');
-        $dompdf->render();
-        $dompdf->stream('certificate-' . $certificate->certificate_number . '.pdf', array('Attachment' => 0));
     }
 
 }

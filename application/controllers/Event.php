@@ -243,7 +243,7 @@ class Event extends MY_Controller
 
     public function certificate($id = null)
     {
-        $this->load_composer();
+        $this->load->library('pdf_gen');
 
         $certificate = $this->certificate_model->get_certificate_by_id($id);
 
@@ -251,17 +251,18 @@ class Event extends MY_Controller
             show_404();
         }
 
-        $this->stream_pdf(
+        $this->pdf_gen->generate(
             'certificates/pdf',
             array('certificate' => $certificate),
-            'certificate-' . $certificate->certificate_number . '.pdf',
+            'certificate-' . $certificate->certificate_number,
+            'A4',
             'landscape'
         );
     }
 
     public function pdf()
     {
-        $this->load_composer();
+        $this->load->library('pdf_gen');
 
         $keyword = trim((string) $this->input->get('keyword', TRUE));
         $status = trim((string) $this->input->get('status', TRUE));
@@ -274,7 +275,7 @@ class Event extends MY_Controller
 
         $events = $this->event_model->get_all_events(null, 0, $keyword, $status, $start_date, $end_date);
 
-        $this->stream_pdf('admin/events/report_pdf', array('events' => $events), 'event-report.pdf', 'portrait');
+        $this->pdf_gen->generate('admin/events/report_pdf', array('events' => $events), 'event-report', 'A4', 'portrait');
     }
 
     public function excel()
@@ -440,15 +441,6 @@ class Event extends MY_Controller
             $sheet->setCellValue($column . '1', $header);
             $column++;
         }
-    }
-
-    private function stream_pdf($view, $data, $filename, $orientation)
-    {
-        $dompdf = new \Dompdf\Dompdf();
-        $dompdf->loadHtml($this->load->view($view, $data, TRUE));
-        $dompdf->setPaper('A4', $orientation);
-        $dompdf->render();
-        $dompdf->stream($filename, array('Attachment' => 0));
     }
 
     private function download_excel($spreadsheet, $filename)
