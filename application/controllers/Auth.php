@@ -3,7 +3,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Auth extends MY_Controller
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -33,8 +32,11 @@ class Auth extends MY_Controller
             'role' => 'participant',
         );
 
-        $this->auth_model->create_user($data);
-        $this->session->set_flashdata('success', 'Registration successful. Please log in.');
+        if ($this->auth_model->create_user($data)) {
+            $this->session->set_flashdata('success', 'Registration successful. Please log in.');
+        } else {
+            $this->session->set_flashdata('error', 'Registration failed.');
+        }
 
         redirect('auth/login');
     }
@@ -49,16 +51,20 @@ class Auth extends MY_Controller
         $this->form_validation->set_rules('password', 'Password', 'required');
 
         if ($this->input->method() === 'post' && $this->form_validation->run() === TRUE) {
-            $user = $this->auth_model->find_by_email($this->input->post('email', TRUE));
+            $email = $this->input->post('email', TRUE);
+            $password = $this->input->post('password');
+            $user = $this->auth_model->find_by_email($email);
 
-            if ($user && password_verify($this->input->post('password'), $user->password)) {
-                $this->session->sess_regenerate(TRUE);
-                $this->session->set_userdata(array(
+            if ($user && password_verify($password, $user->password)) {
+                $session_data = array(
                     'id' => $user->id,
                     'name' => $user->name,
                     'role' => $user->role,
                     'login' => TRUE,
-                ));
+                );
+
+                $this->session->sess_regenerate(TRUE);
+                $this->session->set_userdata($session_data);
 
                 redirect('dashboard');
             }
