@@ -3,22 +3,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Registration_model extends CI_Model
 {
-    public function find_by_user_event($user_id, $event_id)
-    {
-        return $this->db->get_where('registrations', array(
-            'user_id' => (int) $user_id,
-            'event_id' => (int) $event_id,
-        ))->row();
-    }
-
-    public function get_by_id($id)
+    // Mengecek apakah peserta sudah mendaftar pada event tertentu
+    public function get_registration_by_user_event($user_id, $event_id)
     {
         return $this->db
-            ->get_where('registrations', array('id' => (int) $id))
+            ->where('user_id', (int) $user_id)
+            ->where('event_id', (int) $event_id)
+            ->get('registrations')
             ->row();
     }
 
-    public function get_user_registrations($user_id, $keyword = null, $status = null, $attendance = null)
+    // Mengambil daftar pendaftaran milik peserta yang sedang login
+    public function get_participant_registrations($user_id, $keyword = null, $status = null, $attendance = null)
     {
         $this->db->select('
             registrations.*,
@@ -44,7 +40,7 @@ class Registration_model extends CI_Model
             $this->db->group_end();
         }
 
-        if (in_array($status, array('pending', 'approved', 'rejected'), TRUE)) {
+        if (in_array($status, array('pending', 'approved'), TRUE)) {
             $this->db->where('registrations.status', $status);
         }
 
@@ -52,13 +48,13 @@ class Registration_model extends CI_Model
             $this->db->where('registrations.attendance', $attendance);
         }
 
-        return $this->db
-            ->order_by('registrations.id', 'DESC')
-            ->get()
-            ->result();
+        $this->db->order_by('registrations.id', 'DESC');
+
+        return $this->db->get()->result();
     }
 
-    public function get_user_registration_detail($registration_id, $user_id)
+    // Mengambil detail satu pendaftaran milik peserta
+    public function get_participant_registration_detail($registration_id, $user_id)
     {
         $this->db->select('
             registrations.*,
@@ -73,37 +69,17 @@ class Registration_model extends CI_Model
         $this->db->from('registrations');
         $this->db->join('events', 'events.id = registrations.event_id');
         $this->db->join('certificates', 'certificates.registration_id = registrations.id', 'left');
-
         $this->db->where('registrations.id', (int) $registration_id);
         $this->db->where('registrations.user_id', (int) $user_id);
 
         return $this->db->get()->row();
     }
 
-    public function user_owns_registration($registration_id, $user_id)
-    {
-        return $this->db
-            ->where('id', (int) $registration_id)
-            ->where('user_id', (int) $user_id)
-            ->count_all_results('registrations') > 0;
-    }
-
-    public function create_registration($data)
+    // Menyimpan data pendaftaran event
+    public function insert_registration($data)
     {
         $this->db->insert('registrations', $data);
 
         return $this->db->insert_id();
-    }
-
-    public function register_event($registration_data)
-    {
-        $this->db->trans_start();
-
-        $this->db->insert('registrations', $registration_data);
-        $registration_id = $this->db->insert_id();
-
-        $this->db->trans_complete();
-
-        return $this->db->trans_status() ? $registration_id : false;
     }
 }

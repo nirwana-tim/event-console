@@ -11,6 +11,7 @@ class Event extends MY_Controller
 
         $this->require_admin();
         $this->load->model('Event_model', 'event_model');
+        $this->load->model('Certificate_model', 'certificate_model');
         $this->load->library('pagination');
 
     }
@@ -33,7 +34,7 @@ class Event extends MY_Controller
 
         $this->render('admin/events/index', array(
             'page_title' => 'Event Data',
-            'events' => $this->event_model->get_all(self::PER_PAGE, $offset, $keyword, $status, $start_date, $end_date),
+            'events' => $this->event_model->get_all_events(self::PER_PAGE, $offset, $keyword, $status, $start_date, $end_date),
             'keyword' => $keyword,
             'status' => $status,
             'start_date' => $start_date,
@@ -46,7 +47,7 @@ class Event extends MY_Controller
     {
         $this->set_active_menu('event');
 
-        $event = $this->event_model->get_by_id($id);
+        $event = $this->event_model->get_event_by_id($id);
 
         if (!$event) {
             show_404();
@@ -58,15 +59,17 @@ class Event extends MY_Controller
         ));
     }
 
-    public function add()
-    {
-        $this->create();
-    }
-
     public function create()
     {
         $this->set_active_menu('event');
-        $this->set_event_rules();
+        $this->form_validation->set_rules('name', 'Event Name', 'trim|required|max_length[150]');
+        $this->form_validation->set_rules('date', 'Date', 'trim|required');
+        $this->form_validation->set_rules('start_time', 'Start Time', 'trim');
+        $this->form_validation->set_rules('end_time', 'End Time', 'trim');
+        $this->form_validation->set_rules('location', 'Location', 'trim|required|max_length[150]');
+        $this->form_validation->set_rules('quota', 'Quota', 'trim|integer');
+        $this->form_validation->set_rules('status', 'Status', 'trim|required|in_list[dibuka,ditutup,selesai]');
+        $this->form_validation->set_rules('description', 'Description', 'trim');
 
         if ($this->form_validation->run() === FALSE) {
             $this->render('admin/events/create', array('page_title' => 'Create Event'));
@@ -80,31 +83,43 @@ class Event extends MY_Controller
             redirect('event/create');
         }
 
-        $data = $this->event_payload();
-        $data['banner'] = $upload['file_name'];
+        $data = array(
+            'user_id' => (int) $this->session->userdata('id'),
+            'name' => $this->input->post('name', TRUE),
+            'description' => $this->input->post('description', TRUE),
+            'date' => $this->input->post('date', TRUE),
+            'start_time' => $this->input->post('start_time', TRUE) ?: null,
+            'end_time' => $this->input->post('end_time', TRUE) ?: null,
+            'location' => $this->input->post('location', TRUE),
+            'quota' => $this->input->post('quota', TRUE) !== '' ? (int) $this->input->post('quota', TRUE) : null,
+            'status' => $this->input->post('status', TRUE),
+            'banner' => $upload['file_name'],
+        );
 
-        $this->event_model->insert($data);
+        $this->event_model->insert_event($data);
         $this->session->set_flashdata('success', 'Event added successfully.');
 
         redirect('event');
-    }
-
-    public function edit($id = null)
-    {
-        $this->update($id);
     }
 
     public function update($id = null)
     {
         $this->set_active_menu('event');
 
-        $event = $this->event_model->get_by_id($id);
+        $event = $this->event_model->get_event_by_id($id);
 
         if (!$event) {
             show_404();
         }
 
-        $this->set_event_rules();
+        $this->form_validation->set_rules('name', 'Event Name', 'trim|required|max_length[150]');
+        $this->form_validation->set_rules('date', 'Date', 'trim|required');
+        $this->form_validation->set_rules('start_time', 'Start Time', 'trim');
+        $this->form_validation->set_rules('end_time', 'End Time', 'trim');
+        $this->form_validation->set_rules('location', 'Location', 'trim|required|max_length[150]');
+        $this->form_validation->set_rules('quota', 'Quota', 'trim|integer');
+        $this->form_validation->set_rules('status', 'Status', 'trim|required|in_list[dibuka,ditutup,selesai]');
+        $this->form_validation->set_rules('description', 'Description', 'trim');
 
         if ($this->form_validation->run() === FALSE) {
             $this->render('admin/events/update', array(
@@ -114,7 +129,17 @@ class Event extends MY_Controller
             return;
         }
 
-        $data = $this->event_payload();
+        $data = array(
+            'user_id' => (int) $this->session->userdata('id'),
+            'name' => $this->input->post('name', TRUE),
+            'description' => $this->input->post('description', TRUE),
+            'date' => $this->input->post('date', TRUE),
+            'start_time' => $this->input->post('start_time', TRUE) ?: null,
+            'end_time' => $this->input->post('end_time', TRUE) ?: null,
+            'location' => $this->input->post('location', TRUE),
+            'quota' => $this->input->post('quota', TRUE) !== '' ? (int) $this->input->post('quota', TRUE) : null,
+            'status' => $this->input->post('status', TRUE),
+        );
 
         if (!empty($_FILES['banner']['name'])) {
             $upload = $this->upload_banner();
@@ -127,7 +152,7 @@ class Event extends MY_Controller
             $data['banner'] = $upload['file_name'];
         }
 
-        $this->event_model->update($id, $data);
+        $this->event_model->update_event($id, $data);
         $this->session->set_flashdata('success', 'Event updated successfully.');
 
         redirect('event');
@@ -135,18 +160,18 @@ class Event extends MY_Controller
 
     public function delete($id = null)
     {
-        $event = $this->event_model->get_by_id($id);
+        $event = $this->event_model->get_event_by_id($id);
 
         if (!$event) {
             show_404();
         }
 
-        if ($this->event_model->has_registrations($id)) {
+        if ($this->event_model->event_has_registrations($id)) {
             $this->session->set_flashdata('error', 'This event cannot be deleted because it already has registrations.');
             redirect('event');
         }
 
-        $this->event_model->delete($id);
+        $this->event_model->delete_event($id);
         $this->session->set_flashdata('success', 'Event deleted successfully.');
 
         redirect('event');
@@ -163,7 +188,7 @@ class Event extends MY_Controller
         $status = trim((string) $this->input->get('status', TRUE));
         $attendance = trim((string) $this->input->get('attendance', TRUE));
 
-        if (!in_array($status, array('pending', 'approved', 'rejected'), TRUE)) {
+        if (!in_array($status, array('pending', 'approved'), TRUE)) {
             $status = '';
         }
 
@@ -173,12 +198,12 @@ class Event extends MY_Controller
 
         $this->render('admin/registrations/index', array(
             'page_title' => 'Participant Registrations',
-            'events' => $this->event_model->get_options(),
+            'events' => $this->event_model->get_event_options(),
             'selected_event_id' => $selected_event_id,
             'keyword' => $keyword,
             'selected_status' => $status,
             'selected_attendance' => $attendance,
-            'registrations' => $this->event_model->get_registrations($selected_event_id, $keyword, $status, $attendance),
+            'registrations' => $this->event_model->get_event_registrations($selected_event_id, $keyword, $status, $attendance),
         ));
     }
 
@@ -188,7 +213,7 @@ class Event extends MY_Controller
             show_404();
         }
 
-        if ($this->event_model->update_attendance($registration_id, $attendance)) {
+        if ($this->event_model->update_registration_attendance($registration_id, $attendance)) {
             $this->session->set_flashdata('success', 'Attendance updated successfully.');
         } else {
             $this->session->set_flashdata('error', 'Attendance update failed.');
@@ -209,10 +234,10 @@ class Event extends MY_Controller
 
         $this->render('admin/certificates/index', array(
             'page_title' => 'Certificates',
-            'events' => $this->event_model->get_options(),
+            'events' => $this->event_model->get_event_options(),
             'selected_event_id' => $selected_event_id,
             'keyword' => $keyword,
-            'certificates' => $this->event_model->get_certificates($selected_event_id, $keyword),
+            'certificates' => $this->certificate_model->get_all_certificates($selected_event_id, $keyword),
         ));
     }
 
@@ -220,19 +245,18 @@ class Event extends MY_Controller
     {
         $this->load_composer();
 
-        $certificate = $this->event_model->get_certificate_by_id($id);
+        $certificate = $this->certificate_model->get_certificate_by_id($id);
 
         if (!$certificate) {
             show_404();
         }
 
-        $dompdf = new \Dompdf\Dompdf();
-        $html = $this->load->view('certificates/pdf', array('certificate' => $certificate), TRUE);
-
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'landscape');
-        $dompdf->render();
-        $dompdf->stream('certificate-' . $certificate->certificate_number . '.pdf', array('Attachment' => 0));
+        $this->stream_pdf(
+            'certificates/pdf',
+            array('certificate' => $certificate),
+            'certificate-' . $certificate->certificate_number . '.pdf',
+            'landscape'
+        );
     }
 
     public function pdf()
@@ -248,14 +272,9 @@ class Event extends MY_Controller
             $status = '';
         }
 
-        $events = $this->event_model->get_all(null, 0, $keyword, $status, $start_date, $end_date);
-        $html = $this->load->view('admin/events/report_pdf', array('events' => $events), TRUE);
+        $events = $this->event_model->get_all_events(null, 0, $keyword, $status, $start_date, $end_date);
 
-        $dompdf = new \Dompdf\Dompdf();
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-        $dompdf->stream('event-report.pdf', array('Attachment' => 0));
+        $this->stream_pdf('admin/events/report_pdf', array('events' => $events), 'event-report.pdf', 'portrait');
     }
 
     public function excel()
@@ -275,7 +294,9 @@ class Event extends MY_Controller
             $status = '';
         }
 
-        $this->write_event_sheet($sheet, $this->event_model->get_all(null, 0, $keyword, $status, $start_date, $end_date));
+        $events = $this->event_model->get_all_events(null, 0, $keyword, $status, $start_date, $end_date);
+
+        $this->write_event_sheet($sheet, $events);
         $this->download_excel($spreadsheet, 'event-report.xlsx');
     }
 
@@ -283,7 +304,7 @@ class Event extends MY_Controller
     {
         $this->load_composer();
 
-        $event = $this->event_model->get_by_id($event_id);
+        $event = $this->event_model->get_event_by_id($event_id);
 
         if (!$event) {
             show_404();
@@ -293,17 +314,11 @@ class Event extends MY_Controller
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setTitle('Participants');
 
-        $headers = array('No', 'Name', 'Email', 'Phone', 'Institution', 'Address', 'Team', 'Registration Status', 'Attendance');
-        $column = 'A';
-
-        foreach ($headers as $header) {
-            $sheet->setCellValue($column . '1', $header);
-            $column++;
-        }
+        $this->write_headers($sheet, array('No', 'Name', 'Email', 'Phone', 'Institution', 'Address', 'Team', 'Registration Status', 'Attendance'));
 
         $row = 2;
         $number = 1;
-        $participants = $this->event_model->get_participants($event_id);
+        $participants = $this->event_model->get_event_participants($event_id);
 
         foreach ($participants as $participant) {
             $sheet->setCellValue('A' . $row, $number++);
@@ -329,7 +344,7 @@ class Event extends MY_Controller
     {
         return array(
             'base_url' => base_url('event/index'),
-            'total_rows' => $this->event_model->count_all($keyword, $status, $start_date, $end_date),
+            'total_rows' => $this->event_model->count_events($keyword, $status, $start_date, $end_date),
             'per_page' => self::PER_PAGE,
             'uri_segment' => 3,
             'reuse_query_string' => TRUE,
@@ -352,33 +367,6 @@ class Event extends MY_Controller
             'last_tag_open' => '<li class="page-item">',
             'last_tag_close' => '</li>',
             'attributes' => array('class' => 'page-link'),
-        );
-    }
-
-    private function set_event_rules()
-    {
-        $this->form_validation->set_rules('name', 'Event Name', 'trim|required|max_length[150]');
-        $this->form_validation->set_rules('date', 'Date', 'trim|required');
-        $this->form_validation->set_rules('start_time', 'Start Time', 'trim');
-        $this->form_validation->set_rules('end_time', 'End Time', 'trim');
-        $this->form_validation->set_rules('location', 'Location', 'trim|required|max_length[150]');
-        $this->form_validation->set_rules('quota', 'Quota', 'trim|integer');
-        $this->form_validation->set_rules('status', 'Status', 'trim|required|in_list[dibuka,ditutup,selesai]');
-        $this->form_validation->set_rules('description', 'Description', 'trim');
-    }
-
-    private function event_payload()
-    {
-        return array(
-            'user_id' => (int) $this->session->userdata('id'),
-            'name' => $this->input->post('name', TRUE),
-            'description' => $this->input->post('description', TRUE),
-            'date' => $this->input->post('date', TRUE),
-            'start_time' => $this->input->post('start_time', TRUE) ?: null,
-            'end_time' => $this->input->post('end_time', TRUE) ?: null,
-            'location' => $this->input->post('location', TRUE),
-            'quota' => $this->input->post('quota', TRUE) !== '' ? (int) $this->input->post('quota', TRUE) : null,
-            'status' => $this->input->post('status', TRUE),
         );
     }
 
@@ -423,13 +411,7 @@ class Event extends MY_Controller
 
     private function write_event_sheet($sheet, $events)
     {
-        $headers = array('No', 'Event Name', 'Date', 'Time', 'Location', 'Quota', 'Status');
-        $column = 'A';
-
-        foreach ($headers as $header) {
-            $sheet->setCellValue($column . '1', $header);
-            $column++;
-        }
+        $this->write_headers($sheet, array('No', 'Event Name', 'Date', 'Time', 'Location', 'Quota', 'Status'));
 
         $row = 2;
         $number = 1;
@@ -448,6 +430,25 @@ class Event extends MY_Controller
         foreach (range('A', 'G') as $column) {
             $sheet->getColumnDimension($column)->setAutoSize(TRUE);
         }
+    }
+
+    private function write_headers($sheet, $headers)
+    {
+        $column = 'A';
+
+        foreach ($headers as $header) {
+            $sheet->setCellValue($column . '1', $header);
+            $column++;
+        }
+    }
+
+    private function stream_pdf($view, $data, $filename, $orientation)
+    {
+        $dompdf = new \Dompdf\Dompdf();
+        $dompdf->loadHtml($this->load->view($view, $data, TRUE));
+        $dompdf->setPaper('A4', $orientation);
+        $dompdf->render();
+        $dompdf->stream($filename, array('Attachment' => 0));
     }
 
     private function download_excel($spreadsheet, $filename)

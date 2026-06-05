@@ -29,7 +29,7 @@ class Dashboard extends MY_Controller
 
         if ($role === 'participant') {
             $this->load->model('Event_model', 'event_model');
-            $data['latest_events'] = $this->event_model->get_events_with_registration($this->session->userdata('id'), 4);
+            $data['latest_events'] = $this->event_model->get_events_for_participant($this->session->userdata('id'), 4);
         } else {
             $data['latest_events'] = $this->dashboard_model->get_latest_events(5);
             $data['recent_activities'] = $this->dashboard_model->get_recent_activities(6);
