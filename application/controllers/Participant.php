@@ -195,7 +195,7 @@ class Participant extends MY_Controller
             return;
         }
 
-        $registration_id = $this->registration_model->create_registration($this->registration_payload($id));
+        $this->registration_model->create_registration($this->registration_payload($id));
 
         $this->session->set_flashdata('success', 'Successfully registered for the event.');
         redirect('participant');
