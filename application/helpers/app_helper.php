@@ -53,7 +53,6 @@ if (!function_exists('status_badge_class')) {
             'approved' => 'success',
             'verified' => 'success',
             'pending' => 'warning',
-            'rejected' => 'danger',
             'dibuka' => 'success',
             'ditutup' => 'warning',
             'selesai' => 'secondary',
@@ -73,7 +72,6 @@ if (!function_exists('status_label')) {
             'pending' => 'Pending',
             'approved' => 'Approved',
             'verified' => 'Verified',
-            'rejected' => 'Rejected',
         );
 
         return isset($labels[$status]) ? $labels[$status] : ucfirst((string) $status);
