@@ -1,9 +1,9 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 class Event extends MY_Controller
 {
-    const PER_PAGE = 5;
+    const PER_PAGE = 10;
 
     public function __construct()
     {
@@ -13,7 +13,6 @@ class Event extends MY_Controller
         $this->load->model('Event_model', 'event_model');
         $this->load->model('Certificate_model', 'certificate_model');
         $this->load->library('pagination');
-
     }
 
     public function index()
@@ -348,6 +347,7 @@ class Event extends MY_Controller
             'total_rows' => $this->event_model->count_events($keyword, $status, $start_date, $end_date),
             'per_page' => self::PER_PAGE,
             'uri_segment' => 3,
+            'cur_page' => (string) $this->uri->segment(3, '00'),
             'reuse_query_string' => TRUE,
             'full_tag_open' => '<nav aria-label="Pagination"><ul class="pagination mt-3">',
             'full_tag_close' => '</ul></nav>',

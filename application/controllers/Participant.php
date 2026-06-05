@@ -223,6 +223,7 @@ class Participant extends MY_Controller
             'total_rows' => $this->event_model->count_events_for_participant($keyword, $status),
             'per_page' => self::EVENT_PER_PAGE,
             'uri_segment' => 3,
+            'cur_page' => (string) $this->uri->segment(3, '00'),
             'reuse_query_string' => TRUE,
             'full_tag_open' => '<ul class="pagination pagination-primary justify-content-center">',
             'full_tag_close' => '</ul>',
