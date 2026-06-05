@@ -48,7 +48,6 @@
                             <option value="">All Status</option>
                             <option value="pending" <?= isset($selected_status) && $selected_status === 'pending' ? 'selected' : '' ?>>Pending</option>
                             <option value="approved" <?= isset($selected_status) && $selected_status === 'approved' ? 'selected' : '' ?>>Approved</option>
-                            <option value="rejected" <?= isset($selected_status) && $selected_status === 'rejected' ? 'selected' : '' ?>>Rejected</option>
                         </select>
                     </div>
 
