@@ -29,7 +29,10 @@ class Users extends MY_Controller
     public function create()
     {
         $this->set_active_menu('users');
-        $this->set_user_rules();
+
+        $this->form_validation->set_rules('name', 'Name', 'trim|required|max_length[100]');
+        $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|callback_check_unique_email');
+        $this->form_validation->set_rules('role', 'Role', 'trim|required|in_list[admin,participant]');
         $this->form_validation->set_rules('password', 'Password', 'required|min_length[6]');
 
         if ($this->form_validation->run() === FALSE) {
@@ -46,8 +49,11 @@ class Users extends MY_Controller
             'role' => $this->input->post('role', TRUE),
         );
 
-        $this->auth_model->create_user($data);
-        $this->session->set_flashdata('success', 'User account created successfully.');
+        if ($this->auth_model->create_user($data)) {
+            $this->session->set_flashdata('success', 'User account created successfully.');
+        } else {
+            $this->session->set_flashdata('error', 'User account creation failed.');
+        }
 
         redirect('users');
     }
@@ -66,7 +72,10 @@ class Users extends MY_Controller
         }
 
         $this->set_active_menu('users');
-        $this->set_user_rules($id);
+
+        $this->form_validation->set_rules('name', 'Name', 'trim|required|max_length[100]');
+        $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|callback_check_unique_email[' . (int) $id . ']');
+        $this->form_validation->set_rules('role', 'Role', 'trim|required|in_list[admin,participant]');
 
         if ($this->input->post('password')) {
             $this->form_validation->set_rules('password', 'New Password', 'min_length[6]');
@@ -91,8 +100,11 @@ class Users extends MY_Controller
             $data['password'] = password_hash($this->input->post('password'), PASSWORD_DEFAULT);
         }
 
-        $this->auth_model->update_user($id, $data);
-        $this->session->set_flashdata('success', 'User account updated successfully.');
+        if ($this->auth_model->update_user($id, $data)) {
+            $this->session->set_flashdata('success', 'User account updated successfully.');
+        } else {
+            $this->session->set_flashdata('error', 'User account update failed.');
+        }
 
         redirect('users');
     }
@@ -127,18 +139,5 @@ class Users extends MY_Controller
         }
 
         return true;
-    }
-
-    private function set_user_rules($id = null)
-    {
-        $email_rule = 'trim|required|valid_email|callback_check_unique_email';
-
-        if ($id) {
-            $email_rule .= '[' . (int) $id . ']';
-        }
-
-        $this->form_validation->set_rules('name', 'Name', 'trim|required|max_length[100]');
-        $this->form_validation->set_rules('email', 'Email', $email_rule);
-        $this->form_validation->set_rules('role', 'Role', 'trim|required|in_list[admin,participant]');
     }
 }

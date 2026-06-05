@@ -66,16 +66,6 @@ class Auth_model extends CI_Model
             ->result();
     }
 
-    public function register($data)
-    {
-        return $this->create_user($data);
-    }
-
-    public function login($email)
-    {
-        return $this->find_by_email($email);
-    }
-
     public function find_by_id($id)
     {
         return $this->db
